@@ -8,7 +8,6 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
-import menu.Menu;
 import model.CompanyModel;
 import model.ComputerModel;
 
@@ -62,14 +61,13 @@ public class MySQLConnectDB {
 			statement = (Statement) connect.createStatement();
 			// Result set get the result of the SQL query
 			
-			
-			
+			System.out.println("Computer : "+getComputerById(42).getName());
 			resultSet = statement.executeQuery("SELECT * FROM "+tableName);
-			if(tableName.equalsIgnoreCase(COMPUTER_TABLE_NAME)){
+			/*if(tableName.equalsIgnoreCase(COMPUTER_TABLE_NAME)){
 				displayComputerResult(resultSet);
 			}else{
 				displayCompanyResult(resultSet);
-			}
+			}*/
 			
 			
 
@@ -141,6 +139,28 @@ public class MySQLConnectDB {
 		
 	}
 	
+	
+	public ComputerModel getComputerById(int id){
+		ComputerModel computer = null;
+		try {
+			resultSet = statement.executeQuery("SELECT * FROM "+COMPUTER_TABLE_NAME +" WHERE id ="+id);
+			while(resultSet.next()){
+				int idComputer = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				String introduced = resultSet.getString(3);
+				String discontinued = resultSet.getString(4);
+				int companyId = resultSet.getInt(5);	
+				computer = new ComputerModel(idComputer,name,introduced,discontinued,companyId);
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return computer;
+		
+	}
 	public void updateComputer(ComputerModel computer){
 
 		 try {

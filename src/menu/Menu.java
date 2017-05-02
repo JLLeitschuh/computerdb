@@ -4,6 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+import com.mysql.jdbc.StringUtils;
+
+import model.ComputerModel;
+
 public class Menu {
 
 	
@@ -29,7 +33,7 @@ public class Menu {
 	public static void updateComputer(int idComputerUpdate){
 		
 		
-		
+		ComputerModel computerModel = null;
 		System.out.print("Enter name:");
 		Scanner in = new Scanner(System.in);
 		String name =in.nextLine();
@@ -38,15 +42,24 @@ public class Menu {
 		System.out.print("introduced:");
 		String discontinued =convertToDate(in.nextLine());
 		
+		if(!name.equalsIgnoreCase("")){
+			computerModel.setName(name);
+		}
 		if(introduced.equalsIgnoreCase("")){
-			
+			computerModel.setIntroduced(introduced);
 		}
 		if(discontinued.equalsIgnoreCase("")){
-			
+			computerModel.setDiscontinued(discontinued);
 		}
 		System.out.print("Company ID:");
 		String companyId =in.nextLine();
 		
+		while(StringUtils.isStrictlyNumeric(companyId)){
+			System.out.print("Company ID:");
+			companyId =in.nextLine();
+		}
+		
+		computerModel.setCompanyId(Integer.parseInt(companyId));
 		
 		
 	}
