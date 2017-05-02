@@ -28,6 +28,8 @@ public class Menu {
 	
 	public static void updateComputer(int idComputerUpdate){
 		
+		
+		
 		System.out.print("Enter name:");
 		Scanner in = new Scanner(System.in);
 		String name =in.nextLine();
@@ -35,8 +37,15 @@ public class Menu {
 		String introduced =convertToDate(in.nextLine());
 		System.out.print("introduced:");
 		String discontinued =convertToDate(in.nextLine());
+		
+		if(introduced.equalsIgnoreCase("")){
+			
+		}
+		if(discontinued.equalsIgnoreCase("")){
+			
+		}
 		System.out.print("Company ID:");
-		String companyId =convertToDate(in.nextLine());
+		String companyId =in.nextLine();
 		
 		
 		
