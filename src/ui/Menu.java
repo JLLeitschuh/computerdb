@@ -8,19 +8,25 @@ import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
 
-import computerdb.MySQLConnectDB;
+
 import computerdb.MySQLConnectionSingleton;
 import computerdb.Query;
+import dao.CompanyDao;
+import dao.ComputerDao;
+import dao.DAO;
+import model.CompanyModel;
 import model.ComputerModel;
 import utils.Utils;
 
 public class Menu {
 
-	MySQLConnectDB mySQLDb;
+	DAO<ComputerModel> computerDAO ;
+	DAO<CompanyModel> companyDAO;
 	Scanner in;
 
 	public Menu(){
-		this.mySQLDb = new MySQLConnectDB();
+		computerDAO = new ComputerDao();
+		companyDAO = new CompanyDao();
 		in = new Scanner(System.in);
 	}
 
@@ -105,9 +111,9 @@ public class Menu {
 		System.out.println("Delete computer with id :");
 		String computerId= in.nextLine();
 		if(StringUtils.isStrictlyNumeric(computerId)){
-			ComputerModel computerModel = mySQLDb.getComputerById(Integer.parseInt(computerId));
+			ComputerModel computerModel = computerDAO.find(Integer.parseInt(computerId));
 			if(computerModel!=null){
-				mySQLDb.deleteComputer(computerModel);
+				computerDAO.delete(computerModel);
 			}else{
 				System.out.println("This computer doesn't exist");
 			}
@@ -127,7 +133,13 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
 		if(isComputerIdOk){
-			mySQLDb.displayComputerById(Integer.parseInt(computerId));
+			ComputerModel computer = computerDAO.find(Integer.parseInt(computerId));
+			if(computer!=null){
+				System.out.println(computer.toString());
+			}else{
+				System.out.println("Computer doesn't exist");
+			}
+			
 		}else{
 			System.out.println("Computer Id must be numeric");
 		}
@@ -161,7 +173,7 @@ public class Menu {
 	public void updateComputer(int idComputerUpdate){
 
 
-		ComputerModel computerModel = mySQLDb.getComputerById(idComputerUpdate);
+		ComputerModel computerModel = computerDAO.find(idComputerUpdate);
 		if( computerModel!=null ){
 			System.out.print("Enter name:");
 			String name =in.nextLine();
@@ -182,12 +194,12 @@ public class Menu {
 			System.out.print("Company ID:");
 			String companyId =in.nextLine();
 
-			boolean isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && mySQLDb.getCompanyById(Integer.parseInt(companyId));
+			boolean isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
 
 			if(isCompanyIdOk){
 				computerModel.setCompanyId(Integer.parseInt(companyId));
 			}
-			mySQLDb.updateComputer(computerModel);
+			computerDAO.update(computerModel);
 
 		}else{
 			System.out.println("Computer doesn't exist");
@@ -219,16 +231,16 @@ public class Menu {
 		System.out.print("Company ID:");
 		String companyId =in.nextLine();
 
-		boolean isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && mySQLDb.getCompanyById(Integer.parseInt(companyId));
+		boolean isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
 
 		while(!isCompanyIdOk){
 			System.out.print("Company id must be numeric and must be into database :");
 			companyId =in.nextLine();
-			isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && mySQLDb.getCompanyById(Integer.parseInt(companyId));
+			isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
 		}
 
 		computerModel.setCompanyId(Integer.parseInt(companyId));
-		mySQLDb.insertComputer(computerModel);
+		computerDAO.create(computerModel);
 
 	}
 
@@ -236,14 +248,14 @@ public class Menu {
      * display all computers from computer table
      */
 	public void displayComputerList(){
-		mySQLDb.displayTableData(MySQLConnectDB.COMPUTER_TABLE_NAME);
+		computerDAO.getAll();
 	}
 
 	/**
 	 * display all company from company table
 	 */
 	public void displayCompanyList(){
-		mySQLDb.displayTableData(MySQLConnectDB.COMPANY_TABLE_NAME);
+		companyDAO.getAll();
 	}
 
 }

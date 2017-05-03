@@ -1,11 +1,8 @@
 package main;
 
-import java.sql.Timestamp;
 
-import computerdb.MySQLConnectDB;
-import model.ComputerModel;
 import ui.Menu;
-import utils.Utils;
+
 
 public class Main {
 

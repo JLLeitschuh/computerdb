@@ -13,6 +13,7 @@ public class MySQLConnectionSingleton {
 	private static final String USER_NAME= "admincdb";
 	private static final String PWD= "qwerty1234";
 	
+	//generate singleton which is loaded at the begining
 	private static MySQLConnectionSingleton instance = new MySQLConnectionSingleton();
 	
 	Connection connect;
