@@ -1,8 +1,8 @@
 package computerdb;
 
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -13,39 +13,29 @@ import model.ComputerModel;
 
 public class MySQLConnectDB {
 
-	private Connection connect = null;
+	
 	private Statement statement = null;
 	private ResultSet resultSet = null;
 	private PreparedStatement preparedStatement = null;
 
-	private static final String DATABASE_NAME = "computer-database-db";
+	
 	public static final String COMPUTER_TABLE_NAME= "computer";
 	public static final String COMPANY_TABLE_NAME= "company";
-	private static final String URL="jdbc:mysql://localhost/";
-	private static final String USER_NAME= "admincdb";
-	private static final String PWD= "qwerty1234";
+	Connection connect;
 
-
-
-
-	private void connectToDb() throws SQLException{
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			connect = (Connection) DriverManager
-					.getConnection(URL+DATABASE_NAME+"?autoReconnect=true&useSSL=false&&zeroDateTimeBehavior=convertToNull",USER_NAME,PWD);
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	public MySQLConnectDB(){
+		connect = MySQLConnectionSingleton.getInstance().getConnection();
 	}
 
+
+
+
+	/**
+	 * close all items
+	 */
 	public void close(){
 		try {
-			if(connect!=null){
-				connect.close();
-			}
+			
 			if(statement!=null){
 				statement.close();
 			}
@@ -63,10 +53,15 @@ public class MySQLConnectDB {
 	}
 
 
+	
+	/**
+	 * display all data from tablename
+	 * @param tableName
+	 */
 	public void displayTableData(String tableName){
 
 		try {
-			connectToDb();
+			
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM "+tableName);
 			if(tableName.equalsIgnoreCase(COMPUTER_TABLE_NAME)){
@@ -82,11 +77,17 @@ public class MySQLConnectDB {
 		}
 
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return true company exist 
+	 */
 
 	public boolean getCompanyById(int id){
 		try {
 
-			connectToDb();
+			
 			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPANY_TABLE_NAME +" WHERE id =?");
 			preparedStatement.setInt(1,id);
 
@@ -110,7 +111,11 @@ public class MySQLConnectDB {
 	}
 
 
-
+	/**
+	 * display all computers from table "computer"
+	 * @param resultSet
+	 * @throws SQLException
+	 */
 	public void displayComputerResult(ResultSet resultSet) throws SQLException {
 		//         Now get some metadata from the database
 		// Result set get the result of the SQL query
@@ -119,8 +124,8 @@ public class MySQLConnectDB {
 
 			int id = resultSet.getInt(1);
 			String name = resultSet.getString(2);
-			String introduced = resultSet.getString(3);
-			String discontinued = resultSet.getString(4);
+			Timestamp introduced = resultSet.getTimestamp(3);
+			Timestamp discontinued = resultSet.getTimestamp(4);
 			int companyId = resultSet.getInt(5);
 
 			System.out.println("Value " + new ComputerModel(id,name,introduced,discontinued,companyId).toString());	 
@@ -129,6 +134,11 @@ public class MySQLConnectDB {
 
 	}
 
+	/**
+	 * display all companies from table "company"
+	 * @param resultSet
+	 * @throws SQLException
+	 */
 	public void displayCompanyResult(ResultSet resultSet) throws SQLException {
 
 		while (resultSet.next()) {
@@ -142,15 +152,19 @@ public class MySQLConnectDB {
 
 	}
 
+	/**
+	 * insert now computer into computer tbale
+	 * @param computer
+	 */
 	public void insertComputer(ComputerModel computer){
 
 		try {
-			connectToDb();
+			
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement("insert into " +COMPUTER_TABLE_NAME +" values (default, ?, ?, ?, ?)");
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setString(2,computer.getIntroduced());
-			preparedStatement.setString(3, computer.getDiscontinued());
+			preparedStatement.setTimestamp(2,computer.getIntroduced());
+			preparedStatement.setTimestamp(3, computer.getDiscontinued());
 			preparedStatement.setInt(4, computer.getCompanyId());
 			preparedStatement.executeUpdate();
 
@@ -165,12 +179,17 @@ public class MySQLConnectDB {
 
 	}
 
+	/**
+	 * get ComputerModel with id "id"
+	 * @param id
+	 * @return null if computer doesn't exist
+	 */
 
 	public ComputerModel getComputerById(int id){
 		ComputerModel computer = null;
 		try {
 
-			connectToDb();
+			
 			
 			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPUTER_TABLE_NAME+" WHERE id =?");
 			preparedStatement.setInt(1,id);
@@ -179,8 +198,8 @@ public class MySQLConnectDB {
 
 				int idComputer = resultSet.getInt(1);
 				String name = resultSet.getString(2);
-				String introduced = resultSet.getString(3);
-				String discontinued = resultSet.getString(4);
+				Timestamp introduced = resultSet.getTimestamp(3);
+				Timestamp discontinued = resultSet.getTimestamp(4);
 				int companyId = resultSet.getInt(5);	
 				computer = new ComputerModel(idComputer,name,introduced,discontinued,companyId);
 			}
@@ -194,6 +213,10 @@ public class MySQLConnectDB {
 		return computer;
 	}
 
+	/**
+	 * display computer detail with id "id"
+	 * @param id
+	 */
 
 	public void displayComputerById(int id){
 
@@ -207,18 +230,46 @@ public class MySQLConnectDB {
 		}
 
 	}
+	
+	/**
+	 * update one computer data 
+	 * @param computer
+	 */
 	public void updateComputer(ComputerModel computer){
 
 		try {
 
-			connectToDb();
+			
 			preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " +COMPUTER_TABLE_NAME +
 					" SET name = ?,introduced =?, discontinued=?,company_id=?"+
-					" WHERE id ="+ computer.getId());
+					" WHERE id =?");
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setString(2,computer.getIntroduced());
-			preparedStatement.setString(3, computer.getDiscontinued());
+			preparedStatement.setTimestamp(2,computer.getIntroduced());
+			preparedStatement.setTimestamp(3, computer.getDiscontinued());
 			preparedStatement.setInt(4, computer.getCompanyId());
+			preparedStatement.setInt(5, computer.getId());
+			preparedStatement.executeUpdate();
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			close();
+		}
+
+	}
+	
+	/**
+	 * delete computer from database "computer"
+	 * @param computer
+	 */
+	public void deleteComputer(ComputerModel computer){
+
+		try {
+
+			preparedStatement = (PreparedStatement) connect.prepareStatement("Delete From " +COMPUTER_TABLE_NAME +" WHERE id =?");
+			preparedStatement.setInt(1, computer.getId());
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {

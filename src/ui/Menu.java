@@ -1,15 +1,18 @@
-package menu;
+package ui;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
 
-import Utils.Utils;
 import computerdb.MySQLConnectDB;
+import computerdb.MySQLConnectionSingleton;
 import computerdb.Query;
 import model.ComputerModel;
+import utils.Utils;
 
 public class Menu {
 
@@ -21,7 +24,9 @@ public class Menu {
 		in = new Scanner(System.in);
 	}
 
-
+	/**
+	 * make menu choice 
+	 */
 	public void chooseMenu(){
 
 
@@ -33,12 +38,19 @@ public class Menu {
 			System.out.println("Insert new computer write 3");
 			System.out.println("Update existing computer write 4 ");
 			System.out.println("Display one Computer write 5 ");
-			System.out.println("Write 6 to quit ");
+			System.out.println("Delete  Computer write 6 ");
+			System.out.println("Write 7 to quit ");
 			String choice  =in.nextLine();
 
 			if(StringUtils.isStrictlyNumeric(choice)){
-				if(Integer.parseInt(choice) ==6){
+				if(Integer.parseInt(choice) ==7){
 					keepChoose = false;
+					try {
+						MySQLConnectionSingleton.getInstance().getConnection().close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					};
 				}else{
 					choice(Integer.parseInt(choice));
 				}
@@ -49,6 +61,10 @@ public class Menu {
 
 	}
 
+	/**
+	 * choice statement with numeric selected by user
+	 * @param numeric
+	 */
 	public void choice(int numeric){
 
 		switch (numeric) {
@@ -68,6 +84,9 @@ public class Menu {
 		case Query.DISPLAYCOMPUTERBYID:
 			displayComputerById();
 			break;
+		case Query.DELETECOMPUTERBYID:
+			deleteComputerById();
+			break;
 
 		default:
 			System.out.println("Choice must be between 1 and 6, try again");
@@ -78,8 +97,30 @@ public class Menu {
 	}
 
 
+	/**
+	 * delete computer from computer table
+	 */
+	public void deleteComputerById(){
+
+		System.out.println("Delete computer with id :");
+		String computerId= in.nextLine();
+		if(StringUtils.isStrictlyNumeric(computerId)){
+			ComputerModel computerModel = mySQLDb.getComputerById(Integer.parseInt(computerId));
+			if(computerModel!=null){
+				mySQLDb.deleteComputer(computerModel);
+			}else{
+				System.out.println("This computer doesn't exist");
+			}
+
+		}
+
+	}
+	
+	/**
+	 * display Computer with specific id
+	 */
 	public void displayComputerById(){
-		
+
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer To display with id ");
 		String computerId = in.nextLine();
@@ -95,12 +136,14 @@ public class Menu {
 
 
 
-
+	/**
+	 * chooseComputerToUpdate
+	 */
 	public void chooseComputerToUpdate(){
-		
+
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer To update with id ");
-		
+
 		String computerId = in.nextLine();
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId) ;
 
@@ -111,6 +154,10 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * update Computer with specific id
+	 * @param idComputerUpdate
+	 */
 	public void updateComputer(int idComputerUpdate){
 
 
@@ -119,17 +166,17 @@ public class Menu {
 			System.out.print("Enter name:");
 			String name =in.nextLine();
 			System.out.print("introduced:");
-			String introduced =Utils.convertToDate(in.nextLine());
-			System.out.print("introduced:");
-			String discontinued =Utils.convertToDate(in.nextLine());
+			Timestamp introduced =Utils.convertToDate(in.nextLine());
+			System.out.print("discontinued:");
+			Timestamp discontinued =Utils.convertToDate(in.nextLine());
 
 			if(!name.equalsIgnoreCase("")){
 				computerModel.setName(name);
 			}
-			if(introduced.equalsIgnoreCase("")){
+			if(introduced!=null){
 				computerModel.setIntroduced(introduced);
 			}
-			if(discontinued.equalsIgnoreCase("")){
+			if(discontinued!=null){
 				computerModel.setDiscontinued(discontinued);
 			}
 			System.out.print("Company ID:");
@@ -140,6 +187,7 @@ public class Menu {
 			if(isCompanyIdOk){
 				computerModel.setCompanyId(Integer.parseInt(companyId));
 			}
+			mySQLDb.updateComputer(computerModel);
 
 		}else{
 			System.out.println("Computer doesn't exist");
@@ -147,6 +195,9 @@ public class Menu {
 
 	}
 
+	/**
+	 * insert new computer into computer table
+	 */
 	public  void insertComputer(){
 
 		System.out.print("Enter name:");
@@ -154,19 +205,17 @@ public class Menu {
 		ComputerModel computerModel = new ComputerModel();
 		String name =in.nextLine();
 		System.out.print("Enter introduced:");
-		String introduced =Utils.convertToDate(in.nextLine());
+		Timestamp introduced =Utils.convertToDate(in.nextLine());
 		System.out.print("Enter discontinuited :");
-		String discontinued =Utils.convertToDate(in.nextLine());
+		Timestamp discontinued =Utils.convertToDate(in.nextLine());
 
 		if(!name.equalsIgnoreCase("")){
 			computerModel.setName(null);
 		}
-		if(introduced.equalsIgnoreCase("")){
-			computerModel.setIntroduced(null);
-		}
-		if(discontinued.equalsIgnoreCase("")){
-			computerModel.setDiscontinued(null);
-		}
+
+		computerModel.setIntroduced(introduced);
+		computerModel.setDiscontinued(discontinued);
+
 		System.out.print("Company ID:");
 		String companyId =in.nextLine();
 
@@ -183,11 +232,16 @@ public class Menu {
 
 	}
 
-
+    /**
+     * display all computers from computer table
+     */
 	public void displayComputerList(){
 		mySQLDb.displayTableData(MySQLConnectDB.COMPUTER_TABLE_NAME);
 	}
 
+	/**
+	 * display all company from company table
+	 */
 	public void displayCompanyList(){
 		mySQLDb.displayTableData(MySQLConnectDB.COMPANY_TABLE_NAME);
 	}
