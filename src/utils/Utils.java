@@ -6,6 +6,11 @@ import java.text.SimpleDateFormat;
 
 public class Utils {
 
+	/**
+	 * convert data String to Timestamp
+	 * @param date
+	 * @return Timestamp from string
+	 */
 	public static Timestamp convertToDate(String date){
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd"); // your template here	

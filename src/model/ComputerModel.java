@@ -32,38 +32,80 @@ public class ComputerModel {
 		
 	}
 	
-	
+	/**
+	 * 
+	 * @return integer id
+	 */
 	public int getId() {
 		return id;
 	}
+	/**
+	 * set Id
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
+	/**
+	 * 
+	 * @return computer name 
+	 */
 	public String getName() {
 		return name;
 	}
+	/**
+	 * set computer name
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+	/**
+	 * get Introduced timestamp
+	 * @return
+	 */
 	public Timestamp getIntroduced() {
 		return introduced;
 	}
+	/**
+	 * setIntroduced timestamp
+	 * @param introduced
+	 */
 	public void setIntroduced(Timestamp introduced) {
 		this.introduced = introduced;
 	}
+	/**
+	 * get Discontinued timestamp
+	 * @return
+	 */
 	public Timestamp getDiscontinued() {
 		return discontinued;
 	}
+	/**
+	 * set discontinued timestamp
+	 * @param discontinued
+	 */
 	public void setDiscontinued(Timestamp discontinued) {
 		this.discontinued = discontinued;
 	}
+	/**
+	 * get company id
+	 * @return
+	 */
 	public int getCompanyId() {
 		return companyId;
 	}
+	/**
+	 * set company Id
+	 * @param companyId
+	 */
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
 	}
 	
+	/**
+	 * override toString method
+	 */
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
