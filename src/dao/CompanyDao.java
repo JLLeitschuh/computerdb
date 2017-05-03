@@ -1,6 +1,5 @@
 package dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -19,19 +18,16 @@ public class CompanyDao extends DAO<CompanyModel>{
 		// TODO Auto-generated method stub
 		CompanyModel companyModel = null;
 		try {
-			
-
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPANY_TABLE_NAME +" WHERE id =?");
 			preparedStatement.setInt(1,id);
-
 			resultSet = preparedStatement.executeQuery();;
 
-			
 			if(resultSet.first()){
 				int companyId = resultSet.getInt(1);
 				String name = resultSet.getString(2);
 				companyModel= new CompanyModel(companyId, name);
+			
 			}
 
 		} catch (SQLException e) {
@@ -64,8 +60,8 @@ public class CompanyDao extends DAO<CompanyModel>{
 
 	@Override
 	public void getAll() {
-		
-		
+
+
 		try {
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM "+COMPANY_TABLE_NAME);

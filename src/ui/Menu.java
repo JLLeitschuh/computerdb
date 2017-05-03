@@ -110,10 +110,12 @@ public class Menu {
 
 		System.out.println("Delete computer with id :");
 		String computerId= in.nextLine();
+		
 		if (StringUtils.isStrictlyNumeric(computerId)) {
 			
 			ComputerModel computerModel = computerDAO.find(Integer.parseInt(computerId));
 			if (computerModel!=null) {
+				
 				computerDAO.delete(computerModel);
 			}else {
 				System.out.println("This computer doesn't exist");
@@ -126,18 +128,19 @@ public class Menu {
 	/**
 	 * display Computer with specific id
 	 */
-	public void displayComputerById(){
+	public void displayComputerById() {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
-		System.out.println("Choose Computer To display with id ");
+		System.out.println("Choose Computer ID to display details ");
+		
 		String computerId = in.nextLine();
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
-		if(isComputerIdOk){
+		if (isComputerIdOk) {
 			ComputerModel computer = computerDAO.find(Integer.parseInt(computerId));
-			if(computer!=null){
+			if (computer!=null) {
 				System.out.println(computer.toString());
-			}else{
+			}else {
 				System.out.println("Computer doesn't exist");
 			}
 			
@@ -195,10 +198,15 @@ public class Menu {
 			System.out.print("Company ID:");
 			String companyId =in.nextLine();
 
-			boolean isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
+			
 
-			if(isCompanyIdOk){
-				computerModel.setCompanyId(Integer.parseInt(companyId));
+			if(StringUtils.isStrictlyNumeric(companyId)){
+				
+				CompanyModel companyModel = companyDAO.find(Integer.parseInt(companyId));
+				if(companyModel!=null){
+					computerModel.setCompanyModel(companyModel);
+				}
+				
 			}
 			computerDAO.update(computerModel);
 
@@ -242,7 +250,8 @@ public class Menu {
 			isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
 		}
 
-		computerModel.setCompanyId(Integer.parseInt(companyId));
+		CompanyModel company = companyDAO.find(Integer.parseInt(companyId));
+		computerModel.setCompanyModel(company);
 		computerDAO.create(computerModel);
 
 	}

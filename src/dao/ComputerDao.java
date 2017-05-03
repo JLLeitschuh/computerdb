@@ -7,17 +7,19 @@ import java.sql.Timestamp;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
+import model.CompanyModel;
 import model.ComputerModel;
 
 public class ComputerDao extends DAO<ComputerModel> {
 
 	public static final String COMPUTER_TABLE_NAME= "computer";
-	
+
 	@Override
 	public ComputerModel find(int id) {
+
 		ComputerModel computer = null;
 		try {
-			
+
 			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPUTER_TABLE_NAME+" WHERE id =?");
 			preparedStatement.setInt(1,id);
 			resultSet = preparedStatement.executeQuery();
@@ -27,8 +29,10 @@ public class ComputerDao extends DAO<ComputerModel> {
 				String name = resultSet.getString(2);
 				Timestamp introduced = resultSet.getTimestamp(3);
 				Timestamp discontinued = resultSet.getTimestamp(4);
-				int companyId = resultSet.getInt(5);	
-				computer = new ComputerModel(idComputer,name,introduced,discontinued,companyId);
+				int companyId = resultSet.getInt(5);
+				DAO<CompanyModel> companydao = new CompanyDao();
+				CompanyModel companyModel = companydao.find(companyId);
+				computer = new ComputerModel(idComputer,name,introduced,discontinued,companyModel);
 			}
 
 		} catch (SQLException e) {
@@ -42,41 +46,41 @@ public class ComputerDao extends DAO<ComputerModel> {
 
 	@Override
 	public void create(ComputerModel computer) {
-try {
-			
+		try {
+
 			preparedStatement = (PreparedStatement) connect.prepareStatement("insert into " +COMPUTER_TABLE_NAME +" values (default, ?, ?, ?, ?)");
 			preparedStatement.setString(1, computer.getName());
 			preparedStatement.setTimestamp(2,computer.getIntroduced());
 			preparedStatement.setTimestamp(3, computer.getDiscontinued());
-			preparedStatement.setInt(4, computer.getCompanyId());
+			preparedStatement.setInt(4, computer.getCompanyModel().getId());
 			preparedStatement.executeUpdate();
 
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 		}finally{
 			close();
 		}
-	
+
 	}
 
 	@Override
 	public ComputerModel update(ComputerModel computer) {
 
 		try {
-			
+
 			preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " +COMPUTER_TABLE_NAME +
 					" SET name = ?,introduced =?, discontinued=?,company_id=?"+
 					" WHERE id =?");
 			preparedStatement.setString(1, computer.getName());
 			preparedStatement.setTimestamp(2,computer.getIntroduced());
-			preparedStatement.setTimestamp(3, computer.getDiscontinued());
-			preparedStatement.setInt(4, computer.getCompanyId());
+			preparedStatement.setTimestamp(3, computer.getDiscontinued());		
+			preparedStatement.setInt(4, computer.getCompanyModel().getId());			
 			preparedStatement.setInt(5, computer.getId());
 			preparedStatement.executeUpdate();
-			
+
 			computer = find(computer.getId());
 
 		} catch (SQLException e) {
@@ -104,13 +108,15 @@ try {
 		}
 
 	}
-	
-	
+
+
 
 	@Override
 	public void getAll() {
-		
+
 		try {
+			DAO<CompanyModel> companydao = new CompanyDao();
+			
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM "+COMPUTER_TABLE_NAME);
 			while (resultSet.next()) {
@@ -120,20 +126,20 @@ try {
 				Timestamp introduced = resultSet.getTimestamp(3);
 				Timestamp discontinued = resultSet.getTimestamp(4);
 				int companyId = resultSet.getInt(5);
-
-				System.out.println("Value " + new ComputerModel(id,name,introduced,discontinued,companyId).toString());	 
+				CompanyModel companyModel = companydao.find(companyId);
+				System.out.println("Value " + new ComputerModel(id,name,introduced,discontinued,companyModel).toString());	 
 
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 	public void close(){
 		try {
-			
+
 			if(statement!=null){
 				statement.close();
 			}

@@ -8,24 +8,24 @@ public class ComputerModel {
 	private String name;
 	private Timestamp introduced;
 	private Timestamp discontinued;
-	private int companyId;
+	private CompanyModel companyModel;
 	
 	
-	public ComputerModel(int id, String name, Timestamp introduced, Timestamp discontinued, int companyId) {
+	public ComputerModel(int id, String name, Timestamp introduced, Timestamp discontinued, CompanyModel companyModel) {
 	
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
+		this.companyModel = companyModel;
 	}
 	
-	public ComputerModel( String name,Timestamp introduced, Timestamp discontinued, int companyId) {
+	public ComputerModel( String name,Timestamp introduced, Timestamp discontinued, CompanyModel companyModel) {
 		
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
+		this.companyModel = companyModel;
 	}
 	
 	public ComputerModel(){
@@ -89,18 +89,18 @@ public class ComputerModel {
 		this.discontinued = discontinued;
 	}
 	/**
-	 * get company id
+	 * get company companyModel
 	 * @return
 	 */
-	public int getCompanyId() {
-		return companyId;
+	public CompanyModel getCompanyModel() {
+		return companyModel;
 	}
 	/**
 	 * set company Id
 	 * @param companyId
 	 */
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
+	public void setCompanyModel(CompanyModel companyModel) {
+		this.companyModel = companyModel;
 	}
 	
 	/**
@@ -114,7 +114,14 @@ public class ComputerModel {
 		strBuilder.append("name: "+this.name+ ",");
 		strBuilder.append("introduced: "+this.introduced+ ",");
 		strBuilder.append("discontinued: "+this.discontinued+ ",");
-		strBuilder.append("companyId: "+this.companyId);
+		if(companyModel!=null){
+			strBuilder.append("companyId: "+this.companyModel.getId());
+			strBuilder.append("companyName: "+this.companyModel.getName());
+		}else{
+			strBuilder.append("companyId: "+null);
+			strBuilder.append("companyName: "+null);
+		}
+		
 		return strBuilder.toString();
 	}
 	
