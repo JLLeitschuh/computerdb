@@ -1,6 +1,5 @@
 package dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -14,6 +13,9 @@ public class ComputerDao extends DAO<ComputerModel> {
 
 	public static final String COMPUTER_TABLE_NAME= "computer";
 
+	/**
+	 * find computer with specific id
+	 */
 	@Override
 	public ComputerModel find(int id) {
 
@@ -44,6 +46,9 @@ public class ComputerDao extends DAO<ComputerModel> {
 		return computer;
 	}
 
+	/**
+	 * create new computer into computer table
+	 */
 	@Override
 	public void create(ComputerModel computer) {
 		try {
@@ -65,7 +70,9 @@ public class ComputerDao extends DAO<ComputerModel> {
 		}
 
 	}
-
+	/**
+	 * update computer into computer table
+	 */
 	@Override
 	public ComputerModel update(ComputerModel computer) {
 
@@ -92,6 +99,9 @@ public class ComputerDao extends DAO<ComputerModel> {
 		return computer;
 	}
 
+	/**
+	 * delete computer from computer table
+	 */
 	@Override
 	public void delete(ComputerModel computer) {
 		try {
@@ -110,7 +120,9 @@ public class ComputerDao extends DAO<ComputerModel> {
 	}
 
 
-
+	/**
+	 * display all computer details 
+	 */
 	@Override
 	public void getAll() {
 
@@ -137,23 +149,6 @@ public class ComputerDao extends DAO<ComputerModel> {
 
 
 	}
-	public void close(){
-		try {
-
-			if(statement!=null){
-				statement.close();
-			}
-			if(preparedStatement!=null){
-				preparedStatement.close();
-			}
-			if(resultSet!=null){
-				resultSet.close();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+	
 
 }

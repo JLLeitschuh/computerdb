@@ -13,6 +13,9 @@ public class CompanyDao extends DAO<CompanyModel>{
 
 	public static final String COMPANY_TABLE_NAME= "company";
 
+	/**
+	 * find company with specific id
+	 */
 	@Override
 	public CompanyModel find(int id) {
 		// TODO Auto-generated method stub
@@ -58,6 +61,9 @@ public class CompanyDao extends DAO<CompanyModel>{
 
 	}
 
+	/**
+	 * get all company from company table
+	 */
 	@Override
 	public void getAll() {
 
