@@ -106,15 +106,16 @@ public class Menu {
 	/**
 	 * delete computer from computer table
 	 */
-	public void deleteComputerById(){
+	public void deleteComputerById() {
 
 		System.out.println("Delete computer with id :");
 		String computerId= in.nextLine();
-		if(StringUtils.isStrictlyNumeric(computerId)){
+		if (StringUtils.isStrictlyNumeric(computerId)) {
+			
 			ComputerModel computerModel = computerDAO.find(Integer.parseInt(computerId));
-			if(computerModel!=null){
+			if (computerModel!=null) {
 				computerDAO.delete(computerModel);
-			}else{
+			}else {
 				System.out.println("This computer doesn't exist");
 			}
 
@@ -221,8 +222,10 @@ public class Menu {
 		System.out.print("Enter discontinuited :");
 		Timestamp discontinued =Utils.convertToDate(in.nextLine());
 
-		if(!name.equalsIgnoreCase("")){
+		if(name.equalsIgnoreCase("")){
 			computerModel.setName(null);
+		}else{
+			computerModel.setName(name);
 		}
 
 		computerModel.setIntroduced(introduced);
