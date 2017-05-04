@@ -9,7 +9,7 @@ import com.mysql.jdbc.Statement;
 
 import computerdb.MySQLConnectionSingleton;
 
-public abstract class DAO<T> {
+public abstract class IDao<T> {
 
 	protected Statement statement = null;
 	protected ResultSet resultSet = null;

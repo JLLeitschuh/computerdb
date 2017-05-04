@@ -22,7 +22,7 @@ public class MySQLConnectionSingleton {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = (Connection) DriverManager
-					.getConnection(URL+DATABASE_NAME+"?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull",USER_NAME,PWD);
+					.getConnection(URL+DATABASE_NAME+"?autoReconnect=true&useSSL=false",USER_NAME,PWD);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

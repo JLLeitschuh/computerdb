@@ -1,17 +1,17 @@
 package model;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class ComputerModel {
 
 	private int id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private CompanyModel companyModel;
 	
 	
-	public ComputerModel(int id, String name, Timestamp introduced, Timestamp discontinued, CompanyModel companyModel) {
+	public ComputerModel(int id, String name, LocalDate introduced, LocalDate discontinued, CompanyModel companyModel) {
 	
 		this.id = id;
 		this.name = name;
@@ -20,7 +20,7 @@ public class ComputerModel {
 		this.companyModel = companyModel;
 	}
 	
-	public ComputerModel( String name,Timestamp introduced, Timestamp discontinued, CompanyModel companyModel) {
+	public ComputerModel( String name,LocalDate introduced, LocalDate discontinued, CompanyModel companyModel) {
 		
 		this.name = name;
 		this.introduced = introduced;
@@ -64,28 +64,28 @@ public class ComputerModel {
 	 * get Introduced timestamp
 	 * @return
 	 */
-	public Timestamp getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 	/**
 	 * setIntroduced timestamp
 	 * @param introduced
 	 */
-	public void setIntroduced(Timestamp introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 	/**
 	 * get Discontinued timestamp
 	 * @return
 	 */
-	public Timestamp getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 	/**
 	 * set discontinued timestamp
 	 * @param discontinued
 	 */
-	public void setDiscontinued(Timestamp discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 	/**

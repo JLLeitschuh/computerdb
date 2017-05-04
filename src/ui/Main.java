@@ -1,8 +1,7 @@
-package main;
+package ui;
 
 
-import ui.Menu;
-import utils.Utils;
+import mappers.DataMapper;
 
 
 public class Main {

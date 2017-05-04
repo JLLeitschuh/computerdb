@@ -7,7 +7,7 @@ import com.mysql.jdbc.Statement;
 
 import model.CompanyModel;
 
-public class CompanyDao extends DAO<CompanyModel>{
+public class CompanyDao extends IDao<CompanyModel>{
 
 
 

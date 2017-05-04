@@ -1,4 +1,4 @@
-package mappers;
+package ui;
 
 import java.util.ArrayList;
 

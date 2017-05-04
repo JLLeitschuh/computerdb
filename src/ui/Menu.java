@@ -1,9 +1,7 @@
 package ui;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
@@ -13,15 +11,15 @@ import computerdb.MySQLConnectionSingleton;
 import computerdb.Query;
 import dao.CompanyDao;
 import dao.ComputerDao;
-import dao.DAO;
+import dao.IDao;
+import mappers.DataMapper;
 import model.CompanyModel;
 import model.ComputerModel;
-import utils.Utils;
 
 public class Menu {
 
-	DAO<ComputerModel> computerDAO ;
-	DAO<CompanyModel> companyDAO;
+	IDao<ComputerModel> computerDAO ;
+	IDao<CompanyModel> companyDAO;
 	Scanner in;
 
 	public Menu(){
@@ -182,9 +180,9 @@ public class Menu {
 			System.out.print("Enter name:");
 			String name =in.nextLine();
 			System.out.print("introduced:");
-			Timestamp introduced =Utils.convertToDate(in.nextLine());
+			LocalDate introduced =DataMapper.convertStringToDate(in.nextLine());
 			System.out.print("discontinued:");
-			Timestamp discontinued =Utils.convertToDate(in.nextLine());
+			LocalDate discontinued =DataMapper.convertStringToDate(in.nextLine());
 
 			if(!name.equalsIgnoreCase("")){
 				computerModel.setName(name);
@@ -226,9 +224,9 @@ public class Menu {
 		ComputerModel computerModel = new ComputerModel();
 		String name =in.nextLine();
 		System.out.print("Enter introduced:");
-		Timestamp introduced =Utils.convertToDate(in.nextLine());
+		LocalDate introduced =DataMapper.convertStringToDate(in.nextLine());
 		System.out.print("Enter discontinuited :");
-		Timestamp discontinued =Utils.convertToDate(in.nextLine());
+		LocalDate discontinued =DataMapper.convertStringToDate(in.nextLine());
 
 		if(name.equalsIgnoreCase("")){
 			computerModel.setName(null);
