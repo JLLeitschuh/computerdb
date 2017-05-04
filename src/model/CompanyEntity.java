@@ -1,13 +1,13 @@
 package model;
 
-public class CompanyModel {
+public class CompanyEntity {
 
 	
 	private int id;
 	private String name;
 	
 	
-	public CompanyModel(int id, String name) {
+	public CompanyEntity(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

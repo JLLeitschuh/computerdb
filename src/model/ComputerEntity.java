@@ -2,35 +2,25 @@ package model;
 
 import java.time.LocalDate;
 
-public class ComputerModel {
+public class ComputerEntity {
 
 	private int id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private CompanyModel companyModel;
+	private CompanyEntity companyModel;
 	
 	
-	public ComputerModel(int id, String name, LocalDate introduced, LocalDate discontinued, CompanyModel companyModel) {
+	public ComputerEntity(ComputerBuilder computerBuilder) {
 	
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyModel = companyModel;
+		this.id = computerBuilder.id;
+		this.name = computerBuilder.name;
+		this.introduced = computerBuilder.introduced;
+		this.discontinued = computerBuilder.discontinued;
+		this.companyModel = computerBuilder.company;
 	}
 	
-	public ComputerModel( String name,LocalDate introduced, LocalDate discontinued, CompanyModel companyModel) {
-		
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyModel = companyModel;
-	}
 	
-	public ComputerModel(){
-		
-	}
 	
 	/**
 	 * 
@@ -92,17 +82,61 @@ public class ComputerModel {
 	 * get company companyModel
 	 * @return
 	 */
-	public CompanyModel getCompanyModel() {
+	public CompanyEntity getCompanyEntity() {
 		return companyModel;
 	}
 	/**
 	 * set company Id
 	 * @param companyId
 	 */
-	public void setCompanyModel(CompanyModel companyModel) {
+	public void setCompanyEntity(CompanyEntity companyModel) {
 		this.companyModel = companyModel;
 	}
 	
+	
+	public static class ComputerBuilder {
+		
+		
+		private int id;
+		private String name;
+		private LocalDate introduced;
+		private LocalDate discontinued;
+		private CompanyEntity company;
+ 
+        public ComputerBuilder() {
+            
+        }
+ 
+        public ComputerBuilder id(int id){
+        	this.id = id;
+        	return this;
+        }
+        public ComputerBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+ 
+        public ComputerBuilder introduced(LocalDate introduced) {
+            this.introduced = introduced;
+            return this;
+        }
+ 
+        public ComputerBuilder discontinued(LocalDate introduced) {
+            this.discontinued = introduced;
+            return this;
+        }
+        public ComputerBuilder company(CompanyEntity company) {
+            this.company= company;
+            return this;
+        }
+        
+        
+ 
+        public ComputerEntity build() {
+            return new ComputerEntity(this);
+        }
+ 
+    }
 	/**
 	 * override toString method
 	 */

@@ -13,13 +13,13 @@ import dao.CompanyDao;
 import dao.ComputerDao;
 import dao.IDao;
 import mappers.DataMapper;
-import model.CompanyModel;
-import model.ComputerModel;
+import model.CompanyEntity;
+import model.ComputerEntity;
 
 public class Menu {
 
-	IDao<ComputerModel> computerDAO ;
-	IDao<CompanyModel> companyDAO;
+	IDao<ComputerEntity> computerDAO ;
+	IDao<CompanyEntity> companyDAO;
 	Scanner in;
 
 	public Menu(){
@@ -111,7 +111,7 @@ public class Menu {
 		
 		if (StringUtils.isStrictlyNumeric(computerId)) {
 			
-			ComputerModel computerModel = computerDAO.find(Integer.parseInt(computerId));
+			ComputerEntity computerModel = computerDAO.find(Integer.parseInt(computerId));
 			if (computerModel!=null) {
 				
 				computerDAO.delete(computerModel);
@@ -135,7 +135,7 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
 		if (isComputerIdOk) {
-			ComputerModel computer = computerDAO.find(Integer.parseInt(computerId));
+			ComputerEntity computer = computerDAO.find(Integer.parseInt(computerId));
 			if (computer!=null) {
 				System.out.println(computer.toString());
 			}else {
@@ -175,7 +175,7 @@ public class Menu {
 	public void updateComputer(int idComputerUpdate){
 
 
-		ComputerModel computerModel = computerDAO.find(idComputerUpdate);
+		ComputerEntity computerModel = computerDAO.find(idComputerUpdate);
 		if( computerModel!=null ){
 			System.out.print("Enter name:");
 			String name =in.nextLine();
@@ -200,9 +200,9 @@ public class Menu {
 
 			if(StringUtils.isStrictlyNumeric(companyId)){
 				
-				CompanyModel companyModel = companyDAO.find(Integer.parseInt(companyId));
+				CompanyEntity companyModel = companyDAO.find(Integer.parseInt(companyId));
 				if(companyModel!=null){
-					computerModel.setCompanyModel(companyModel);
+					computerModel.setCompanyEntity(companyModel);
 				}
 				
 			}
@@ -221,7 +221,7 @@ public class Menu {
 
 		System.out.print("Enter name:");
 
-		ComputerModel computerModel = new ComputerModel();
+		ComputerEntity.ComputerBuilder computerBuilder = new ComputerEntity.ComputerBuilder();
 		String name =in.nextLine();
 		System.out.print("Enter introduced:");
 		LocalDate introduced =DataMapper.convertStringToDate(in.nextLine());
@@ -229,13 +229,13 @@ public class Menu {
 		LocalDate discontinued =DataMapper.convertStringToDate(in.nextLine());
 
 		if(name.equalsIgnoreCase("")){
-			computerModel.setName(null);
+			computerBuilder.name(null);
 		}else{
-			computerModel.setName(name);
+			computerBuilder.name(name);
 		}
 
-		computerModel.setIntroduced(introduced);
-		computerModel.setDiscontinued(discontinued);
+		computerBuilder.introduced(introduced);
+		computerBuilder.discontinued(discontinued);
 
 		System.out.print("Company ID:");
 		String companyId =in.nextLine();
@@ -248,9 +248,9 @@ public class Menu {
 			isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
 		}
 
-		CompanyModel company = companyDAO.find(Integer.parseInt(companyId));
-		computerModel.setCompanyModel(company);
-		computerDAO.create(computerModel);
+		CompanyEntity company = companyDAO.find(Integer.parseInt(companyId));
+		computerBuilder.company(company);
+		computerDAO.create(new ComputerEntity(computerBuilder));
 
 	}
 

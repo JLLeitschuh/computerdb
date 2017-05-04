@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
-import model.CompanyModel;
+import model.CompanyEntity;
 
-public class CompanyDao extends IDao<CompanyModel>{
+public class CompanyDao extends IDao<CompanyEntity>{
 
 
 
@@ -17,9 +17,9 @@ public class CompanyDao extends IDao<CompanyModel>{
 	 * find company with specific id
 	 */
 	@Override
-	public CompanyModel find(int id) {
+	public CompanyEntity find(int id) {
 		// TODO Auto-generated method stub
-		CompanyModel companyModel = null;
+		CompanyEntity companyModel = null;
 		try {
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPANY_TABLE_NAME +" WHERE id =?");
@@ -29,7 +29,7 @@ public class CompanyDao extends IDao<CompanyModel>{
 			if(resultSet.first()){
 				int companyId = resultSet.getInt(1);
 				String name = resultSet.getString(2);
-				companyModel= new CompanyModel(companyId, name);
+				companyModel= new CompanyEntity(companyId, name);
 			
 			}
 
@@ -44,19 +44,19 @@ public class CompanyDao extends IDao<CompanyModel>{
 	}
 
 	@Override
-	public void create(CompanyModel obj) {
+	public void create(CompanyEntity obj) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public CompanyModel update(CompanyModel obj) {
+	public CompanyEntity update(CompanyEntity obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void delete(CompanyModel obj) {
+	public void delete(CompanyEntity obj) {
 		// TODO Auto-generated method stub
 
 	}
@@ -76,7 +76,7 @@ public class CompanyDao extends IDao<CompanyModel>{
 				int id = resultSet.getInt(1);
 				String name = resultSet.getString(2);
 
-				System.out.println("Value " + new CompanyModel(id,name).toString());	 
+				System.out.println("Value " + new CompanyEntity(id,name).toString());	 
 
 			}
 		} catch (SQLException e) {

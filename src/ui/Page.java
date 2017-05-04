@@ -2,12 +2,12 @@ package ui;
 
 import java.util.ArrayList;
 
-import model.ComputerModel;
+import model.ComputerEntity;
 
 public class Page {
 
 	
-	private ArrayList<ComputerModel> computerModelList ;
+	private ArrayList<ComputerEntity> computerModelList ;
 	private int numberItemPerPage =20;
 	private int numberPage = 0;
 	private int currentPage=0;
@@ -15,7 +15,7 @@ public class Page {
 	
 	
 	public Page(){
-		this.computerModelList = new ArrayList<ComputerModel>();
+		this.computerModelList = new ArrayList<ComputerEntity>();
 	}
 	
 	public void setNumberPage(int numberItemPerPage ){
