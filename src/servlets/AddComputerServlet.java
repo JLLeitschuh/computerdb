@@ -41,7 +41,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());		
-		request.setAttribute("computerList", companyDao.getAll());
+		request.setAttribute("companyList", companyDao.getAll());
 		
 		this.getServletContext().getRequestDispatcher( "/WEB-INF/addComputer.jsp" ).forward( request, response );
 	}

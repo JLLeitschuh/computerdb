@@ -8,7 +8,7 @@ public class ComputerEntity {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private CompanyEntity companyModel;
+	private CompanyEntity companyEntity;
 	
 	
 	public ComputerEntity(ComputerBuilder computerBuilder) {
@@ -17,7 +17,7 @@ public class ComputerEntity {
 		this.name = computerBuilder.name;
 		this.introduced = computerBuilder.introduced;
 		this.discontinued = computerBuilder.discontinued;
-		this.companyModel = computerBuilder.company;
+		this.companyEntity = computerBuilder.company;
 	}
 	
 	
@@ -83,14 +83,14 @@ public class ComputerEntity {
 	 * @return
 	 */
 	public CompanyEntity getCompanyEntity() {
-		return companyModel;
+		return companyEntity;
 	}
 	/**
 	 * set company Id
 	 * @param companyId
 	 */
 	public void setCompanyEntity(CompanyEntity companyModel) {
-		this.companyModel = companyModel;
+		this.companyEntity = companyModel;
 	}
 	
 	
@@ -148,9 +148,9 @@ public class ComputerEntity {
 		strBuilder.append("name: "+this.name+ ",");
 		strBuilder.append("introduced: "+this.introduced+ ",");
 		strBuilder.append("discontinued: "+this.discontinued+ ",");
-		if(companyModel!=null){
-			strBuilder.append("companyId: "+this.companyModel.getId());
-			strBuilder.append("companyName: "+this.companyModel.getName());
+		if(companyEntity!=null){
+			strBuilder.append("companyId: "+this.companyEntity.getId());
+			strBuilder.append("companyName: "+this.companyEntity.getName());
 		}else{
 			strBuilder.append("companyId: "+null);
 			strBuilder.append("companyName: "+null);
