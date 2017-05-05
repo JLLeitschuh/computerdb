@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -42,7 +43,7 @@ public abstract class IDao<T> {
 	 */
 	public abstract void delete(T obj);
 	
-	public abstract void getAll();
+	public abstract List<T>getAll();
 	
 	public void close(){
 		try {

@@ -1,12 +1,12 @@
 package dao;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
-import model.CompanyEntity;
+import mappers.ComputerMapper;
 import model.ComputerEntity;
 
 public class ComputerDao extends IDao<ComputerEntity> {
@@ -27,14 +27,7 @@ public class ComputerDao extends IDao<ComputerEntity> {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 
-				int idComputer = resultSet.getInt(1);
-				String name = resultSet.getString(2);
-				LocalDate introduced = resultSet.getDate(3).toLocalDate();
-				LocalDate discontinued = resultSet.getDate(4).toLocalDate();
-				int companyId = resultSet.getInt(5);
-				IDao<CompanyEntity> companydao = new CompanyDao();
-				CompanyEntity companyModel = companydao.find(companyId);
-				computer = new ComputerEntity.ComputerBuilder().id(idComputer).name(name).introduced(introduced).discontinued(discontinued).company(companyModel).build();
+				computer = ComputerMapper.createComputer(resultSet);
 			}
 
 		} catch (SQLException e) {
@@ -59,7 +52,6 @@ public class ComputerDao extends IDao<ComputerEntity> {
 			preparedStatement.setString(3, computer.getDiscontinued()==null ? null : computer.getDiscontinued().toString());
 			preparedStatement.setInt(4, computer.getCompanyEntity().getId());
 			preparedStatement.executeUpdate();
-
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -124,29 +116,24 @@ public class ComputerDao extends IDao<ComputerEntity> {
 	 * display all computer details 
 	 */
 	@Override
-	public void getAll() {
+	public ArrayList<ComputerEntity> getAll() {
 
+		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		try {
-			IDao<CompanyEntity> companydao = new CompanyDao();
-			
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM "+COMPUTER_TABLE_NAME);
+			
 			while (resultSet.next()) {
 
-				int id = resultSet.getInt(1);
-				String name = resultSet.getString(2);
-				
-				LocalDate introduced = resultSet.getDate(3)==null ?null:resultSet.getDate(3).toLocalDate();
-				LocalDate discontinued = resultSet.getDate(4)==null ?null:resultSet.getDate(4).toLocalDate();
-				int companyId = resultSet.getInt(5);
-				CompanyEntity companyModel = companydao.find(companyId);
-				System.out.println("Value " + new ComputerEntity.ComputerBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(companyModel).build().toString());	 
-
+				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
+				computerList.add(computerEntity);
+				System.out.println("Value " + computerEntity.toString());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return computerList;
 
 
 	}

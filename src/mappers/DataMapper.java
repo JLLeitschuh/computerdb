@@ -19,6 +19,9 @@ public class DataMapper {
 
 	public static LocalDate convertStringToDate(String strDate){
 
+		if(strDate.equalsIgnoreCase("")){
+			return null;
+		}
 		try{
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate localeDate =  LocalDate.parse(strDate,formatter);

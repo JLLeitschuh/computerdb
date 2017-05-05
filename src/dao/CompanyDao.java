@@ -1,10 +1,13 @@
 package dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
+import mappers.CompanyMapper;
 import model.CompanyEntity;
 
 public class CompanyDao extends IDao<CompanyEntity>{
@@ -27,9 +30,8 @@ public class CompanyDao extends IDao<CompanyEntity>{
 			resultSet = preparedStatement.executeQuery();;
 
 			if(resultSet.first()){
-				int companyId = resultSet.getInt(1);
-				String name = resultSet.getString(2);
-				companyModel= new CompanyEntity(companyId, name);
+				
+				companyModel= CompanyMapper.createCompany(resultSet);
 			
 			}
 
@@ -65,24 +67,25 @@ public class CompanyDao extends IDao<CompanyEntity>{
 	 * get all company from company table
 	 */
 	@Override
-	public void getAll() {
+	public List<CompanyEntity> getAll() {
 
+		ArrayList<CompanyEntity> companyList = new ArrayList<>();
 
 		try {
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM "+COMPANY_TABLE_NAME);
 			while (resultSet.next()) {
 
-				int id = resultSet.getInt(1);
-				String name = resultSet.getString(2);
-
-				System.out.println("Value " + new CompanyEntity(id,name).toString());	 
+				CompanyEntity companyEntity = CompanyMapper.createCompany(resultSet);
+				companyList.add(companyEntity);
+				System.out.println("Value " + companyEntity.toString());	 
 
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return companyList;
 		// TODO Auto-generated method stub
 
 	}
