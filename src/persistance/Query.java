@@ -1,4 +1,4 @@
-package computerdb;
+package persistance;
 
 public class Query {
 	 

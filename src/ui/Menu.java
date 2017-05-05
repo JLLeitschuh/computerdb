@@ -6,15 +6,14 @@ import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
 
-
-import computerdb.MySQLConnectionSingleton;
-import computerdb.Query;
 import dao.CompanyDao;
 import dao.ComputerDao;
 import dao.IDao;
 import mappers.DataMapper;
 import model.CompanyEntity;
 import model.ComputerEntity;
+import persistance.MySQLConnectionSingleton;
+import persistance.Query;
 
 public class Menu {
 

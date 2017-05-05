@@ -7,7 +7,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
-import computerdb.MySQLConnectionSingleton;
+import persistance.MySQLConnectionSingleton;
 
 public abstract class IDao<T> {
 
