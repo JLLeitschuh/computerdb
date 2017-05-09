@@ -14,6 +14,8 @@ import dao.CompanyDao;
 import dao.ComputerDao;
 import mappers.DataMapper;
 import model.ComputerEntity;
+import services.CompanyService;
+import services.ComputerService;
 
 /**
  * Servlet implementation class TestServlet
@@ -21,19 +23,21 @@ import model.ComputerEntity;
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	ComputerDao computerDao;
-	
-	CompanyDao companyDao;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddComputerServlet() {
-        super();
-        computerDao = new ComputerDao();
-        companyDao = new CompanyDao();
-        // TODO Auto-generated constructor stub
-    }
+
+	ComputerService computerService;
+	CompanyService companyService;
+
+
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AddComputerServlet() {
+		super();
+		computerService = new ComputerService();
+		companyService = new CompanyService();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,20 +45,19 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());		
-		request.setAttribute("companyList", companyDao.getAll());
-		
+		request.setAttribute("companyList", companyService.getCompanies());
+
 		this.getServletContext().getRequestDispatcher( "/WEB-INF/addComputer.jsp" ).forward( request, response );
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		
+
 		String computerName = request.getParameter("computerName");
-		LocalDate introduced = DataMapper.convertStringToDate(request.getParameter("introduced"));
-		LocalDate discontinued = DataMapper.convertStringToDate(request.getParameter("discontinued"));
-		int companyId = Integer.parseInt(request.getParameter("companyId"));
-		
-		ComputerEntity computerEntity = new ComputerEntity.ComputerBuilder().name(computerName).introduced(introduced).discontinued(discontinued).company(companyDao.find(companyId)).build();
-		computerDao.create(computerEntity);
+		String introduced = request.getParameter("introduced");
+		String discontinued = request.getParameter("discontinued");
+		String companyId = request.getParameter("companyId");
+
+		computerService.insertComputer( computerName, introduced, discontinued, companyId);
 	}
 
 }
