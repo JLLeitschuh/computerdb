@@ -1,11 +1,25 @@
 package mapperstest;
 
+import java.time.LocalDate;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
+
 
 import mappers.DataMapper;
 
+
+
 public class DataMapperTest {
+	
+	
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
+	}
+
 	
 	@Test
     public void convertStringToDateTest() {
@@ -15,9 +29,6 @@ public class DataMapperTest {
 				
     }
 	
-	@Test(expected=java.time.format.DateTimeParseException.class)
-	public void convertStringToDateTestException() {
-		DataMapper.convertStringToDate("test");
-	}
+	
 
 }

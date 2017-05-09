@@ -58,7 +58,7 @@ public class CompanyDao extends IDao<CompanyEntity>{
 	}
 
 	@Override
-	public void delete(CompanyEntity obj) {
+	public void delete(int id) {
 		// TODO Auto-generated method stub
 
 	}

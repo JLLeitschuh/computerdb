@@ -13,9 +13,9 @@ public class CompanyService {
 		companyDao = new CompanyDao();
 	}
 	
-	public CompanyEntity findCompanyById(int id){
+	public CompanyEntity findCompanyById(String strId){
 		
-		
+		int id = Integer.parseInt(strId);
 		return companyDao.find(id);
 		
 	}

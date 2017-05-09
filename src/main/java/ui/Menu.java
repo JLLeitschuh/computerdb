@@ -14,16 +14,18 @@ import model.CompanyEntity;
 import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
 import persistance.Query;
+import services.CompanyService;
+import services.ComputerService;
 
 public class Menu {
 
-	IDao<ComputerEntity> computerDAO ;
-	IDao<CompanyEntity> companyDAO;
+	ComputerService computerService;
+	CompanyService companyService ;
 	Scanner in;
 
 	public Menu(){
-		computerDAO = new ComputerDao();
-		companyDAO = new CompanyDao();
+		computerService = new ComputerService();
+		companyService = new CompanyService();
 		in = new Scanner(System.in);
 	}
 
@@ -110,10 +112,10 @@ public class Menu {
 		
 		if (StringUtils.isStrictlyNumeric(computerId)) {
 			
-			ComputerEntity computerModel = computerDAO.find(Integer.parseInt(computerId));
+			ComputerEntity computerModel = computerService.getComputerById(computerId);
 			if (computerModel!=null) {
 				
-				computerDAO.delete(computerModel);
+				computerService.deleteComputer(computerId);
 			}else {
 				System.out.println("This computer doesn't exist");
 			}
@@ -134,7 +136,7 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
 		if (isComputerIdOk) {
-			ComputerEntity computer = computerDAO.find(Integer.parseInt(computerId));
+			ComputerEntity computer = computerService.getComputerById(computerId);
 			if (computer!=null) {
 				System.out.println(computer.toString());
 			}else {
@@ -161,7 +163,7 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId) ;
 
 		if(isComputerIdOk){
-			updateComputer(Integer.parseInt(computerId));
+			updateComputer(computerId);
 		}else{
 			System.out.println("Computer Id must be numeric");
 		}
@@ -171,41 +173,22 @@ public class Menu {
 	 * update Computer with specific id
 	 * @param idComputerUpdate
 	 */
-	public void updateComputer(int idComputerUpdate){
+	public void updateComputer(String idComputerUpdate){
 
 
-		ComputerEntity computerModel = computerDAO.find(idComputerUpdate);
+		ComputerEntity computerModel = computerService.getComputerById(idComputerUpdate);
 		if( computerModel!=null ){
 			System.out.print("Enter name:");
 			String name =in.nextLine();
 			System.out.print("introduced:");
-			LocalDate introduced =DataMapper.convertStringToDate(in.nextLine());
+			String introduced =in.nextLine();
 			System.out.print("discontinued:");
-			LocalDate discontinued =DataMapper.convertStringToDate(in.nextLine());
+			String discontinued =in.nextLine();
 
-			if(!name.equalsIgnoreCase("")){
-				computerModel.setName(name);
-			}
-			if(introduced!=null){
-				computerModel.setIntroduced(introduced);
-			}
-			if(discontinued!=null){
-				computerModel.setDiscontinued(discontinued);
-			}
 			System.out.print("Company ID:");
 			String companyId =in.nextLine();
-
-			
-
-			if(StringUtils.isStrictlyNumeric(companyId)){
-				
-				CompanyEntity companyModel = companyDAO.find(Integer.parseInt(companyId));
-				if(companyModel!=null){
-					computerModel.setCompanyEntity(companyModel);
-				}
-				
-			}
-			computerDAO.update(computerModel);
+	
+			computerService.update(name, introduced, discontinued, companyId);
 
 		}else{
 			System.out.println("Computer doesn't exist");
@@ -220,36 +203,20 @@ public class Menu {
 
 		System.out.print("Enter name:");
 
-		ComputerEntity.ComputerBuilder computerBuilder = new ComputerEntity.ComputerBuilder();
+		
 		String name =in.nextLine();
 		System.out.print("Enter introduced:");
-		LocalDate introduced =DataMapper.convertStringToDate(in.nextLine());
+		String introduced =in.nextLine();
 		System.out.print("Enter discontinuited :");
-		LocalDate discontinued =DataMapper.convertStringToDate(in.nextLine());
+		String discontinued =in.nextLine();
 
-		if(name.equalsIgnoreCase("")){
-			computerBuilder.name(null);
-		}else{
-			computerBuilder.name(name);
-		}
-
-		computerBuilder.introduced(introduced);
-		computerBuilder.discontinued(discontinued);
-
+		
 		System.out.print("Company ID:");
 		String companyId =in.nextLine();
 
-		boolean isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
 
-		while(!isCompanyIdOk){
-			System.out.print("Company id must be numeric and must be into database :");
-			companyId =in.nextLine();
-			isCompanyIdOk = StringUtils.isStrictlyNumeric(companyId) && companyDAO.find(Integer.parseInt(companyId))!=null;
-		}
-
-		CompanyEntity company = companyDAO.find(Integer.parseInt(companyId));
-		computerBuilder.company(company);
-		computerDAO.create(new ComputerEntity(computerBuilder));
+	
+		computerService.insertComputer(name, introduced, discontinued, companyId);;
 
 	}
 
@@ -257,14 +224,14 @@ public class Menu {
      * display all computers from computer table
      */
 	public void displayComputerList(){
-		computerDAO.getAll();
+		computerService.getComputers();
 	}
 
 	/**
 	 * display all company from company table
 	 */
 	public void displayCompanyList(){
-		companyDAO.getAll();
+		companyService.getCompanies();
 	}
 
 }

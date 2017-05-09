@@ -41,7 +41,7 @@ public abstract class IDao<T> {
 	 * Permet la suppression d'une entrée de la base
 	 * @param obj
 	 */
-	public abstract void delete(T obj);
+	public abstract void delete(int id);
 	
 	public abstract List<T>getAll();
 	

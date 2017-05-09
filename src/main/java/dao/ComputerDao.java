@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -90,16 +91,42 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		}
 		return computer;
 	}
+	
+	
+	List<ComputerEntity> getComputerLimie(int begin, int end){
+		
+		ArrayList<ComputerEntity> computerList = new ArrayList<>();
+		try {
+			
+			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPUTER_TABLE_NAME+ " limit ?,?");
+			preparedStatement.setInt(1, begin);
+			preparedStatement.setInt(2, end);
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+
+				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
+				computerList.add(computerEntity);
+				System.out.println("Value " + computerEntity.toString());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return computerList;
+		
+		
+	}
 
 	/**
 	 * delete computer from computer table
 	 */
 	@Override
-	public void delete(ComputerEntity computer) {
+	public void delete(int id) {
 		try {
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement("Delete From " +COMPUTER_TABLE_NAME +" WHERE id =?");
-			preparedStatement.setInt(1, computer.getId());
+			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
