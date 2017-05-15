@@ -93,8 +93,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 		
-			<mytag:pagination startPage="${startPage}" endPage="${endPage}" currentPage="${currentPage }" />
-
+			<mytag:pagination startPage="${startPage}" endPage="${endPage}" currentPage="${currentPage}" />
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<button type="button" class="btn btn-default">10</button>
 				<button type="button" class="btn btn-default">50</button>

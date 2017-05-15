@@ -14,10 +14,10 @@ import model.ComputerEntity;
 
 public class ComputerDao extends IDao<ComputerEntity> {
 
-	public static final String COMPUTER_TABLE_NAME= "computer";
+	public static final String COMPUTER_TABLE_NAME = "computer";
 
 	/**
-	 * find computer with specific id
+	 * find computer with specific id.
 	 */
 	@Override
 	public ComputerEntity find(int id) {
@@ -25,8 +25,9 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		ComputerEntity computer = null;
 		try {
 
-			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPUTER_TABLE_NAME+" WHERE id =?");
-			preparedStatement.setInt(1,id);
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("SELECT * FROM " + COMPUTER_TABLE_NAME + " WHERE id =?");
+			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 
@@ -36,23 +37,26 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			close();
 		}
 		return computer;
 	}
 
 	/**
-	 * create new computer into computer table
+	 * create new computer into computer table.
 	 */
 	@Override
 	public void create(ComputerEntity computer) {
 		try {
 
-			preparedStatement = (PreparedStatement) connect.prepareStatement("insert into " +COMPUTER_TABLE_NAME +" values (default, ?, ?, ?, ?)");
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("insert into " + COMPUTER_TABLE_NAME + " values (default, ?, ?, ?, ?)");
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setString(2,computer.getIntroduced()==null ? null : computer.getIntroduced().toString());
-			preparedStatement.setString(3, computer.getDiscontinued()==null ? null : computer.getDiscontinued().toString());
+			preparedStatement.setString(2,
+					computer.getIntroduced() == null ? null : computer.getIntroduced().toString());
+			preparedStatement.setString(3,
+					computer.getDiscontinued() == null ? null : computer.getDiscontinued().toString());
 			preparedStatement.setInt(4, computer.getCompanyEntity().getId());
 			preparedStatement.executeUpdate();
 
@@ -60,26 +64,28 @@ public class ComputerDao extends IDao<ComputerEntity> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 
-		}finally{
+		} finally {
 			close();
 		}
 
 	}
+
 	/**
-	 * update computer into computer table
+	 * update computer into computer table.
 	 */
 	@Override
 	public ComputerEntity update(ComputerEntity computer) {
 
 		try {
 
-			preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " +COMPUTER_TABLE_NAME +
-					" SET name = ?,introduced =?, discontinued=?,company_id=?"+
-					" WHERE id =?");
+			preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " + COMPUTER_TABLE_NAME
+					+ " SET name = ?,introduced =?, discontinued=?,company_id=?" + " WHERE id =?");
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setString(2,computer.getIntroduced()==null ? null : computer.getIntroduced().toString());
-			preparedStatement.setString(3, computer.getDiscontinued()==null ? null : computer.getDiscontinued().toString());
-			preparedStatement.setInt(4, computer.getCompanyEntity().getId());			
+			preparedStatement.setString(2,
+					computer.getIntroduced() == null ? null : computer.getIntroduced().toString());
+			preparedStatement.setString(3,
+					computer.getDiscontinued() == null ? null : computer.getDiscontinued().toString());
+			preparedStatement.setInt(4, computer.getCompanyEntity().getId());
 			preparedStatement.setInt(5, computer.getId());
 			preparedStatement.executeUpdate();
 
@@ -88,19 +94,25 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			close();
 		}
 		return computer;
 	}
 
-
-	List<ComputerEntity> getComputerLimie(int begin, int end){
+	/**
+	 * get computer List between begin and end parameters.
+	 * @param begin parameter corresponding to the start of list
+	 * @param end  parameter corresponding to the end of list
+	 * @return computerEntity list
+	 */
+	List<ComputerEntity> getComputerLimite(int begin, int end) {
 
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		try {
 
-			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPUTER_TABLE_NAME+ " limit ?,?");
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("SELECT * FROM " + COMPUTER_TABLE_NAME + " limit ?,?");
 			preparedStatement.setInt(1, begin);
 			preparedStatement.setInt(2, end);
 			resultSet = preparedStatement.executeQuery();
@@ -117,23 +129,27 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		}
 		return computerList;
 
-
 	}
 
-	public ComputerDTO createComputerDTO(ComputerEntity computer){
+	/**
+	 * create ComputerDTO corresponding to computerEntity.
+	 * @param computer entity.
+	 * @return ComputerDTO map with parameter computer
+	 */
+	public ComputerDTO createComputerDTO(ComputerEntity computer) {
 
 		ComputerDTOBuilder computerDTOBuilder = new ComputerDTOBuilder();
 
-		if(computer!=null){
+		if (computer != null) {
 			computerDTOBuilder.id(computer.getId()).name(computer.getName());
 
-			if(computer.getIntroduced()!=null){
+			if (computer.getIntroduced() != null) {
 				computerDTOBuilder.introduced(computer.getIntroduced().toString());
 			}
-			if(computer.getDiscontinued()!=null){
+			if (computer.getDiscontinued() != null) {
 				computerDTOBuilder.discontinued(computer.getDiscontinued().toString());
 			}
-			if(computer.getCompanyEntity()!=null){
+			if (computer.getCompanyEntity() != null) {
 
 				computerDTOBuilder.companyId(computer.getCompanyEntity().getId());
 				computerDTOBuilder.companyName(computer.getCompanyEntity().getName());
@@ -145,28 +161,28 @@ public class ComputerDao extends IDao<ComputerEntity> {
 	}
 
 	/**
-	 * delete computer from computer table
+	 * delete computer from computer table.
 	 */
 	@Override
 	public void delete(int id) {
 		try {
 
-			preparedStatement = (PreparedStatement) connect.prepareStatement("Delete From " +COMPUTER_TABLE_NAME +" WHERE id =?");
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE id =?");
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			close();
 		}
 
 	}
 
-
 	/**
-	 * display all computer details 
+	 * display all computer details.
 	 */
 	@Override
 	public ArrayList<ComputerEntity> getAll() {
@@ -174,7 +190,7 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		try {
 			statement = (Statement) connect.createStatement();
-			resultSet = statement.executeQuery("SELECT * FROM "+COMPUTER_TABLE_NAME);
+			resultSet = statement.executeQuery("SELECT * FROM " + COMPUTER_TABLE_NAME);
 
 			while (resultSet.next()) {
 
@@ -188,8 +204,6 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		}
 		return computerList;
 
-
 	}
-
 
 }
