@@ -7,6 +7,7 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
+import dto.CompanyDTO;
 import mappers.CompanyMapper;
 import model.CompanyEntity;
 
@@ -63,6 +64,15 @@ public class CompanyDao extends IDao<CompanyEntity>{
 
 	}
 
+	public CompanyDTO createCompanyDTO(CompanyEntity company){
+		
+		return new CompanyDTO(company.getId(), company.getName());
+	}
+	
+	public CompanyEntity createCompany(CompanyDTO companyDTO){
+		
+		return new CompanyEntity(companyDTO.getId(), companyDTO.getName());
+	}
 	/**
 	 * get all company from company table
 	 */

@@ -9,6 +9,7 @@ import com.mysql.jdbc.StringUtils;
 import dao.CompanyDao;
 import dao.ComputerDao;
 import dao.IDao;
+import dto.ComputerDTO;
 import mappers.DataMapper;
 import model.CompanyEntity;
 import model.ComputerEntity;
@@ -112,7 +113,7 @@ public class Menu {
 		
 		if (StringUtils.isStrictlyNumeric(computerId)) {
 			
-			ComputerEntity computerModel = computerService.getComputerById(computerId);
+			ComputerDTO computerModel = computerService.getComputerById(computerId);
 			if (computerModel!=null) {
 				
 				computerService.deleteComputer(computerId);
@@ -136,7 +137,7 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
 		if (isComputerIdOk) {
-			ComputerEntity computer = computerService.getComputerById(computerId);
+			ComputerDTO computer = computerService.getComputerById(computerId);
 			if (computer!=null) {
 				System.out.println(computer.toString());
 			}else {
@@ -176,7 +177,7 @@ public class Menu {
 	public void updateComputer(String idComputerUpdate){
 
 
-		ComputerEntity computerModel = computerService.getComputerById(idComputerUpdate);
+		ComputerDTO computerModel = computerService.getComputerById(idComputerUpdate);
 		if( computerModel!=null ){
 			System.out.print("Enter name:");
 			String name =in.nextLine();

@@ -1,8 +1,10 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.CompanyDao;
+import dto.CompanyDTO;
 import model.CompanyEntity;
 
 public class CompanyService {
@@ -13,16 +15,23 @@ public class CompanyService {
 		companyDao = new CompanyDao();
 	}
 	
-	public CompanyEntity findCompanyById(String strId){
+	public CompanyDTO findCompanyById(String strId){
 		
 		int id = Integer.parseInt(strId);
-		return companyDao.find(id);
+		return companyDao.createCompanyDTO(companyDao.find(id));
 		
 	}
 	
-	public List<CompanyEntity> getCompanies(){
+	public List<CompanyDTO> getCompanies(){
 		
-		return companyDao.getAll();
+		List<CompanyDTO> companyDTOs = new ArrayList<CompanyDTO>();
+		List<CompanyEntity> companies =companyDao.getAll();
+		
+		for(CompanyEntity company : companies){
+			companyDTOs.add(companyDao.createCompanyDTO(company));
+		}
+		
+		return companyDTOs;
 	}
 	
 }

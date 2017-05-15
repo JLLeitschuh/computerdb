@@ -7,6 +7,8 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
+import dto.ComputerDTO;
+import dto.ComputerDTO.ComputerDTOBuilder;
 import mappers.ComputerMapper;
 import model.ComputerEntity;
 
@@ -91,18 +93,18 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		}
 		return computer;
 	}
-	
-	
+
+
 	List<ComputerEntity> getComputerLimie(int begin, int end){
-		
+
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		try {
-			
+
 			preparedStatement = (PreparedStatement) connect.prepareStatement("SELECT * FROM "+COMPUTER_TABLE_NAME+ " limit ?,?");
 			preparedStatement.setInt(1, begin);
 			preparedStatement.setInt(2, end);
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while (resultSet.next()) {
 
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
@@ -114,8 +116,32 @@ public class ComputerDao extends IDao<ComputerEntity> {
 			e.printStackTrace();
 		}
 		return computerList;
-		
-		
+
+
+	}
+
+	public ComputerDTO createComputerDTO(ComputerEntity computer){
+
+		ComputerDTOBuilder computerDTOBuilder = new ComputerDTOBuilder();
+
+		if(computer!=null){
+			computerDTOBuilder.id(computer.getId()).name(computer.getName());
+
+			if(computer.getIntroduced()!=null){
+				computerDTOBuilder.introduced(computer.getIntroduced().toString());
+			}
+			if(computer.getDiscontinued()!=null){
+				computerDTOBuilder.discontinued(computer.getDiscontinued().toString());
+			}
+			if(computer.getCompanyEntity()!=null){
+
+				computerDTOBuilder.companyId(computer.getCompanyEntity().getId());
+				computerDTOBuilder.companyName(computer.getCompanyEntity().getName());
+			}
+		}
+
+		return computerDTOBuilder.build();
+
 	}
 
 	/**
@@ -149,7 +175,7 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		try {
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM "+COMPUTER_TABLE_NAME);
-			
+
 			while (resultSet.next()) {
 
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
@@ -164,6 +190,6 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 
 	}
-	
+
 
 }

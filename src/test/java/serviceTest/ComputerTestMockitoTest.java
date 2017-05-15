@@ -10,6 +10,7 @@ import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 
 import dao.ComputerDao;
+import dto.ComputerDTO;
 import mappers.DataMapper;
 
 import static org.junit.Assert.*;
@@ -46,19 +47,19 @@ public class ComputerTestMockitoTest {
 	@Test
 	public void testComputerService(){
 
-		List<ComputerEntity> list = new ArrayList<ComputerEntity>();
-		ComputerEntity.ComputerBuilder computerBuilder= new ComputerEntity.ComputerBuilder().name("Test");
+		List<ComputerDTO> list = new ArrayList<ComputerDTO>();
+		ComputerDTO.ComputerDTOBuilder computerBuilder= new ComputerDTO.ComputerDTOBuilder().name("Test");
 		list.add(computerBuilder.build());
 
 		Mockito.when(computerService.getComputers()).thenReturn(list);
 		assertEquals(computerService.getComputers().get(0).getName(),"Test");
 
-		ComputerEntity.ComputerBuilder computerBuilder2= new ComputerEntity.ComputerBuilder().introduced(DataMapper.convertStringToDate("1966-01-01"));
+		ComputerDTO.ComputerDTOBuilder computerBuilder2= new ComputerDTO.ComputerDTOBuilder().introduced("1966-01-01");
 		list.add(computerBuilder2.build());
 
 		Mockito.when(computerService.getComputers()).thenReturn(list);
 
-		assertEquals(computerService.getComputers().get(1).getIntroduced().toString(),"1966-01-01");
+		assertEquals(computerService.getComputers().get(1).getIntroduced(),"1966-01-01");
 		assertEquals(computerService.getComputers().size(),2);
 
 		

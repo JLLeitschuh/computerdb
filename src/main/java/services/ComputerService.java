@@ -8,7 +8,10 @@ import java.util.List;
 import org.slf4j.event.SubstituteLoggingEvent;
 
 import dao.ComputerDao;
+import dto.CompanyDTO;
+import dto.ComputerDTO;
 import mappers.DataMapper;
+import model.CompanyEntity;
 import model.ComputerEntity;
 import ui.Page;
 
@@ -16,7 +19,8 @@ public class ComputerService {
 
 	ComputerDao computerDao;
 	CompanyService companyService;
-	ArrayList<ComputerEntity> computerList;
+	List<ComputerDTO> computerDTOList;
+	
 	Page page = new Page();
 
 	public ComputerService(){
@@ -31,38 +35,44 @@ public class ComputerService {
 		LocalDate introducedLocalDate = DataMapper.convertStringToDate(introduced);
 		LocalDate discontinuedLocalDate = DataMapper.convertStringToDate(introduced);
 	
-		ComputerEntity computerEntity = new ComputerEntity.ComputerBuilder().name(name).introduced(introducedLocalDate).discontinued(discontinuedLocalDate).company(companyService.findCompanyById(companyId)).build();
+		CompanyDTO companyDTO = companyService.findCompanyById(companyId); 
+		ComputerEntity computerEntity = new ComputerEntity.ComputerBuilder().name(name).introduced(introducedLocalDate).discontinued(discontinuedLocalDate).company(new CompanyEntity(companyDTO.getId(),companyDTO.getName())).build();
 
 		computerDao.create(computerEntity);
 	}
 
-	public ComputerEntity getComputerById(String strId){
+	public ComputerDTO getComputerById(String strId){
 
 		int id = Integer.parseInt(strId);
-		return computerDao.find(id);
+		return computerDao.createComputerDTO(computerDao.find(id));
 	}
 
-	public ComputerEntity update(String name, String introduced, String discontinued,String companyId ){
+	public ComputerDTO update(String name, String introduced, String discontinued,String companyId ){
 
 		LocalDate introducedLocalDate = DataMapper.convertStringToDate(introduced);
 		LocalDate discontinuedLocalDate = DataMapper.convertStringToDate(introduced);
 		
-		
-		ComputerEntity computerEntity = new ComputerEntity.ComputerBuilder().name(name).introduced(introducedLocalDate).discontinued(discontinuedLocalDate).company(companyService.findCompanyById(companyId)).build();			
-		return computerDao.update(computerEntity);
+		CompanyDTO companyDTO = companyService.findCompanyById(companyId); 
+		ComputerEntity computerEntity = new ComputerEntity.ComputerBuilder().name(name).introduced(introducedLocalDate).discontinued(discontinuedLocalDate).company(new CompanyEntity(companyDTO.getId(),companyDTO.getName())).build();			
+		return computerDao.createComputerDTO(computerDao.update(computerEntity));
 
 
 	}
 	
 	
-	public List<ComputerEntity> getComputers(){
+	public List<ComputerDTO> getComputers(){
 		
-		computerList = computerDao.getAll();
-		return computerList;
+		List<ComputerEntity> computerList = computerDao.getAll();
+		
+		computerDTOList = new ArrayList<>();
+		for(ComputerEntity computer : computerList){
+			computerDTOList.add(computerDao.createComputerDTO(computer));
+		}
+		return computerDTOList;
 		
 	}
 	
-	public List<ComputerEntity> getComputerFromTo(String pageNumber,String itemPerPage){
+	public List<ComputerDTO> getComputerFromTo(String pageNumber,String itemPerPage){
 		
 		if(page.getComputerList()==null){
 			
@@ -83,7 +93,7 @@ public class ComputerService {
 		if(to >= page.getComputerList().size()){
 			to = page.getComputerList().size() -1;
 		}
-		return computerList.subList(from, to);
+		return computerDTOList.subList(from, to);
 	}
 	
 	public Page getPage(){

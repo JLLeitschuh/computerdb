@@ -79,7 +79,7 @@
 								onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
-							<td>${computer.companyEntity.name}</td>
+							<td>${computer.companyName}</td>
 
 						</tr>
 					</c:forEach>

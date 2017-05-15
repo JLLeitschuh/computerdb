@@ -1,14 +1,14 @@
 package ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import dto.ComputerDTO;
 import model.ComputerEntity;
 
 public class Page {
 
 	
-	private List<ComputerEntity> computerList ;
+	private List<ComputerDTO> computerList ;
 	private int numberItemPerPage =10;
 	private int numberPage = 0;
 	private int currentPage=1;
@@ -16,12 +16,10 @@ public class Page {
 	private int endPage = 5;
 	
 	
-	
 	public Page(){
 	
 	}
-	
-	
+		
 	public void setNumberItemPage(int numberItemPage){
 		this.numberItemPerPage = numberItemPage;
 	}
@@ -52,7 +50,7 @@ public class Page {
 		
 	}
 	
-	public void setComputerList(List<ComputerEntity> computerList){
+	public void setComputerList(List<ComputerDTO> computerList){
 		this.computerList = computerList;
 		this.numberPage = computerList.size()/this.numberItemPerPage;
 	}
@@ -70,7 +68,7 @@ public class Page {
 	}
 
 
-	public List<ComputerEntity> getComputerList() {
+	public List<ComputerDTO> getComputerList() {
 		return computerList;
 	}
 
