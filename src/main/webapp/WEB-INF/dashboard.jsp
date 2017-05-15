@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
 <title>Computer Database</title>
@@ -91,27 +92,8 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<ul class="pagination">
-				<li><a
-					href="<c:url value="/dashboard">
-               <c:param name="page" value="${currentPage-1}"/>
-        						 </c:url>"
-					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-				</a></li>
-				<c:forEach var="i" begin="${startPage}" end="${endPage}">
-					<li><a
-						href="<c:url value="/dashboard">
-               <c:param name="page" value="${i}"/>
-        						 </c:url>"
-						onclick="">${i}</a></li>
-				</c:forEach>
-				<li><a
-					href="<c:url value="/dashboard">
-               <c:param name="page" value="${currentPage+1}"/>
-        						 </c:url>"
-					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</ul>
+		
+			<mytag:pagination startPage="${startPage}" endPage="${endPage}" currentPage="${currentPage }" />
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<button type="button" class="btn btn-default">10</button>
