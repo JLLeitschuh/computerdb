@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import dao.ComputerDao;
 import dto.CompanyDTO;
@@ -20,12 +23,15 @@ public class ComputerService {
 	List<ComputerDTO> computerDTOList;
 
 	Page page = new Page();
+	Logger logger;
 
 	/**
 	 * constructor.
 	 */
 	public ComputerService() {
 
+		//PropertyConfigurator.configure("/main/resources/log4j.properties");
+		logger = LoggerFactory.getLogger(getClass());
 		computerDao = new ComputerDao();
 		page = new Page();
 
@@ -94,7 +100,9 @@ public class ComputerService {
 
 		computerDTOList = new ArrayList<>();
 		for (ComputerEntity computer : computerList) {
+
 			computerDTOList.add(computerDao.createComputerDTO(computer));
+			logger.info("Name Computer " + computer.getName());
 		}
 		return computerDTOList;
 
