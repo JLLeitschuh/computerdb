@@ -18,6 +18,8 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 	/**
 	 * find computer with specific id.
+	 * @param id .
+	 * @return computer entity find
 	 */
 	@Override
 	public ComputerEntity find(int id) {
@@ -45,6 +47,7 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 	/**
 	 * create new computer into computer table.
+	 * @param computer .
 	 */
 	@Override
 	public void create(ComputerEntity computer) {
@@ -72,6 +75,8 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 	/**
 	 * update computer into computer table.
+	 * @param computer .
+	 * @return update computer;
 	 */
 	@Override
 	public ComputerEntity update(ComputerEntity computer) {
@@ -162,6 +167,7 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 	/**
 	 * delete computer from computer table.
+	 * @param id .
 	 */
 	@Override
 	public void delete(int id) {
@@ -183,6 +189,7 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 	/**
 	 * display all computer details.
+	 * @return computer list
 	 */
 	@Override
 	public ArrayList<ComputerEntity> getAll() {

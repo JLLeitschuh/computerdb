@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags"%>
 <html>
 <head>
 <title>Computer Database</title>
@@ -92,13 +92,15 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-		
-			<mytag:pagination startPage="${startPage}" endPage="${endPage}" currentPage="${currentPage}" />
+
+			<mytag:pagination startPage="${startPage}" endPage="${endPage}"
+				currentPage="${currentPage}" />
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<button type="button" class="btn btn-default">10</button>
 				<button type="button" class="btn btn-default">50</button>
 				<button type="button" class="btn btn-default">100</button>
 			</div>
+		</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

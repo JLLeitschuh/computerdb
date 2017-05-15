@@ -43,9 +43,15 @@ public abstract class IDao<T> {
 	 */
 	public abstract void delete(int id);
 
-
+	/**
+	 * get item list.
+	 * @return item List T
+	 */
 	public abstract List<T> getAll();
 
+	/**
+	 * close.
+	 */
 	public void close() {
 		try {
 

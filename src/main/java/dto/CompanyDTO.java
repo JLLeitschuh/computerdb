@@ -4,10 +4,14 @@ public class CompanyDTO {
 
 	private int id;
 	private String name;
-	
-	
+
+  /**
+  * companyDTO constructor.
+  * @param id .
+  * @param name .
+  */
 	public CompanyDTO(int id, String name) {
-		
+
 		this.id = id;
 		this.name = name;
 	}
@@ -31,6 +35,6 @@ public class CompanyDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
+
 }

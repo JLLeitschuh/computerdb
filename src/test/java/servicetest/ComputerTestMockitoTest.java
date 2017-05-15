@@ -1,4 +1,4 @@
-package serviceTest;
+package servicetest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,32 +6,34 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
+
 
 import dao.ComputerDao;
 import dto.ComputerDTO;
-import mappers.DataMapper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import model.CompanyEntity;
 import model.ComputerEntity;
 import services.ComputerService;
 
 public class ComputerTestMockitoTest {
 
+	/**
+	 * setUp.
+	 */
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 
-
+	/**
+	 * test ComputerEntity return methods.
+	 */
 	@Test
-	public void testComputer(){
+	public void testComputer() {
 		ComputerEntity computerEntity = Mockito.mock(ComputerEntity.class);
 
 		Mockito.when(computerEntity.getId()).thenReturn(43);
@@ -44,37 +46,41 @@ public class ComputerTestMockitoTest {
 
 	@Mock
 	ComputerService computerService;
+
+	/**
+	 * test ComputerDTO list containing.
+	 */
 	@Test
-	public void testComputerService(){
+	public void testComputerService() {
 
 		List<ComputerDTO> list = new ArrayList<ComputerDTO>();
-		ComputerDTO.ComputerDTOBuilder computerBuilder= new ComputerDTO.ComputerDTOBuilder().name("Test");
+		ComputerDTO.ComputerDTOBuilder computerBuilder = new ComputerDTO.ComputerDTOBuilder().name("Test");
 		list.add(computerBuilder.build());
 
 		Mockito.when(computerService.getComputers()).thenReturn(list);
-		assertEquals(computerService.getComputers().get(0).getName(),"Test");
+		assertEquals(computerService.getComputers().get(0).getName(), "Test");
 
-		ComputerDTO.ComputerDTOBuilder computerBuilder2= new ComputerDTO.ComputerDTOBuilder().introduced("1966-01-01");
+		ComputerDTO.ComputerDTOBuilder computerBuilder2 = new ComputerDTO.ComputerDTOBuilder().introduced("1966-01-01");
 		list.add(computerBuilder2.build());
 
 		Mockito.when(computerService.getComputers()).thenReturn(list);
 
-		assertEquals(computerService.getComputers().get(1).getIntroduced(),"1966-01-01");
-		assertEquals(computerService.getComputers().size(),2);
+		assertEquals(computerService.getComputers().get(1).getIntroduced(), "1966-01-01");
+		assertEquals(computerService.getComputers().size(), 2);
 
-		
-		
-	
 	}
-	
-	
+
 	@Mock
 	ComputerDao computerDao;
-	@InjectMocks 
+	@InjectMocks
 	ComputerService computerService2;
+
+	/**
+	 * test method call verification.
+	 */
 	@Test
-	public void testServiceMethodeCaller(){
-		
+	public void testServiceMethodeCaller() {
+
 		computerService2.getComputers();
 		Mockito.verify(computerDao).getAll();
 
@@ -82,22 +88,23 @@ public class ComputerTestMockitoTest {
 		Mockito.verify(computerDao).find(1);
 	}
 
+	/**
+	 * test computer DAO.
+	 */
 	@Test
-	public void testComputerDAO(){
-		
+	public void testComputerDAO() {
+
 		List<ComputerEntity> userMap = new ArrayList<>();
 		ComputerDao dao = Mockito.mock(ComputerDao.class);
 		Mockito.when(dao.update(Mockito.any(ComputerEntity.class))).thenAnswer(i -> {
-				ComputerEntity computer=  (ComputerEntity) i.getArguments()[0];
-			    userMap.add(computer.getId(), computer);
-			    return null;
+			ComputerEntity computer = (ComputerEntity) i.getArguments()[0];
+			userMap.add(computer.getId(), computer);
+			return null;
 		});
 		Mockito.when(dao.find(Mockito.any(Integer.class))).thenAnswer(i -> {
-		    int id = (int) i.getArguments()[0];
-		    return userMap.get(id);
-		});	
+			int id = (int) i.getArguments()[0];
+			return userMap.get(id);
+		});
 	}
-
-
 
 }

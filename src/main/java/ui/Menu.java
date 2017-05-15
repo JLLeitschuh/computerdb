@@ -1,18 +1,11 @@
 package ui;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
 
-import dao.CompanyDao;
-import dao.ComputerDao;
-import dao.IDao;
 import dto.ComputerDTO;
-import mappers.DataMapper;
-import model.CompanyEntity;
-import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
 import persistance.Query;
 import services.CompanyService;
@@ -21,23 +14,25 @@ import services.ComputerService;
 public class Menu {
 
 	ComputerService computerService;
-	CompanyService companyService ;
+	CompanyService companyService;
 	Scanner in;
 
-	public Menu(){
+	/**
+	 * constructor.
+	 */
+	public Menu() {
 		computerService = new ComputerService();
 		companyService = new CompanyService();
 		in = new Scanner(System.in);
 	}
 
 	/**
-	 * make menu choice 
+	 * make menu choice.
 	 */
-	public void chooseMenu(){
-
+	public void chooseMenu() {
 
 		boolean keepChoose = true;
-		while(keepChoose){
+		while (keepChoose) {
 
 			System.out.println("Display Computer List write 1 ");
 			System.out.println("Display Company List write 2 ");
@@ -46,18 +41,19 @@ public class Menu {
 			System.out.println("Display one Computer write 5 ");
 			System.out.println("Delete  Computer write 6 ");
 			System.out.println("Write 7 to quit ");
-			String choice  =in.nextLine();
+			String choice = in.nextLine();
 
-			if(StringUtils.isStrictlyNumeric(choice)){
-				if(Integer.parseInt(choice) ==7){
+			if (StringUtils.isStrictlyNumeric(choice)) {
+				if (Integer.parseInt(choice) == 7) {
 					keepChoose = false;
 					try {
 						MySQLConnectionSingleton.getInstance().getConnection().close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					};
-				}else{
+					}
+
+				} else {
 					choice(Integer.parseInt(choice));
 				}
 			}
@@ -68,10 +64,10 @@ public class Menu {
 	}
 
 	/**
-	 * choice statement with numeric selected by user
-	 * @param numeric
+	 * choice statement with numeric selected by user.
+	 * @param numeric .
 	 */
-	public void choice(int numeric){
+	public void choice(int numeric) {
 
 		switch (numeric) {
 
@@ -99,139 +95,130 @@ public class Menu {
 			break;
 		}
 
-
 	}
 
-
 	/**
-	 * delete computer from computer table
+	 * delete computer from computer table.
 	 */
 	public void deleteComputerById() {
 
 		System.out.println("Delete computer with id :");
-		String computerId= in.nextLine();
-		
+		String computerId = in.nextLine();
+
 		if (StringUtils.isStrictlyNumeric(computerId)) {
-			
+
 			ComputerDTO computerModel = computerService.getComputerById(computerId);
-			if (computerModel!=null) {
-				
+			if (computerModel != null) {
+
 				computerService.deleteComputer(computerId);
-			}else {
+			} else {
 				System.out.println("This computer doesn't exist");
 			}
 
 		}
 
 	}
-	
+
 	/**
-	 * display Computer with specific id
+	 * display Computer with specific id.
 	 */
 	public void displayComputerById() {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer ID to display details ");
-		
+
 		String computerId = in.nextLine();
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
 		if (isComputerIdOk) {
 			ComputerDTO computer = computerService.getComputerById(computerId);
-			if (computer!=null) {
+			if (computer != null) {
 				System.out.println(computer.toString());
-			}else {
+			} else {
 				System.out.println("Computer doesn't exist");
 			}
-			
-		}else{
+
+		} else {
 			System.out.println("Computer Id must be numeric");
 		}
 	}
 
-
-
-
 	/**
-	 * chooseComputerToUpdate
+	 * chooseComputerToUpdate.
 	 */
-	public void chooseComputerToUpdate(){
+	public void chooseComputerToUpdate() {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer To update with id ");
 
 		String computerId = in.nextLine();
-		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId) ;
+		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
-		if(isComputerIdOk){
+		if (isComputerIdOk) {
 			updateComputer(computerId);
-		}else{
+		} else {
 			System.out.println("Computer Id must be numeric");
 		}
 	}
 
 	/**
-	 * update Computer with specific id
-	 * @param idComputerUpdate
+	 * update Computer with specific id.
+	 * @param idComputerUpdate .
 	 */
-	public void updateComputer(String idComputerUpdate){
-
+	public void updateComputer(String idComputerUpdate) {
 
 		ComputerDTO computerModel = computerService.getComputerById(idComputerUpdate);
-		if( computerModel!=null ){
+		if (computerModel != null) {
 			System.out.print("Enter name:");
-			String name =in.nextLine();
+
+			String name = in.nextLine();
 			System.out.print("introduced:");
-			String introduced =in.nextLine();
+			String introduced = in.nextLine();
 			System.out.print("discontinued:");
-			String discontinued =in.nextLine();
+			String discontinued = in.nextLine();
 
 			System.out.print("Company ID:");
-			String companyId =in.nextLine();
-	
-			computerService.update(name, introduced, discontinued, companyId);
+			String companyId = in.nextLine();
 
-		}else{
+			computerService.update(idComputerUpdate, name, introduced, discontinued, companyId);
+
+		} else {
 			System.out.println("Computer doesn't exist");
 		}
 
 	}
 
 	/**
-	 * insert new computer into computer table
+	 * insert new computer into computer table.
 	 */
-	public  void insertComputer(){
+	public void insertComputer() {
 
 		System.out.print("Enter name:");
 
-		
-		String name =in.nextLine();
+		String name = in.nextLine();
 		System.out.print("Enter introduced:");
-		String introduced =in.nextLine();
+		String introduced = in.nextLine();
 		System.out.print("Enter discontinuited :");
-		String discontinued =in.nextLine();
+		String discontinued = in.nextLine();
 
-		
 		System.out.print("Company ID:");
-		String companyId =in.nextLine();
+		String companyId = in.nextLine();
 
-
-	
-		computerService.insertComputer(name, introduced, discontinued, companyId);;
+		computerService.insertComputer(name, introduced, discontinued, companyId);
 
 	}
 
-    /**
-     * display all computers from computer table
-     */
-	public void displayComputerList(){
+	/**
+	 * display all computers from computer table.
+	 */
+	public void displayComputerList() {
 		computerService.getComputers();
 	}
 
 	/**
-	 * display all company from company table
+	 * display all company from company table.
 	 */
-	public void displayCompanyList(){
+	public void displayCompanyList() {
 		companyService.getCompanies();
 	}
 

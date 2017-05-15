@@ -10,28 +10,40 @@ import model.CompanyEntity;
 public class CompanyService {
 
 	CompanyDao companyDao;
-	
-	public CompanyService(){
+
+	/**
+	 * Company Service constructor.
+	 */
+	public CompanyService() {
 		companyDao = new CompanyDao();
 	}
-	
-	public CompanyDTO findCompanyById(String strId){
-		
+	/**
+	 * find company into db by id.
+	 * @param strId .
+	 * @return CompanyDTO corresponding to object company with id "strId"
+	 */
+
+	public CompanyDTO findCompanyById(String strId) {
+
 		int id = Integer.parseInt(strId);
 		return companyDao.createCompanyDTO(companyDao.find(id));
-		
+
 	}
-	
-	public List<CompanyDTO> getCompanies(){
-		
+
+	/**
+	 *  get companyDTO company list.
+	 * @return list of companyDTO corresponding to companies object into db
+	 */
+	public List<CompanyDTO> getCompanies() {
+
 		List<CompanyDTO> companyDTOs = new ArrayList<CompanyDTO>();
-		List<CompanyEntity> companies =companyDao.getAll();
-		
-		for(CompanyEntity company : companies){
+		List<CompanyEntity> companies = companyDao.getAll();
+
+		for (CompanyEntity company : companies) {
 			companyDTOs.add(companyDao.createCompanyDTO(company));
 		}
-		
+
 		return companyDTOs;
 	}
-	
+
 }

@@ -1,43 +1,35 @@
 package mappers;
 
-
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
 
 
 public class DataMapper {
 
 	/**
-	 * convert data String to Timestamp
-	 * @param date
+	 * convert data String to Timestamp.
+	 * @param strDate .
 	 * @return Timestamp from string
 	 */
-	
 
-	public static LocalDate convertStringToDate(String strDate){
+	public static LocalDate convertStringToDate(String strDate) {
 
-		if(strDate.equalsIgnoreCase("")){
+		if (strDate.equalsIgnoreCase("")) {
 			return null;
 		}
-		try{
+		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate localeDate =  LocalDate.parse(strDate,formatter);
-			
+			LocalDate localeDate = LocalDate.parse(strDate, formatter);
+
 			return localeDate;
 
-		}catch(Exception e ){
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
-		
+
 		return null;
 	}
 
-	public static Date asDate(LocalDate localDate) {
-	    return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-	  }
 
 }

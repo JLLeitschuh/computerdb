@@ -67,6 +67,10 @@ public class CompanyDao extends IDao<CompanyEntity> {
 		return null;
 	}
 
+	/**
+	 * delete company with id ID.
+	 * @param id .
+	 */
 	@Override
 	public void delete(int id) {
 		// TODO Auto-generated method stub
