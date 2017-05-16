@@ -2,6 +2,7 @@ package model;
 
 public class CompanyEntity {
 
+	
 	private int id;
 	private String name;
 

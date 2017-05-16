@@ -13,32 +13,30 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="dashboard.html"> Application -Computer Database </a>
 		</div>
 	</header>
-
 	<section id="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
-					<form action="addComputer" method="POST">
+					<form action="addComputer" id="form-addComputer" accept-charset="utf-8" method="POST">
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" name="computerName"
-									id="computerName" placeholder="Computer name">
+									id="computerName" placeholder="Computer name"  required>
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <input
+								<label for="introduced">Introduced date (yyyy-mm-dd)</label> <input
 									type="date" class="form-control" name="introduced"
-									id="introduced" placeholder="Introduced date">
+									id="introduced" placeholder="Introduced date" data-validation="date" data-validation-format="yyyy-mm-dd">
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <input
+								<label for="discontinued">Discontinued date (yyyy-mm-dd)</label> <input
 									type="date" class="form-control" name="discontinued"
-									id="discontinued" placeholder="Discontinued date">
+									id="discontinued" placeholder="Discontinued date" data-validation="date" data-validation-format="yyyy-mm-dd">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -50,7 +48,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
+							<input type="submit" value="Add" id="addComputer" class="btn btn-primary">
 							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
@@ -58,5 +56,13 @@
 			</div>
 		</div>
 	</section>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+	<script>
+	  $.validate({
+	    lang: 'fr'
+	  });
+</script>
 </body>
 </html>

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dto.ComputerDTO;
+import dto.ComputerDTO.ComputerDTOBuilder;
 import services.CompanyService;
 import services.ComputerService;
 
@@ -57,7 +59,8 @@ public class AddComputerServlet extends HttpServlet {
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
 
-		computerService.insertComputer(computerName, introduced, discontinued, companyId);
+		//computerService.insertComputer(computerName, introduced, discontinued, companyId);
+		doGet(request, response);
 	}
 
 }

@@ -30,8 +30,9 @@ public class ComputerService {
 	 */
 	public ComputerService() {
 
-		//PropertyConfigurator.configure("/main/resources/log4j.properties");
+		// PropertyConfigurator.configure("/main/resources/log4j.properties");
 		logger = LoggerFactory.getLogger(getClass());
+		companyService = new CompanyService();
 		computerDao = new ComputerDao();
 		page = new Page();
 
