@@ -37,22 +37,14 @@ public class DashBoardServlet extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String page = request.getParameter("page");
-		request.setAttribute("computerList", computerService.getComputerFromTo(page, "10"));
+		String itemNumber = request.getParameter("item_number");
+		System.out.println("item number "+itemNumber);
+		request.setAttribute("computerList", computerService.getComputerFromTo(page, itemNumber));
 		request.setAttribute("currentPage", computerService.getPage().getCurrentPage());
 		request.setAttribute("startPage", computerService.getPage().startPage());
 		request.setAttribute("endPage", computerService.getPage().endPage());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
 	}
 
-	/**
-	 * doPost.
-	 * @param request .
-	 * @param response .
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
 
 }

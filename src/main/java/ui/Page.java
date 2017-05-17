@@ -1,62 +1,76 @@
 package ui;
 
-import java.util.List;
-
-import dto.ComputerDTO;
-
-
 public class Page {
 
-	private List<ComputerDTO> computerList;
 	private int numberItemPerPage = 10;
 	private int numberPage = 0;
 	private int currentPage = 1;
 	private int startPage = 1;
 	private int endPage = 5;
 
-
-
-	public void setNumberItemPage(int numberItemPage) {
-		this.numberItemPerPage = numberItemPage;
-	}
+	private int numberOfTotalItem = -1;
 
 	/**
 	 * set Pagination currentPage and reinitialized startPage and endPage parameter.
 	 * @param currentPage .
 	 */
-	public void setCurentPage(int currentPage) {
+	public void setCurrentPage(int currentPage) {
 
-		if (currentPage >= 1 && currentPage < numberPage) {
+		if (currentPage <= 0) {
+			this.currentPage = 1;
+		} else if (currentPage >= this.numberPage) {
+			this.currentPage = this.numberPage - 1;
+		} else {
 
 			this.currentPage = currentPage;
 		}
-		if (currentPage < startPage && currentPage > 1) {
-			startPage = currentPage;
+		if (this.currentPage < startPage) {
+			startPage = this.currentPage;
 			endPage = startPage + 5;
 		}
-		if (currentPage > endPage && currentPage < numberPage) {
-			endPage = currentPage;
+		if (this.currentPage > endPage) {
+			endPage = this.currentPage;
 			startPage = endPage - 5;
 		}
-		if (numberPage > endPage && currentPage == endPage) {
+		if (numberPage > endPage && this.currentPage == endPage) {
 			// increment start page
 			startPage++;
 			endPage = startPage + 5;
 
-		} else if (currentPage == startPage && startPage > 1) {
+		} else if (this.currentPage == startPage && startPage > 1) {
 			startPage--;
 			endPage = startPage + 5;
 		}
 
 	}
 
+	public int getNumberOfTotalItem() {
+		return numberOfTotalItem;
+	}
+
 	/**
-	 * set Computer List and update numberPage.
-	 * @param computerList .
+	 * set number of total item and update Number of page.
+	 * @param numberOfTotalItem .
 	 */
-	public void setComputerList(List<ComputerDTO> computerList) {
-		this.computerList = computerList;
-		this.numberPage = computerList.size() / this.numberItemPerPage;
+	public void setNumberOfTotalItem(int numberOfTotalItem) {
+		this.numberOfTotalItem = numberOfTotalItem;
+		updateNumberPage();
+	}
+
+	/**
+	 * update number of page.
+	 */
+	public void updateNumberPage() {
+		this.numberPage = this.numberOfTotalItem / this.numberItemPerPage;
+	}
+
+	/**
+	 * set number of item by page and update Number of page.
+	 * @param numberItemPage .
+	 */
+	public void setNumberItemPage(int numberItemPage) {
+		this.numberItemPerPage = numberItemPage;
+		updateNumberPage();
 	}
 
 	public int getNumberItemPerPage() {
@@ -71,16 +85,11 @@ public class Page {
 		return this.currentPage;
 	}
 
-	public List<ComputerDTO> getComputerList() {
-		return computerList;
-	}
-
 	/**
 	 * update and return numberPage.
 	 * @return numberPage
 	 */
 	public int getNumberPage() {
-		this.numberPage = computerList.size() / this.numberItemPerPage;
 		return numberPage;
 	}
 

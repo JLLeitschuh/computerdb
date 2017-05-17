@@ -95,10 +95,25 @@
 
 			<mytag:pagination startPage="${startPage}" endPage="${endPage}"
 				currentPage="${currentPage}" />
-			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+			<div class="btn-group btn-group-sm pull-right" id="item_number"
+				role="group">
+				<a
+					href="<c:url value="/dashboard">
+               <c:param name="item_number" value="10"/>
+        						 </c:url>">
+					<button type="button" class="btn btn-default">10</button>
+				</a> <a
+					href="<c:url value="/dashboard">
+               <c:param name="item_number" value="50"/>
+               </c:url>">
+					<button type="button" class="btn btn-default">50</button>
+				</a> <a
+					href="<c:url value="/dashboard">
+               <c:param name="item_number" value="100"/>
+               </c:url>">
+					<button type="button" class="btn btn-default" value="100">100</button>
+
+				</a>
 			</div>
 		</div>
 	</footer>

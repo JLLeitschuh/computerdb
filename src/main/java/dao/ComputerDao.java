@@ -188,6 +188,22 @@ public class ComputerDao extends IDao<ComputerEntity> {
 	}
 
 	/**
+	 * get number of item into computer db.
+	 * @return item count into computer table
+	 */
+	public int getCount() {
+		try {
+			statement = (Statement) connect.createStatement();
+			resultSet = statement.executeQuery("SELECT Count(*) FROM " + COMPUTER_TABLE_NAME);
+			resultSet.first();
+			return resultSet.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	/**
 	 * display all computer details.
 	 * @return computer list
 	 */
@@ -203,12 +219,38 @@ public class ComputerDao extends IDao<ComputerEntity> {
 
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
 				computerList.add(computerEntity);
-				System.out.println("Value " + computerEntity.toString());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return computerList;
+
+	}
+
+	/**
+	 * get computers on database with begin and end limit.
+	 * @param begin .
+	 * @param limit .
+	 * @return list of computer between begin and end
+	 */
+	public ArrayList<ComputerEntity> getElementWithLimits(int begin, int limit) {
+		ArrayList<ComputerEntity> computerList = new ArrayList<>();
+		try {
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("SELECT * FROM " + COMPUTER_TABLE_NAME + " Limit ?,? ");
+			preparedStatement.setInt(1, begin);
+			preparedStatement.setInt(2, limit);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
+				computerList.add(computerEntity);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return computerList;
 
 	}

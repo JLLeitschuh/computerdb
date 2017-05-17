@@ -117,32 +117,45 @@ public class ComputerService {
 	 */
 	public List<ComputerDTO> getComputerFromTo(String pageNumber, String itemPerPage) {
 
-		if (page.getComputerList() == null) {
+		page.setNumberOfTotalItem(computerDao.getCount());
+		System.out.println("total number page  " + page.getNumberOfTotalItem());
 
-			page.setComputerList(getComputers());
-		}
 		if (itemPerPage != null) {
 			page.setNumberItemPage(Integer.parseInt(itemPerPage));
 		}
-		if (pageNumber == null) {
-			this.page.setCurentPage(1);
-		} else {
-			this.page.setCurentPage(Integer.parseInt(pageNumber));
+		if (pageNumber != null) {
+
+			this.page.setCurrentPage(Integer.parseInt(pageNumber));
 		}
 		// calculate begin and end index array
-		int from = this.page.getCurrentPage() * this.page.getNumberItemPerPage();
-		int to = from + this.page.getNumberItemPerPage();
+		int from = (this.page.getCurrentPage() - 1) * this.page.getNumberItemPerPage();
 
-		if (to >= page.getComputerList().size()) {
-			to = page.getComputerList().size() - 1;
-		}
-		return computerDTOList.subList(from, to);
+		return getComputersWithLimit(from, this.page.getNumberItemPerPage());
 	}
 
 	public Page getPage() {
-
 		return this.page;
+	}
 
+	/**
+	 * get computer list with limits.
+	 * @param from .
+	 * @param to .
+	 * @return list of ComputerDTO
+	 */
+
+	public List<ComputerDTO> getComputersWithLimit(int from, int to) {
+
+		List<ComputerEntity> computerList = computerDao.getElementWithLimits(from, to);
+
+		System.out.println("computerListSize " + computerList.size());
+		computerDTOList = new ArrayList<>();
+		for (ComputerEntity computer : computerList) {
+
+			computerDTOList.add(computerDao.createComputerDTO(computer));
+			logger.info("Name Computer " + computer.getName());
+		}
+		return computerDTOList;
 	}
 
 	/**
