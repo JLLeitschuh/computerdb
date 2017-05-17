@@ -204,6 +204,25 @@ public class ComputerDao extends IDao<ComputerEntity> {
 	}
 
 	/**
+	 * get number of item into computer db.
+	 * @return item count into computer table
+	 */
+	public int getCountResearch(String research) {
+		try {
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("SELECT Count(*) FROM " + COMPUTER_TABLE_NAME + " WHERE name like ?");
+
+			preparedStatement.setString(1, research);
+			resultSet = preparedStatement.executeQuery();
+			resultSet.first();
+			return resultSet.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	/**
 	 * display all computer details.
 	 * @return computer list
 	 */
@@ -239,8 +258,39 @@ public class ComputerDao extends IDao<ComputerEntity> {
 		try {
 			preparedStatement = (PreparedStatement) connect
 					.prepareStatement("SELECT * FROM " + COMPUTER_TABLE_NAME + " Limit ?,? ");
+
 			preparedStatement.setInt(1, begin);
 			preparedStatement.setInt(2, limit);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
+				computerList.add(computerEntity);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return computerList;
+
+	}
+
+	/**
+	 * get computers on database with begin end limit and research .
+	 * @param begin .
+	 * @param limit .
+	 * @param strSearchElement .
+	 * @return list of computer between begin and end
+	 */
+	public ArrayList<ComputerEntity> getSearchElementWithLimits(int begin, int limit, String strSearchElement) {
+		ArrayList<ComputerEntity> computerList = new ArrayList<>();
+		try {
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("SELECT * FROM " + COMPUTER_TABLE_NAME + " WHERE name like ? Limit ?,? ");
+
+			preparedStatement.setString(1, "%" + strSearchElement + "%");
+			preparedStatement.setInt(2, begin);
+			preparedStatement.setInt(3, limit);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);

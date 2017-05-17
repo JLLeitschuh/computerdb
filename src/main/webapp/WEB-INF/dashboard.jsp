@@ -94,7 +94,7 @@
 		<div class="container text-center">
 
 			<mytag:pagination startPage="${startPage}" endPage="${endPage}"
-				currentPage="${currentPage}" />
+				currentPage="${currentPage}" search="${search}" />
 			<div class="btn-group btn-group-sm pull-right" id="item_number"
 				role="group">
 				<a

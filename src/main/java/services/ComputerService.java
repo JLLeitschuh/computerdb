@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +21,7 @@ public class ComputerService {
 	ComputerDao computerDao;
 	CompanyService companyService;
 	List<ComputerDTO> computerDTOList;
+	String research = "";
 
 	Page page = new Page();
 	Logger logger;
@@ -113,24 +114,41 @@ public class ComputerService {
 	 * get computer List from pageNumber.
 	 * @param pageNumber page selected by user
 	 * @param itemPerPage .
+	 * @param research .
 	 * @return List of computerDTO corresponding to page "pageNumber"
 	 */
-	public List<ComputerDTO> getComputerFromTo(String pageNumber, String itemPerPage) {
+	public List<ComputerDTO> getComputerFromTo(String pageNumber, String itemPerPage, String research) {
 
-		page.setNumberOfTotalItem(computerDao.getCount());
-		System.out.println("total number page  " + page.getNumberOfTotalItem());
-
-		if (itemPerPage != null) {
-			page.setNumberItemPage(Integer.parseInt(itemPerPage));
+		if (research == null) {
+			page.setNumberOfTotalItem(computerDao.getCount());
+		} else {
+			page.setNumberOfTotalItem(computerDao.getCountResearch(research));
 		}
-		if (pageNumber != null) {
 
+		if (itemPerPage != null && StringUtils.isNumeric(itemPerPage)) {
+			this.page.setNumberItemPage(Integer.parseInt(itemPerPage));
+		}
+		if (pageNumber != null && StringUtils.isNumeric(pageNumber)) {
 			this.page.setCurrentPage(Integer.parseInt(pageNumber));
 		}
+		if (research != null) {
+
+			if (!this.research.equalsIgnoreCase(research)) {
+
+				this.page.setCurrentPage(1);
+				System.out.println("page " + this.page.getCurrentPage() );
+
+			}
+			this.research = research;
+		}
+
 		// calculate begin and end index array
 		int from = (this.page.getCurrentPage() - 1) * this.page.getNumberItemPerPage();
 
-		return getComputersWithLimit(from, this.page.getNumberItemPerPage());
+		System.out.println("total number page  " + page.getNumberOfTotalItem() + " from " + from + " itemperpage "
+				+ this.page.getNumberItemPerPage());
+
+		return getComputers(from, this.page.getNumberItemPerPage(), this.research);
 	}
 
 	public Page getPage() {
@@ -138,15 +156,20 @@ public class ComputerService {
 	}
 
 	/**
-	 * get computer list with limits.
+	 * get computer list with limits and research.
 	 * @param from .
-	 * @param to .
-	 * @return list of ComputerDTO
+	 * @param limit .
+	 * @param strSearch .
+	 * @return list of ComputerDTO with research
 	 */
+	public List<ComputerDTO> getComputers(int from, int limit, String strSearch) {
 
-	public List<ComputerDTO> getComputersWithLimit(int from, int to) {
-
-		List<ComputerEntity> computerList = computerDao.getElementWithLimits(from, to);
+		List<ComputerEntity> computerList;
+		if (strSearch != null) {
+			computerList = computerDao.getSearchElementWithLimits(from, limit, strSearch);
+		} else {
+			computerList = computerDao.getElementWithLimits(from, limit);
+		}
 
 		System.out.println("computerListSize " + computerList.size());
 		computerDTOList = new ArrayList<>();

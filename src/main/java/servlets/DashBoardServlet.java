@@ -36,15 +36,16 @@ public class DashBoardServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 
+		String search = request.getParameter("search");
 		String page = request.getParameter("page");
 		String itemNumber = request.getParameter("item_number");
-		System.out.println("item number "+itemNumber);
-		request.setAttribute("computerList", computerService.getComputerFromTo(page, itemNumber));
+
+		request.setAttribute("search", search);
+		request.setAttribute("computerList", computerService.getComputerFromTo(page, itemNumber, search));
 		request.setAttribute("currentPage", computerService.getPage().getCurrentPage());
 		request.setAttribute("startPage", computerService.getPage().startPage());
 		request.setAttribute("endPage", computerService.getPage().endPage());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
 	}
-
 
 }

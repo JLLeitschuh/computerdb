@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.exceptions.verification.NeverWantedButInvoked;
 
 import dao.ComputerDao;
 import dto.ComputerDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import model.ComputerEntity;
 import services.ComputerService;
+import ui.Page;
 
 public class ComputerTestMockitoTest {
 
@@ -104,6 +106,8 @@ public class ComputerTestMockitoTest {
 	ComputerDao computerDao;
 	@InjectMocks
 	ComputerService computerService2;
+	@Mock
+	Page page;
 
 	/**
 	 * test method call verification.
@@ -116,6 +120,15 @@ public class ComputerTestMockitoTest {
 
 		computerService2.getComputerById("1");
 		Mockito.verify(computerDao).find(1);
+
+		computerService2.getComputerFromTo("1", "10","");
+		Mockito.verify(page).setCurrentPage(1);
+		Mockito.verify(page).setNumberItemPage(10);
+
+		computerService2.getComputerFromTo("100", null,null);
+		Mockito.verify(page).setCurrentPage(100);
+		Mockito.verify(page, Mockito.times(1)).setNumberItemPage(Mockito.anyInt());
+
 	}
 
 	/**

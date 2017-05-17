@@ -5,11 +5,16 @@
 	description="Pagination last display page"%>
 <%@ attribute name="currentPage" required="true" type="java.lang.String"
 	description="Pagination last display page"%>
+<%@ attribute name="search" required="true" type="java.lang.String"
+	description="search page"%>
 
 <ul class="pagination">
 	<li><a
 		href="<c:url value="/dashboard">
                <c:param name="page" value="${currentPage-1}"/>
+               <c:if test ="${not empty search}">
+               <c:param name="search" value="${search}"/>
+					</c:if>
         						 </c:url>"
 		aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 	</a></li>
@@ -18,12 +23,18 @@
 		<li><a
 			href="<c:url value="/dashboard">
                <c:param name="page" value="${i}"/>
+               <c:if test ="${not empty search}">
+               <c:param name="search" value="${search}"/>
+					</c:if>
         						 </c:url>"
 			onclick="">${i}</a></li>
 	</c:forEach>
 	<li><a
 		href="<c:url value="/dashboard">
                <c:param name="page" value="${currentPage+1}"/>
+               <c:if test ="${not empty search}">
+               <c:param name="search" value="${search}"/>
+					</c:if>
         						 </c:url>"
 		aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 	</a></li>

@@ -18,7 +18,7 @@ public class Page {
 
 		if (currentPage <= 0) {
 			this.currentPage = 1;
-		} else if (currentPage >= this.numberPage) {
+		} else if (currentPage >= this.numberPage && this.numberPage > 1) {
 			this.currentPage = this.numberPage - 1;
 		} else {
 
@@ -61,6 +61,7 @@ public class Page {
 	 */
 	public void updateNumberPage() {
 		this.numberPage = this.numberOfTotalItem / this.numberItemPerPage;
+
 	}
 
 	/**
