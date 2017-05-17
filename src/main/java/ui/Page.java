@@ -31,8 +31,7 @@ public class Page {
 		if (this.currentPage > endPage) {
 			endPage = this.currentPage;
 			startPage = endPage - 5;
-		}
-		if (numberPage > endPage && this.currentPage == endPage) {
+		} else if (this.numberPage > endPage && this.currentPage == endPage) {
 			// increment start page
 			startPage++;
 			endPage = startPage + 5;
@@ -45,7 +44,7 @@ public class Page {
 	}
 
 	public int getNumberOfTotalItem() {
-		return numberOfTotalItem;
+		return this.numberOfTotalItem;
 	}
 
 	/**
@@ -77,10 +76,6 @@ public class Page {
 		return numberItemPerPage;
 	}
 
-	public void setNumberItemPerPage(int numberItemPerPage) {
-		this.numberItemPerPage = numberItemPerPage;
-	}
-
 	public int getCurrentPage() {
 		return this.currentPage;
 	}
@@ -90,7 +85,7 @@ public class Page {
 	 * @return numberPage
 	 */
 	public int getNumberPage() {
-		return numberPage;
+		return this.numberPage;
 	}
 
 	/**
@@ -98,7 +93,7 @@ public class Page {
 	 * @return endPage number
 	 */
 	public int endPage() {
-		return endPage;
+		return this.endPage;
 	}
 
 	/**
@@ -106,7 +101,7 @@ public class Page {
 	 * @return startPage number
 	 */
 	public int startPage() {
-		return startPage;
+		return this.startPage;
 	}
 
 }

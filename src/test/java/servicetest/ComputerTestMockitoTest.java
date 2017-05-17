@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-
 import dao.ComputerDao;
 import dto.ComputerDTO;
 
@@ -41,6 +40,37 @@ public class ComputerTestMockitoTest {
 
 		assertEquals(computerEntity.getId(), 43);
 		assertEquals(computerEntity.getName(), "name");
+
+	}
+
+	/**
+	 * test ComputerDTO methods .
+	 */
+	@Test
+	public void testComputerDTO() {
+
+		// mock
+
+		ComputerDTO computerDTO = Mockito.mock(ComputerDTO.class);
+
+		Mockito.when(computerDTO.getId()).thenReturn(43);
+		Mockito.when(computerDTO.getName()).thenReturn("name");
+		Mockito.when(computerDTO.getCompanyId()).thenReturn(1);
+		Mockito.when(computerDTO.getIntroduced()).thenReturn("1955-01-01");
+		Mockito.when(computerDTO.getDiscontinued()).thenReturn("1955-01-01");
+
+		assertEquals(computerDTO.getId(), 43);
+		assertEquals(computerDTO.getName(), "name");
+		assertEquals(computerDTO.getCompanyId(), 1);
+		assertEquals(computerDTO.getIntroduced(), "1955-01-01");
+		assertEquals(computerDTO.getDiscontinued(), "1955-01-01");
+
+		// spy
+		ComputerDTO.ComputerDTOBuilder computerDTOBuilder = Mockito.mock(ComputerDTO.ComputerDTOBuilder.class);
+		ComputerDTO computerDTOspy = Mockito.spy(new ComputerDTO(computerDTOBuilder));
+		Mockito.doReturn("name").when(computerDTOspy).getName();
+
+		assertEquals(computerDTOspy.getName(), "name");
 
 	}
 

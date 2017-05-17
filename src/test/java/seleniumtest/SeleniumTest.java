@@ -1,13 +1,11 @@
 package seleniumtest;
 
-
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 
 public class SeleniumTest {
 	private WebDriver driver;
@@ -20,7 +18,7 @@ public class SeleniumTest {
 		System.setProperty("webdriver.chrome.driver", "chromedriver");
 		driver = new ChromeDriver();
 		baseUrl = "http://localhost:8080/";
-		
+
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
