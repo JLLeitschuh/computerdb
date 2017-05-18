@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
+import exception.DTOException;
 import mappers.ComputerDTOMapper;
 import mappers.ComputerMapper;
 import services.CompanyService;
@@ -66,7 +67,12 @@ public class AddComputerServlet extends HttpServlet {
 		if (companyId != null && StringUtils.isNumeric(companyId)) {
 			computerDTOBuilder.companyId(Integer.parseInt(companyId));
 		}
-		computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		try {
+			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		} catch (DTOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		doGet(request, response);
 	}
 

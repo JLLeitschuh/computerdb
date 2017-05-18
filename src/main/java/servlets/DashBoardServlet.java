@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import dto.ComputerDTO;
+import exception.DTOException;
 import mappers.ComputerDTOMapper;
 import model.ComputerEntity;
 import services.ComputerService;
@@ -56,7 +57,12 @@ public class DashBoardServlet extends HttpServlet {
 
 		// get computer list with research param, if research is null all items
 		// are send by database.
-		pageComputer.setNumberTotalItems(computerService.getTotalItem(searchString));
+		try {
+			pageComputer.setNumberTotalItems(computerService.getTotalItem(searchString));
+		} catch (DTOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		logger.info("TotalItems " + pageComputer.getNumberTotalItems());
 
@@ -81,7 +87,13 @@ public class DashBoardServlet extends HttpServlet {
 
 		logger.info("NumberPage " + pageComputer.getNumberPage());
 
-		List<ComputerEntity> computerList = computerService.getComputers(start, itemNumber, searchString);
+		List<ComputerEntity> computerList = null;
+		try {
+			computerList = computerService.getComputers(start, itemNumber, searchString);
+		} catch (DTOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (computerList == null || pageComputer.getCurrentPage() < 0
 				|| (pageComputer.getCurrentPage() > pageComputer.getNumberPage())) {

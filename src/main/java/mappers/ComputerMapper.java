@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import dao.CompanyDao;
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
+import exception.DTOException;
 import model.CompanyEntity;
 import model.ComputerEntity;
 import model.ComputerEntity.ComputerBuilder;
@@ -17,8 +18,9 @@ public class ComputerMapper {
 	 *  create computer object from result set.
 	 * @param resultSet .
 	 * @return computer entity from result set
+	 * @throws DTOException 
 	 */
-	public static ComputerEntity createComputer(ResultSet resultSet) {
+	public static ComputerEntity createComputer(ResultSet resultSet) throws DTOException {
 
 		try {
 			CompanyDao companyDao = new CompanyDao();

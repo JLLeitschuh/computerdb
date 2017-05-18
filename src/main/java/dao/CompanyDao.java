@@ -10,6 +10,7 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 import dto.CompanyDTO;
+import exception.DTOException;
 import mappers.CompanyMapper;
 import model.CompanyEntity;
 import persistance.MySQLConnectionSingleton;
@@ -20,20 +21,22 @@ public class CompanyDao {
 	public static final String COMPANY_TABLE_NAME = "company";
 	Connection connect;
 
-	public CompanyDao(){
+	public CompanyDao() {
 		connect = MySQLConnectionSingleton.getInstance().getConnection();
 	}
+
 	/**
 	 * find company with specific id.
 	 * @param id for company to find
 	 * @return CompanyEntity
+	 * @throws DTOException 
 	 */
 
-	public CompanyEntity find(int id) {
+	public CompanyEntity find(int id) throws DTOException {
 		// TODO Auto-generated method stub
 		CompanyEntity companyModel = null;
-		PreparedStatement preparedStatement=null;
-		ResultSet resultSet=null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 
 			preparedStatement = (PreparedStatement) connect
@@ -44,25 +47,15 @@ public class CompanyDao {
 			if (resultSet.first()) {
 
 				companyModel = CompanyMapper.createCompany(resultSet);
-
 			}
-
+			return companyModel;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			throw new DTOException(e.getMessage());
+
 		} finally {
 			close(preparedStatement, resultSet, null);
 		}
-
-		return companyModel;
-	}
-
-	/**
-	 * delete company with id ID.
-	 * @param id .
-	 */
-	public void delete(int id) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -89,9 +82,10 @@ public class CompanyDao {
 	/**
 	 * get all company from company table.
 	 * @return list of companies
+	 * @throws DTOException 
 	 */
 
-	public List<CompanyEntity> getAll() {
+	public List<CompanyEntity> getAll() throws DTOException {
 
 		ArrayList<CompanyEntity> companyList = new ArrayList<>();
 		ResultSet resultSet = null;
@@ -106,14 +100,13 @@ public class CompanyDao {
 				System.out.println("Value " + companyEntity.toString());
 
 			}
+			return companyList;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			throw new DTOException(e.getMessage());
 		} finally {
 			close(null, resultSet, statement);
 		}
-		return companyList;
-		// TODO Auto-generated method stub
 
 	}
 

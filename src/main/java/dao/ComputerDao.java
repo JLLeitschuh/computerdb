@@ -11,6 +11,7 @@ import com.mysql.jdbc.Statement;
 
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
+import exception.DTOException;
 import mappers.ComputerMapper;
 import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
@@ -30,9 +31,10 @@ public class ComputerDao {
 	 * find computer with specific id.
 	 * @param id .
 	 * @return computer entity find
+	 * @throws DTOException 
 	 */
 
-	public ComputerEntity find(int id) {
+	public ComputerEntity find(int id) throws DTOException {
 
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
@@ -51,7 +53,7 @@ public class ComputerDao {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, resultSet, statement);
 		}
@@ -61,9 +63,10 @@ public class ComputerDao {
 	/**
 	 * create new computer into computer table.
 	 * @param computer .
+	 * @throws DTOException 
 	 */
 
-	public void create(ComputerEntity computer) {
+	public void create(ComputerEntity computer) throws DTOException {
 
 		PreparedStatement preparedStatement = null;
 		try {
@@ -80,7 +83,7 @@ public class ComputerDao {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
 
 		} finally {
 			close(preparedStatement, null, null);
@@ -92,9 +95,10 @@ public class ComputerDao {
 	 * update computer into computer table.
 	 * @param computer .
 	 * @return update computer;
+	 * @throws DTOException 
 	 */
 
-	public ComputerEntity update(ComputerEntity computer) {
+	public ComputerEntity update(ComputerEntity computer) throws DTOException {
 
 		PreparedStatement preparedStatement = null;
 		try {
@@ -111,21 +115,23 @@ public class ComputerDao {
 			preparedStatement.executeUpdate();
 
 			computer = find(computer.getId());
+			return computer;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, null, null);
 		}
-		return computer;
+
 	}
 
 	/**
 	 * delete computer from computer table.
 	 * @param id .
+	 * @throws DTOException 
 	 */
-	public void delete(int id) {
+	public void delete(int id) throws DTOException {
 
 		PreparedStatement preparedStatement = null;
 		try {
@@ -137,7 +143,7 @@ public class ComputerDao {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, null, null);
 		}
@@ -148,8 +154,9 @@ public class ComputerDao {
 	 * get number of item into computer db.
 	 * @param research .
 	 * @return item count into computer table
+	 * @throws DTOException 
 	 */
-	public int getCount(String research) {
+	public int getCount(String research) throws DTOException {
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 
@@ -166,18 +173,19 @@ public class ComputerDao {
 			resultSet.first();
 			return resultSet.getInt(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, resultSet, null);
 		}
-		return -1;
+
 	}
 
 	/**
 	 * display all computer details.
 	 * @return computer list
+	 * @throws DTOException 
 	 */
-	public ArrayList<ComputerEntity> getAll() {
+	public ArrayList<ComputerEntity> getAll() throws DTOException {
 
 		ResultSet resultSet = null;
 		Statement statement;
@@ -193,7 +201,7 @@ public class ComputerDao {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
 		}
 		return computerList;
 
@@ -205,8 +213,9 @@ public class ComputerDao {
 	 * @param offset .
 	 * @param researchString .
 	 * @return list of computer between begin and end
+	 * @throws DTOException 
 	 */
-	public List<ComputerEntity> getComputers(int start, int offset, String researchString) {
+	public List<ComputerEntity> getComputers(int start, int offset, String researchString) throws DTOException {
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		ResultSet resultSet = null;
@@ -233,8 +242,8 @@ public class ComputerDao {
 				computerList.add(computerEntity);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DTOException(e.getMessage());
+
 		}
 
 		return computerList;

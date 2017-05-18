@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
 
+import exception.DTOException;
 import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
 import persistance.Query;
@@ -28,8 +29,10 @@ public class Menu {
 
 	/**
 	 * make menu choice.
+	 * @throws DTOException 
+	 * @throws NumberFormatException 
 	 */
-	public void chooseMenu() {
+	public void chooseMenu() throws NumberFormatException, DTOException {
 
 		boolean keepChoose = true;
 		while (keepChoose) {
@@ -66,8 +69,9 @@ public class Menu {
 	/**
 	 * choice statement with numeric selected by user.
 	 * @param numeric .
+	 * @throws DTOException 
 	 */
-	public void choice(int numeric) {
+	public void choice(int numeric) throws DTOException {
 
 		switch (numeric) {
 
@@ -99,8 +103,9 @@ public class Menu {
 
 	/**
 	 * delete computer from computer table.
+	 * @throws DTOException 
 	 */
-	public void deleteComputerById() {
+	public void deleteComputerById() throws DTOException {
 
 		System.out.println("Delete computer with id :");
 		String computerId = in.nextLine();
@@ -121,8 +126,9 @@ public class Menu {
 
 	/**
 	 * display Computer with specific id.
+	 * @throws DTOException 
 	 */
-	public void displayComputerById() {
+	public void displayComputerById() throws DTOException {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer ID to display details ");
@@ -145,8 +151,9 @@ public class Menu {
 
 	/**
 	 * chooseComputerToUpdate.
+	 * @throws DTOException 
 	 */
-	public void chooseComputerToUpdate() {
+	public void chooseComputerToUpdate() throws DTOException {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer To update with id ");
@@ -164,8 +171,9 @@ public class Menu {
 	/**
 	 * update Computer with specific id.
 	 * @param idComputerUpdate .
+	 * @throws DTOException 
 	 */
-	public void updateComputer(String idComputerUpdate) {
+	public void updateComputer(String idComputerUpdate) throws DTOException {
 
 		ComputerEntity computerModel = computerService.getComputerById(idComputerUpdate);
 		if (computerModel != null) {
@@ -210,8 +218,9 @@ public class Menu {
 
 	/**
 	 * display all computers from computer table.
+	 * @throws DTOException 
 	 */
-	public void displayComputerList() {
+	public void displayComputerList() throws DTOException {
 		computerService.getComputers();
 	}
 

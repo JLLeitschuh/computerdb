@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import dao.ComputerDao;
 import dto.ComputerDTO;
+import exception.DTOException;
 import model.ComputerEntity;
 import ui.Page;
 
@@ -33,8 +34,9 @@ public class ComputerService {
 	/**
 	 * insert new computer into db.
 	 * @param computerEntity .
+	 * @throws DTOException 
 	 */
-	public void insertComputer(ComputerEntity computerEntity) {
+	public void insertComputer(ComputerEntity computerEntity) throws DTOException {
 
 		computerDao.create(computerEntity);
 	}
@@ -43,8 +45,9 @@ public class ComputerService {
 	 * get computer by id.
 	 * @param strId .
 	 * @return ComputerDTO corresponding to computer object with id strId
+	 * @throws DTOException 
 	 */
-	public ComputerEntity getComputerById(String strId) {
+	public ComputerEntity getComputerById(String strId) throws DTOException {
 
 		if (StringUtils.isNumeric(strId)) {
 			int id = Integer.parseInt(strId);
@@ -58,8 +61,9 @@ public class ComputerService {
 	 * update computer into db.
 	 * @param computerEntity .
 	 * @return Computer which been update
+	 * @throws DTOException 
 	 */
-	public ComputerEntity update(ComputerEntity computerEntity) {
+	public ComputerEntity update(ComputerEntity computerEntity) throws DTOException {
 
 		return computerDao.update(computerEntity);
 
@@ -68,8 +72,9 @@ public class ComputerService {
 	/**
 	 * get Computers list.
 	 * @return list of computerDTO
+	 * @throws DTOException 
 	 */
-	public List<ComputerEntity> getComputers() {
+	public List<ComputerEntity> getComputers() throws DTOException {
 
 		return computerDao.getAll();
 
@@ -81,8 +86,9 @@ public class ComputerService {
 	 * @param itemPerPage .
 	 * @param researchString .
 	 * @return List of computerDTO corresponding to page "pageNumber"
+	 * @throws DTOException 
 	 */
-	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString) {
+	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString) throws DTOException {
 
 		List<ComputerEntity> computerEntities = null;
 		if (itemPerPage == null) {
@@ -97,8 +103,9 @@ public class ComputerService {
 	 * get total item of table.
 	 * @param researchString .
 	 * @return integer
+	 * @throws DTOException 
 	 */
-	public int getTotalItem(String researchString) {
+	public int getTotalItem(String researchString) throws DTOException {
 
 		return computerDao.getCount(researchString);
 	}
@@ -106,8 +113,9 @@ public class ComputerService {
 	/**
 	 * delete computer with id strId.
 	 * @param strId .
+	 * @throws DTOException 
 	 */
-	public void deleteComputer(String strId) {
+	public void deleteComputer(String strId) throws DTOException {
 
 		int id = Integer.parseInt(strId);
 		computerDao.delete(id);
