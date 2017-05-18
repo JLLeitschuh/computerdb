@@ -23,6 +23,11 @@ public class ComputerDTO {
 		this.companyName = computerBuilder.companyName;
 	}
 
+	public static ComputerDTOBuilder getComputerDtoBuilder() {
+
+		return new ComputerDTOBuilder();
+	}
+
 	public int getId() {
 		return id;
 	}

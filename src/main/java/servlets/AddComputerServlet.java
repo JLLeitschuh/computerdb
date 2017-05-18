@@ -2,18 +2,20 @@ package servlets;
 
 import java.io.IOException;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
+import mappers.ComputerDTOMapper;
+import mappers.ComputerMapper;
 import services.CompanyService;
 import services.ComputerService;
-
 
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
@@ -59,7 +61,12 @@ public class AddComputerServlet extends HttpServlet {
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
 
-		//computerService.insertComputer(computerName, introduced, discontinued, companyId);
+		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
+		computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
+		if (companyId != null && StringUtils.isNumeric(companyId)) {
+			computerDTOBuilder.companyId(Integer.parseInt(companyId));
+		}
+		computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
 		doGet(request, response);
 	}
 
