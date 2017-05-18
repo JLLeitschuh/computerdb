@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import dao.CompanyDao;
-import dao.IDao;
+import dto.ComputerDTO;
+import dto.ComputerDTO.ComputerDTOBuilder;
 import model.CompanyEntity;
 import model.ComputerEntity;
+import model.ComputerEntity.ComputerBuilder;
 
 public class ComputerMapper {
 
@@ -18,14 +20,14 @@ public class ComputerMapper {
 	 */
 	public static ComputerEntity createComputer(ResultSet resultSet) {
 
-		IDao<CompanyEntity> companydao = new CompanyDao();
 		try {
+			CompanyDao companyDao = new CompanyDao();
 			int id = resultSet.getInt(1);
 			String name = resultSet.getString(2);
 			LocalDate introduced = resultSet.getDate(3) == null ? null : resultSet.getDate(3).toLocalDate();
 			LocalDate discontinued = resultSet.getDate(4) == null ? null : resultSet.getDate(4).toLocalDate();
 			int companyId = resultSet.getInt(5);
-			CompanyEntity companyEntity = companydao.find(companyId);
+			CompanyEntity companyEntity = companyDao.find(companyId);
 			return new ComputerEntity.ComputerBuilder().id(id).name(name).introduced(introduced)
 					.discontinued(discontinued).company(companyEntity).build();
 
@@ -36,4 +38,6 @@ public class ComputerMapper {
 
 		return null;
 	}
+
+
 }

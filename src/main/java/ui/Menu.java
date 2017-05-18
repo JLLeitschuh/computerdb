@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.mysql.jdbc.StringUtils;
 
-import dto.ComputerDTO;
+import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
 import persistance.Query;
 import services.CompanyService;
@@ -107,7 +107,7 @@ public class Menu {
 
 		if (StringUtils.isStrictlyNumeric(computerId)) {
 
-			ComputerDTO computerModel = computerService.getComputerById(computerId);
+			ComputerEntity computerModel = computerService.getComputerById(computerId);
 			if (computerModel != null) {
 
 				computerService.deleteComputer(computerId);
@@ -131,7 +131,7 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
 
 		if (isComputerIdOk) {
-			ComputerDTO computer = computerService.getComputerById(computerId);
+			ComputerEntity computer = computerService.getComputerById(computerId);
 			if (computer != null) {
 				System.out.println(computer.toString());
 			} else {
@@ -167,7 +167,7 @@ public class Menu {
 	 */
 	public void updateComputer(String idComputerUpdate) {
 
-		ComputerDTO computerModel = computerService.getComputerById(idComputerUpdate);
+		ComputerEntity computerModel = computerService.getComputerById(idComputerUpdate);
 		if (computerModel != null) {
 			System.out.print("Enter name:");
 
@@ -180,7 +180,7 @@ public class Menu {
 			System.out.print("Company ID:");
 			String companyId = in.nextLine();
 
-			computerService.update(idComputerUpdate, name, introduced, discontinued, companyId);
+			computerService.update(computerModel);
 
 		} else {
 			System.out.println("Computer doesn't exist");
@@ -204,7 +204,7 @@ public class Menu {
 		System.out.print("Company ID:");
 		String companyId = in.nextLine();
 
-		computerService.insertComputer(name, introduced, discontinued, companyId);
+		//computerService.insertComputer(name, introduced, discontinued, companyId);
 
 	}
 

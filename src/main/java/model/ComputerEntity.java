@@ -24,6 +24,11 @@ public class ComputerEntity {
 		this.companyEntity = computerBuilder.company;
 	}
 
+	public static ComputerBuilder computerBuilder() {
+
+		return new ComputerBuilder();
+	}
+
 	/**
 	 * get computer Id.
 	 * @return id from computer
@@ -148,6 +153,7 @@ public class ComputerEntity {
 			this.name = name;
 			return this;
 		}
+
 		/**
 		 * set introduced Local Date.
 		 * @param introduced .
@@ -167,6 +173,7 @@ public class ComputerEntity {
 			this.discontinued = discontinued;
 			return this;
 		}
+
 		/**
 		 * set company entity.
 		 * @param company .

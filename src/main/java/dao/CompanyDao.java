@@ -1,28 +1,39 @@
 package dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 import dto.CompanyDTO;
 import mappers.CompanyMapper;
 import model.CompanyEntity;
+import persistance.MySQLConnectionSingleton;
 
-public class CompanyDao extends IDao<CompanyEntity> {
+import static dao.DaoUtils.*;
+
+public class CompanyDao {
 	public static final String COMPANY_TABLE_NAME = "company";
+	Connection connect;
 
+	public CompanyDao(){
+		connect = MySQLConnectionSingleton.getInstance().getConnection();
+	}
 	/**
 	 * find company with specific id.
 	 * @param id for company to find
 	 * @return CompanyEntity
 	 */
-	@Override
+
 	public CompanyEntity find(int id) {
 		// TODO Auto-generated method stub
 		CompanyEntity companyModel = null;
+		PreparedStatement preparedStatement=null;
+		ResultSet resultSet=null;
 		try {
 
 			preparedStatement = (PreparedStatement) connect
@@ -40,38 +51,16 @@ public class CompanyDao extends IDao<CompanyEntity> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			close();
+			close(preparedStatement, resultSet, null);
 		}
 
 		return companyModel;
 	}
 
 	/**
-	 * Create company obj.
-	 * @param obj .
-	 */
-	@Override
-	public void create(CompanyEntity obj) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * update company object.
-	 * @param obj corresponding to updated company
-	 * @return updated company entity
-	 */
-	@Override
-	public CompanyEntity update(CompanyEntity obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
 	 * delete company with id ID.
 	 * @param id .
 	 */
-	@Override
 	public void delete(int id) {
 		// TODO Auto-generated method stub
 
@@ -101,11 +90,12 @@ public class CompanyDao extends IDao<CompanyEntity> {
 	 * get all company from company table.
 	 * @return list of companies
 	 */
-	@Override
+
 	public List<CompanyEntity> getAll() {
 
 		ArrayList<CompanyEntity> companyList = new ArrayList<>();
-
+		ResultSet resultSet = null;
+		Statement statement = null;
 		try {
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM " + COMPANY_TABLE_NAME);
@@ -119,6 +109,8 @@ public class CompanyDao extends IDao<CompanyEntity> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			close(null, resultSet, statement);
 		}
 		return companyList;
 		// TODO Auto-generated method stub

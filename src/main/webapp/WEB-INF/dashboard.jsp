@@ -21,7 +21,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">121 Computers found</h1>
+			<h1 id="homeTitle">${page.numberTotalItems} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -69,7 +69,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${computerList}" var="computer">
+					<c:forEach items="${page.items}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
@@ -93,8 +93,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 
-			<mytag:pagination startPage="${startPage}" endPage="${endPage}"
-				currentPage="${currentPage}" search="${search}" />
+			<mytag:pagination page="${page}" search="${search}" />
 			<div class="btn-group btn-group-sm pull-right" id="item_number"
 				role="group">
 				<a

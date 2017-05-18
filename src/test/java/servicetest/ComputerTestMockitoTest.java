@@ -79,29 +79,6 @@ public class ComputerTestMockitoTest {
 	@Mock
 	ComputerService computerService;
 
-	/**
-	 * test ComputerDTO list containing.
-	 */
-	@Test
-	public void testComputerService() {
-
-		List<ComputerDTO> list = new ArrayList<ComputerDTO>();
-		ComputerDTO.ComputerDTOBuilder computerBuilder = new ComputerDTO.ComputerDTOBuilder().name("Test");
-		list.add(computerBuilder.build());
-
-		Mockito.when(computerService.getComputers()).thenReturn(list);
-		assertEquals(computerService.getComputers().get(0).getName(), "Test");
-
-		ComputerDTO.ComputerDTOBuilder computerBuilder2 = new ComputerDTO.ComputerDTOBuilder().introduced("1966-01-01");
-		list.add(computerBuilder2.build());
-
-		Mockito.when(computerService.getComputers()).thenReturn(list);
-
-		assertEquals(computerService.getComputers().get(1).getIntroduced(), "1966-01-01");
-		assertEquals(computerService.getComputers().size(), 2);
-
-	}
-
 	@Mock
 	ComputerDao computerDao;
 	@InjectMocks
@@ -109,27 +86,6 @@ public class ComputerTestMockitoTest {
 	@Mock
 	Page page;
 
-	/**
-	 * test method call verification.
-	 */
-	@Test
-	public void testServiceMethodeCaller() {
-
-		computerService2.getComputers();
-		Mockito.verify(computerDao).getAll();
-
-		computerService2.getComputerById("1");
-		Mockito.verify(computerDao).find(1);
-
-		computerService2.getComputerFromTo("1", "10","");
-		Mockito.verify(page).setCurrentPage(1);
-		Mockito.verify(page).setNumberItemPage(10);
-
-		computerService2.getComputerFromTo("100", null,null);
-		Mockito.verify(page).setCurrentPage(100);
-		Mockito.verify(page, Mockito.times(1)).setNumberItemPage(Mockito.anyInt());
-
-	}
 
 	/**
 	 * test computer DAO.

@@ -59,7 +59,7 @@ public class AddComputerServlet extends HttpServlet {
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
 
-		computerService.insertComputer(computerName, introduced, discontinued, companyId);
+		//computerService.insertComputer(computerName, introduced, discontinued, companyId);
 		doGet(request, response);
 	}
 
