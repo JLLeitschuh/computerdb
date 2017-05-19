@@ -70,7 +70,7 @@ public class DashBoardServlet extends HttpServlet {
 		if (page != null && StringUtils.isNumeric(page)) {
 			pageComputer.setCurrentPage(Integer.parseInt(page));
 		}
-		if (searchString != null && page == null) {
+		if (page == null) {
 			pageComputer.setCurrentPage(1);
 		}
 
@@ -103,6 +103,7 @@ public class DashBoardServlet extends HttpServlet {
 			pageComputer.setItems(ComputerDTOMapper.createComputerDTOList(computerList));
 			request.setAttribute("search", searchString);
 			request.setAttribute("page", pageComputer);
+			request.setAttribute("item_number", itemNumber);
 			request.setAttribute("computerList", computerList);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
 		}

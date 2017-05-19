@@ -33,16 +33,22 @@ public class Page<T> {
 		this.currentPage = currentPage;
 	}
 
+	/**
+	 * update number page.
+	 * @param itemPerPage .
+	 */
+
 	public void updateNumberPage(int itemPerPage) {
 
 		if (itemPerPage > 0) {
-			numberPage =  numberTotalItems / itemPerPage;
+
+			numberPage = (int) Math.ceil((float) ((float) numberTotalItems / (float) itemPerPage));
 		}
 	}
-	
-	public int getNumberPage(){
-		
-		return numberPage >0?numberPage :1;
+
+	public int getNumberPage() {
+
+		return numberPage > 0 ? numberPage : 1;
 	}
 
 }
