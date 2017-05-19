@@ -13,7 +13,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -Computer Database </a>
+			<a class="navbar-brand" href=""<c:url value="/dashboard"></c:url>" "> Application -Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
@@ -49,7 +49,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" id="addComputer" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							or <a href="<c:url value="/dashboard"></c:url>" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

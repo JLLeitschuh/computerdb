@@ -1,4 +1,4 @@
-package mappers;
+package mapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,9 @@ public class ComputerDTOMapper {
 		computerBuilder.id(computerDTO.getId()).name(computerDTO.getName());
 		computerBuilder.introduced(DataMapper.convertStringToDate(computerDTO.getIntroduced()));
 		computerBuilder.discontinued(DataMapper.convertStringToDate(computerDTO.getDiscontinued()));
+		
 		if (computerDTO.getCompanyName() != null && computerDTO.getCompanyId() > 0) {
+			
 			computerBuilder.company(new CompanyEntity(computerDTO.getCompanyId(), computerDTO.getCompanyName()));
 		}
 

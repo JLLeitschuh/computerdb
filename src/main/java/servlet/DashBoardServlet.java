@@ -1,4 +1,4 @@
-package servlets;
+package servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.slf4j.Logger;
 
 import dto.ComputerDTO;
 import exception.DTOException;
-import mappers.ComputerDTOMapper;
+import mapper.ComputerDTOMapper;
 import model.ComputerEntity;
-import services.ComputerService;
+import service.ComputerService;
 import ui.Page;
 
 /**
@@ -47,13 +47,13 @@ public class DashBoardServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		// get parameters search, page, item_number
 		String searchString = request.getParameter("search");
 		String page = request.getParameter("page");
 		String itemNumber = request.getParameter("item_number");
+
+		logger.info("GET " + pageComputer.getCurrentPage());
 
 		// get computer list with research param, if research is null all items
 		// are send by database.
@@ -103,9 +103,30 @@ public class DashBoardServlet extends HttpServlet {
 			pageComputer.setItems(ComputerDTOMapper.createComputerDTOList(computerList));
 			request.setAttribute("search", searchString);
 			request.setAttribute("page", pageComputer);
-
+			request.setAttribute("computerList", computerList);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @param request .
+	 * @param response .
+	 */
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String[] selectedComputers = request.getParameter("selection").split(",");
+
+		for (String deleteComputer : selectedComputers) {
+			try {
+				computerService.deleteComputer(deleteComputer);
+			} catch (DTOException e) {
+
+			}
+		}
+		doGet(request, response);
 	}
 
 }

@@ -1,4 +1,4 @@
-package servlets;
+package servlet;
 
 import java.io.IOException;
 
@@ -13,10 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
-import mappers.ComputerDTOMapper;
-import mappers.ComputerMapper;
-import services.CompanyService;
-import services.ComputerService;
+import mapper.ComputerDTOMapper;
+import mapper.ComputerMapper;
+import model.CompanyEntity;
+import service.CompanyService;
+import service.ComputerService;
 
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
@@ -42,9 +43,13 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		request.setAttribute("companyList", companyService.getCompanies());
+
+		try {
+			request.setAttribute("companyList", companyService.getCompanies());
+		} catch (DTOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(request, response);
 	}
@@ -64,16 +69,28 @@ public class AddComputerServlet extends HttpServlet {
 
 		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
 		computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
-		if (companyId != null && StringUtils.isNumeric(companyId)) {
-			computerDTOBuilder.companyId(Integer.parseInt(companyId));
-		}
+
+		CompanyEntity company = null;
+
 		try {
-			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+			company = companyService.findCompanyById(companyId);
 		} catch (DTOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		doGet(request, response);
+		if (company != null) {
+			computerDTOBuilder.companyId(company.getId());
+			computerDTOBuilder.companyName(company.getName());
+		}
+
+		try {
+			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+			this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+		} catch (DTOException e) {
+			// TODO Auto-generated catch block
+			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+		}
+
 	}
 
 }

@@ -1,4 +1,4 @@
-package mappers;
+package mapper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

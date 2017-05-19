@@ -9,8 +9,8 @@ import exception.DTOException;
 import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
 import persistance.Query;
-import services.CompanyService;
-import services.ComputerService;
+import service.CompanyService;
+import service.ComputerService;
 
 public class Menu {
 
@@ -29,7 +29,7 @@ public class Menu {
 
 	/**
 	 * make menu choice.
-	 * @throws DTOException 
+	 * @throws DTOException
 	 * @throws NumberFormatException 
 	 */
 	public void chooseMenu() throws NumberFormatException, DTOException {
@@ -212,7 +212,8 @@ public class Menu {
 		System.out.print("Company ID:");
 		String companyId = in.nextLine();
 
-		//computerService.insertComputer(name, introduced, discontinued, companyId);
+		// computerService.insertComputer(name, introduced, discontinued,
+		// companyId);
 
 	}
 
@@ -226,8 +227,9 @@ public class Menu {
 
 	/**
 	 * display all company from company table.
+	 * @throws DTOException 
 	 */
-	public void displayCompanyList() {
+	public void displayCompanyList() throws DTOException {
 		companyService.getCompanies();
 	}
 

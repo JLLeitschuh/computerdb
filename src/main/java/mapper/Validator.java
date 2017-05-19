@@ -1,4 +1,4 @@
-package mappers;
+package mapper;
 
 public class Validator {
 

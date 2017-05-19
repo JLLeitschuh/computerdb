@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
 <title>Computer Database</title>
@@ -11,7 +12,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
+			<a class="navbar-brand" href="<c:url value="/dashboard"></c:url>" > Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -28,29 +29,49 @@
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName"
-									placeholder="Computer name">
+									type="text" class="form-control" name="computerName"
+									id="computerName"
+									<c:if test="${not empty computer.name }" >
+									value="<c:out value="${computer.name}"/>"
+									</c:if>
+									placeholder="Computer name" />
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" id="introduced"
-									placeholder="Introduced date">
+									type="date" class="form-control" name="introduced"
+									id="introduced" data-validation="date"
+									data-validation-format="yyyy-mm-dd"
+									placeholder="Introduced date"
+									<c:if test="${not empty computer.introduced }" >
+									value="<c:out value="${computer.introduced}"/>"
+									</c:if> />
+
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" id="discontinued"
+									type="date" class="form-control" name="discontinued"
+									id="discontinued" data-validation="date"
+									data-validation-format="yyyy-mm-dd"
+									<c:if test="${not empty computer.discontinued }" >
+									value="<c:out value="${computer.discontinued}"/>"
+									</c:if>
 									placeholder="Discontinued date">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId">
-									<option value="0">--</option>
+									<c:forEach items="${companyList}" var="company">
+										<option value="${company.id}"
+											${computer.companyId == company.id ? 'selected' : ' '}><c:out
+												value="${company.name}"></c:out></option>
+									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
+						<input type="hidden" name="computerId" value="${computerId}" /> 
 							<input type="submit" value="Edit" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							or <a href="<c:url value="/dashboard"></c:url>" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

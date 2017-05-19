@@ -10,6 +10,7 @@ import org.mockito.exceptions.verification.NeverWantedButInvoked;
 
 import dao.ComputerDao;
 import dto.ComputerDTO;
+import exception.DTOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.ComputerEntity;
-import services.ComputerService;
+import service.ComputerService;
 import ui.Page;
 
 public class ComputerTestMockitoTest {
@@ -86,12 +87,12 @@ public class ComputerTestMockitoTest {
 	@Mock
 	Page page;
 
-
 	/**
 	 * test computer DAO.
+	 * @throws DTOException .
 	 */
 	@Test
-	public void testComputerDAO() {
+	public void testComputerDAO() throws DTOException {
 
 		List<ComputerEntity> userMap = new ArrayList<>();
 		ComputerDao dao = Mockito.mock(ComputerDao.class);

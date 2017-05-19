@@ -12,7 +12,7 @@ import com.mysql.jdbc.Statement;
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
-import mappers.ComputerMapper;
+import mapper.ComputerMapper;
 import model.ComputerEntity;
 import persistance.MySQLConnectionSingleton;
 import static dao.DaoUtils.*;
@@ -78,7 +78,9 @@ public class ComputerDao {
 					computer.getIntroduced() == null ? null : computer.getIntroduced().toString());
 			preparedStatement.setString(3,
 					computer.getDiscontinued() == null ? null : computer.getDiscontinued().toString());
-			preparedStatement.setInt(4, computer.getCompanyEntity().getId());
+			if (computer.getCompanyEntity() != null) {
+				preparedStatement.setInt(4, computer.getCompanyEntity().getId());
+			}
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -98,7 +100,7 @@ public class ComputerDao {
 	 * @throws DTOException 
 	 */
 
-	public ComputerEntity update(ComputerEntity computer) throws DTOException {
+	public boolean update(ComputerEntity computer) throws DTOException {
 
 		PreparedStatement preparedStatement = null;
 		try {
@@ -110,12 +112,15 @@ public class ComputerDao {
 					computer.getIntroduced() == null ? null : computer.getIntroduced().toString());
 			preparedStatement.setString(3,
 					computer.getDiscontinued() == null ? null : computer.getDiscontinued().toString());
-			preparedStatement.setInt(4, computer.getCompanyEntity().getId());
-			preparedStatement.setInt(5, computer.getId());
-			preparedStatement.executeUpdate();
+			if (computer.getCompanyEntity() != null) {
+				preparedStatement.setInt(4, computer.getCompanyEntity().getId());
+			} else {
+				preparedStatement.setString(4, null);
+			}
+			preparedStatement.setString(5, null);
+			int count = preparedStatement.executeUpdate();
 
-			computer = find(computer.getId());
-			return computer;
+			return count > 0 ? true : false;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

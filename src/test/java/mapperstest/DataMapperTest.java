@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import mappers.DataMapper;
+import mapper.DataMapper;
 
 public class DataMapperTest {
 

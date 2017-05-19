@@ -11,7 +11,7 @@ import com.mysql.jdbc.Statement;
 
 import dto.CompanyDTO;
 import exception.DTOException;
-import mappers.CompanyMapper;
+import mapper.CompanyMapper;
 import model.CompanyEntity;
 import persistance.MySQLConnectionSingleton;
 

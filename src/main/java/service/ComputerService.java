@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class ComputerService {
 	 * @return Computer which been update
 	 * @throws DTOException 
 	 */
-	public ComputerEntity update(ComputerEntity computerEntity) throws DTOException {
+	public boolean update(ComputerEntity computerEntity) throws DTOException {
 
 		return computerDao.update(computerEntity);
 

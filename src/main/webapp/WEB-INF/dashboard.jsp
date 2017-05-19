@@ -14,14 +14,14 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="/dashboard"> Application - Computer
+				Database </a>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.numberTotalItems} Computers found</h1>
+			<h1 id="homeTitle">${page.numberTotalItems}Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -33,14 +33,17 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+					<a class="btn btn-success" id="addComputer"
+						href="<c:url value="/addComputer">
+              </c:url>">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<c:url var="post_url" value="/dashboard" />
+		<form id="deleteForm" action="${post_url}" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -72,7 +75,7 @@
 					<c:forEach items="${page.items}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${computer.id}"></td>
 							<td><a
 								href="<c:url value="/editComputer">
                <c:param name="computerId" value="${computer.id}"/>
