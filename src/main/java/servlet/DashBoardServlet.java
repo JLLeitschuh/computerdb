@@ -91,7 +91,7 @@ public class DashBoardServlet extends HttpServlet {
 
 		List<ComputerEntity> computerList = null;
 		try {
-			computerList = computerService.getComputers(start, itemNumber, searchString);
+			computerList = computerService.getComputers(start, itemNumber, searchString, null);
 		} catch (DTOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,12 +122,12 @@ public class DashBoardServlet extends HttpServlet {
 
 		String[] selectedComputers = request.getParameter("selection").split(",");
 
-			try {
-				computerService.deleteComputer(selectedComputers);
-			} catch (DTOException e) {
+		try {
+			computerService.deleteComputer(selectedComputers);
+		} catch (DTOException e) {
 
-			}
-		
+		}
+
 		doGet(request, response);
 	}
 

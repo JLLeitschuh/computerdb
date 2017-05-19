@@ -299,15 +299,21 @@ public class ComputerDao {
 	 * @return list of computer between begin and end
 	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers(int start, int offset, String researchString) throws DTOException {
+	public List<ComputerEntity> getComputers(int start, int offset, String researchString, String orderby)
+			throws DTOException {
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		PreparedStatement preparedStatement = null;
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
+
 		try {
 			StringBuilder query = new StringBuilder("SELECT * FROM " + COMPUTER_TABLE_NAME);
 			if (researchString != null) {
 				query.append(" WHERE name like ?");
+			}
+			if (orderby != null) {
+				query.append(" OrderBy ?");
+				;
 			}
 			query.append(" Limit ?,? ");
 
@@ -317,9 +323,16 @@ public class ComputerDao {
 				preparedStatement.setString(1, "%" + researchString + "%");
 				preparedStatement.setInt(2, start);
 				preparedStatement.setInt(3, offset);
+				if (orderby != null) {
+					preparedStatement.setString(4, orderby);
+				}
+
 			} else {
 				preparedStatement.setInt(1, start);
 				preparedStatement.setInt(2, offset);
+				if (orderby != null) {
+					preparedStatement.setString(3, orderby);
+				}
 			}
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {

@@ -89,13 +89,13 @@ public class ComputerService {
 	 * @return List of computerDTO corresponding to page "pageNumber"
 	 * @throws DTOException 
 	 */
-	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString) throws DTOException {
+	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString,String orderBy) throws DTOException {
 
 		List<ComputerEntity> computerEntities = null;
 		if (itemPerPage == null) {
-			computerEntities = computerDao.getComputers(start, 10, researchString);
+			computerEntities = computerDao.getComputers(start, 10, researchString,orderBy);
 		} else if (StringUtils.isNumeric(itemPerPage)) {
-			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString);
+			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString,orderBy);
 		}
 		return computerEntities;
 	}
