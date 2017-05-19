@@ -27,9 +27,10 @@ public class AddComputerServlet extends HttpServlet {
 	CompanyService companyService;
 
 	/**
+	 * @throws DTOException 
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AddComputerServlet() {
+	public AddComputerServlet() throws DTOException {
 		super();
 		computerService = new ComputerService();
 		companyService = new CompanyService();
@@ -85,7 +86,7 @@ public class AddComputerServlet extends HttpServlet {
 
 		try {
 			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-			this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+			doGet(request,response);
 		} catch (DTOException e) {
 			// TODO Auto-generated catch block
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);

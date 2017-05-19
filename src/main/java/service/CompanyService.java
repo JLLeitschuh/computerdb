@@ -16,8 +16,9 @@ public class CompanyService {
 
 	/**
 	 * Company Service constructor.
+	 * @throws DTOException 
 	 */
-	public CompanyService() {
+	public CompanyService() throws DTOException {
 		companyDao = new CompanyDao();
 	}
 

@@ -1,10 +1,12 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
+import exception.DTOException;
 
 public class DaoUtils {
 
@@ -46,6 +48,30 @@ public class DaoUtils {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void autoCommit(Connection connect) throws DTOException{
+		try {
+			connect.commit();
+		} catch (SQLException e) {
+			throw new DTOException("autocommit failed "+e.getMessage());
+		}
+	}
+	public static void closeConnection(Connection connect) throws DTOException {
+		try {
+			connect.close();
+		} catch (SQLException e) {
+			throw new DTOException("close failed "+e.getMessage());
+		}
+	}
+
+	public static void rollback(Connection connect) throws DTOException {
+
+		try {
+			connect.rollback();
+		} catch (SQLException e) {
+			throw new DTOException("rollback failed "+e.getMessage());
+		}
 	}
 
 }

@@ -1,41 +1,37 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
-
-import dto.ComputerDTO;
-import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
 import mapper.ComputerMapper;
 import model.ComputerEntity;
-import persistance.MySQLConnectionSingleton;
+import persistance.ConnectionSingleton;
 import static dao.DaoUtils.*;
 
 public class ComputerDao {
 
 	public static final String COMPUTER_TABLE_NAME = "computer";
-	Connection connect;
 
-	public ComputerDao() {
+	public ComputerDao() throws DTOException {
 
-		connect = MySQLConnectionSingleton.getInstance().getConnection();
 	}
 
 	/**
 	 * find computer with specific id.
 	 * @param id .
 	 * @return computer entity find
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 
 	public ComputerEntity find(int id) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 		Statement statement = null;
@@ -56,6 +52,55 @@ public class ComputerDao {
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, resultSet, statement);
+			closeConnection(connect);
+		}
+		return computer;
+	}
+
+	/**
+	 * delete all computer from company.
+	 * @param companyId .
+	 * @return ComputerEntity .
+	 * @throws DTOException .
+	 */
+	public ComputerEntity deleteCompanyCascade(int companyId) throws DTOException {
+
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
+		try {
+			connect.setAutoCommit(false);
+		} catch (SQLException e2) {
+			new DTOException(e2.getMessage());
+		}
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+		ComputerEntity computer = null;
+		List<String> idComputerList = new ArrayList<String>();
+		try {
+
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("Select *  FROM " + COMPUTER_TABLE_NAME + " WHERE companyid =?");
+			preparedStatement.setInt(1, companyId);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				idComputerList.add(resultSet.getString(1));
+			}
+
+			delete(idComputerList.toArray(new String[0]), connect, preparedStatement);
+
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE companyid =?");
+			preparedStatement.setInt(1, companyId);
+			preparedStatement.executeUpdate();
+			connect.commit();
+
+		} catch (SQLException e) {
+			rollback(connect);
+			throw new DTOException(e.getMessage());
+		} finally {
+
+			close(preparedStatement, resultSet, null);
+			closeConnection(connect);
+
 		}
 		return computer;
 	}
@@ -63,11 +108,12 @@ public class ComputerDao {
 	/**
 	 * create new computer into computer table.
 	 * @param computer .
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 
 	public void create(ComputerEntity computer) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
 
@@ -89,6 +135,7 @@ public class ComputerDao {
 
 		} finally {
 			close(preparedStatement, null, null);
+			closeConnection(connect);
 		}
 
 	}
@@ -97,11 +144,12 @@ public class ComputerDao {
 	 * update computer into computer table.
 	 * @param computer .
 	 * @return update computer;
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 
 	public boolean update(ComputerEntity computer) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
 
@@ -117,7 +165,7 @@ public class ComputerDao {
 			} else {
 				preparedStatement.setString(4, null);
 			}
-			preparedStatement.setString(5, null);
+			preparedStatement.setInt(5, computer.getId());
 			int count = preparedStatement.executeUpdate();
 
 			return count > 0 ? true : false;
@@ -127,32 +175,57 @@ public class ComputerDao {
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, null, null);
+			try {
+				connect.close();
+			} catch (SQLException e) {
+				throw new DTOException(e.getMessage());
+			}
 		}
 
 	}
 
 	/**
 	 * delete computer from computer table.
-	 * @param id .
-	 * @throws DTOException 
+	 * @param idComputerList .
+	 * @throws DTOException .
 	 */
-	public void delete(int id) throws DTOException {
+	public void deleteComputers(String[] idComputerList) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
+			connect.setAutoCommit(false);
+		} catch (SQLException e2) {
+			new DTOException(e2.getMessage());
+		}
+		try {
+			delete(idComputerList, connect, preparedStatement);
+		} finally {
 
-			preparedStatement = (PreparedStatement) connect
-					.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE id =?");
-			preparedStatement.setInt(1, id);
-			preparedStatement.executeUpdate();
+			closeConnection(connect);
+
+		}
+
+	}
+
+	public void delete(String[] idComputerList, Connection connect, PreparedStatement preparedStatement)
+			throws DTOException {
+
+		try {
+
+			for (String id : idComputerList) {
+				preparedStatement = (PreparedStatement) connect
+						.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE id =?");
+				preparedStatement.setString(1, id);
+				preparedStatement.executeUpdate();
+			}
+			connect.commit();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			rollback(connect);
 			throw new DTOException(e.getMessage());
-		} finally {
-			close(preparedStatement, null, null);
 		}
-
 	}
 
 	/**
@@ -162,6 +235,8 @@ public class ComputerDao {
 	 * @throws DTOException 
 	 */
 	public int getCount(String research) throws DTOException {
+
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 
@@ -181,6 +256,7 @@ public class ComputerDao {
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, resultSet, null);
+			closeConnection(connect);
 		}
 
 	}
@@ -188,10 +264,11 @@ public class ComputerDao {
 	/**
 	 * display all computer details.
 	 * @return computer list
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public ArrayList<ComputerEntity> getAll() throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
 		Statement statement;
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
@@ -207,6 +284,8 @@ public class ComputerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new DTOException(e.getMessage());
+		} finally {
+			closeConnection(connect);
 		}
 		return computerList;
 
@@ -218,11 +297,12 @@ public class ComputerDao {
 	 * @param offset .
 	 * @param researchString .
 	 * @return list of computer between begin and end
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public List<ComputerEntity> getComputers(int start, int offset, String researchString) throws DTOException {
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
-		PreparedStatement preparedStatement;
+		PreparedStatement preparedStatement = null;
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
 		try {
 			StringBuilder query = new StringBuilder("SELECT * FROM " + COMPUTER_TABLE_NAME);
@@ -249,6 +329,9 @@ public class ComputerDao {
 		} catch (SQLException e) {
 			throw new DTOException(e.getMessage());
 
+		} finally {
+			close(preparedStatement, resultSet, null);
+			closeConnection(connect);
 		}
 
 		return computerList;

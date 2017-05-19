@@ -1,39 +1,39 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
 
 import dto.CompanyDTO;
 import exception.DTOException;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
-import persistance.MySQLConnectionSingleton;
+import persistance.ConnectionSingleton;
 
 import static dao.DaoUtils.*;
 
 public class CompanyDao {
 	public static final String COMPANY_TABLE_NAME = "company";
-	Connection connect;
 
-	public CompanyDao() {
-		connect = MySQLConnectionSingleton.getInstance().getConnection();
+	public CompanyDao() throws DTOException {
+
 	}
 
 	/**
 	 * find company with specific id.
 	 * @param id for company to find
 	 * @return CompanyEntity
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 
 	public CompanyEntity find(int id) throws DTOException {
 		// TODO Auto-generated method stub
+
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		CompanyEntity companyModel = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -55,6 +55,11 @@ public class CompanyDao {
 
 		} finally {
 			close(preparedStatement, resultSet, null);
+			try {
+				connect.close();
+			} catch (SQLException e) {
+				throw new DTOException(e.getMessage());
+			}
 		}
 
 	}
@@ -82,11 +87,12 @@ public class CompanyDao {
 	/**
 	 * get all company from company table.
 	 * @return list of companies
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 
 	public List<CompanyEntity> getAll() throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ArrayList<CompanyEntity> companyList = new ArrayList<>();
 		ResultSet resultSet = null;
 		Statement statement = null;

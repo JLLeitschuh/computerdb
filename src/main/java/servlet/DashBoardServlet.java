@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -30,9 +31,10 @@ public class DashBoardServlet extends HttpServlet {
 	Logger logger;
 
 	/**
+	 * @throws DTOException 
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DashBoardServlet() {
+	public DashBoardServlet() throws DTOException {
 		super();
 		computerService = new ComputerService();
 		this.pageComputer = new Page<ComputerDTO>();
@@ -120,13 +122,12 @@ public class DashBoardServlet extends HttpServlet {
 
 		String[] selectedComputers = request.getParameter("selection").split(",");
 
-		for (String deleteComputer : selectedComputers) {
 			try {
-				computerService.deleteComputer(deleteComputer);
+				computerService.deleteComputer(selectedComputers);
 			} catch (DTOException e) {
 
 			}
-		}
+		
 		doGet(request, response);
 	}
 

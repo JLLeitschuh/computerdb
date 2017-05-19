@@ -22,8 +22,9 @@ public class ComputerService {
 
 	/**
 	 * constructor.
+	 * @throws DTOException 
 	 */
-	public ComputerService() {
+	public ComputerService() throws DTOException {
 		// PropertyConfigurator.configure("/main/resources/log4j.properties");
 		logger = LoggerFactory.getLogger(getClass());
 		companyService = new CompanyService();
@@ -115,11 +116,9 @@ public class ComputerService {
 	 * @param strId .
 	 * @throws DTOException 
 	 */
-	public void deleteComputer(String strId) throws DTOException {
-
-		int id = Integer.parseInt(strId);
-		computerDao.delete(id);
-
+	public void deleteComputer(String[] computerIdString) throws DTOException {
+		
+		computerDao.deleteComputers(computerIdString);
 	}
 
 }

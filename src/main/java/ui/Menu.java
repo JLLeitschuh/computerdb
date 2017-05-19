@@ -7,7 +7,7 @@ import com.mysql.jdbc.StringUtils;
 
 import exception.DTOException;
 import model.ComputerEntity;
-import persistance.MySQLConnectionSingleton;
+import persistance.ConnectionSingleton;
 import persistance.Query;
 import service.CompanyService;
 import service.ComputerService;
@@ -20,8 +20,9 @@ public class Menu {
 
 	/**
 	 * constructor.
+	 * @throws DTOException 
 	 */
-	public Menu() {
+	public Menu() throws DTOException {
 		computerService = new ComputerService();
 		companyService = new CompanyService();
 		in = new Scanner(System.in);
@@ -50,7 +51,7 @@ public class Menu {
 				if (Integer.parseInt(choice) == 7) {
 					keepChoose = false;
 					try {
-						MySQLConnectionSingleton.getInstance().getConnection().close();
+						ConnectionSingleton.getInstance().getConnection().close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -114,8 +115,8 @@ public class Menu {
 
 			ComputerEntity computerModel = computerService.getComputerById(computerId);
 			if (computerModel != null) {
-
-				computerService.deleteComputer(computerId);
+				String [] computers = new String[]{computerId};
+				computerService.deleteComputer(computers);
 			} else {
 				System.out.println("This computer doesn't exist");
 			}

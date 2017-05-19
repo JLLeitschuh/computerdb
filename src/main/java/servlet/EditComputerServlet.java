@@ -33,9 +33,10 @@ public class EditComputerServlet extends HttpServlet {
 	Logger logger;
 
 	/**
+	 * @throws DTOException 
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public EditComputerServlet() {
+	public EditComputerServlet() throws DTOException {
 		super();
 		computerService = new ComputerService();
 		companyService = new CompanyService();
@@ -115,13 +116,15 @@ public class EditComputerServlet extends HttpServlet {
 
 		try {
 			boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-			if (success) {
-				this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
-			} else {
+			logger.info("success " + success);
+			if (!success) {
 				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+			} else {
+				doGet(request, response);
 			}
 		} catch (DTOException e) {
 
+			logger.error(e.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 		}
 
