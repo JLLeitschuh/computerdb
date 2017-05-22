@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
+import log.LoggerSing;
 import mapper.ComputerDTOMapper;
 import mapper.ComputerMapper;
 import model.CompanyEntity;
@@ -86,9 +88,12 @@ public class AddComputerServlet extends HttpServlet {
 
 		try {
 			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-			doGet(request,response);
+			doGet(request, response);
 		} catch (DTOException e) {
-			// TODO Auto-generated catch block
+			LoggerSing.getLog().logError(e.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+		} catch (NullPointerException e) {
+			LoggerSing.getLog().logError(e.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 		}
 

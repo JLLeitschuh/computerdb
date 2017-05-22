@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exception.DTOException;
+import log.LoggerSing;
 import mapper.ComputerMapper;
 import model.ComputerEntity;
 import persistance.ConnectionSingleton;
@@ -307,32 +308,31 @@ public class ComputerDao {
 		ResultSet resultSet = null;
 
 		try {
-			StringBuilder query = new StringBuilder("SELECT * FROM " + COMPUTER_TABLE_NAME);
+			StringBuilder query = new StringBuilder("SELECT * FROM " + COMPUTER_TABLE_NAME + " cmp LEFT JOIN "
+					+ CompanyDao.COMPANY_TABLE_NAME + " cmpy ON cmpy.id = cmp.company_id ");
 			if (researchString != null) {
-				query.append(" WHERE name like ?");
+				query.append(" WHERE cmp.name like ?");
 			}
 			if (orderby != null) {
-				query.append(" OrderBy ?");
-				;
+				query.append(" Order By " + orderby);
+
 			}
 			query.append(" Limit ?,? ");
 
+			LoggerSing.getLog().logInfo(query.toString());
+
 			preparedStatement = (PreparedStatement) connect.prepareStatement(query.toString());
 
+			// Check if researching exist to set parameter on the right order
 			if (researchString != null) {
 				preparedStatement.setString(1, "%" + researchString + "%");
 				preparedStatement.setInt(2, start);
 				preparedStatement.setInt(3, offset);
-				if (orderby != null) {
-					preparedStatement.setString(4, orderby);
-				}
 
 			} else {
 				preparedStatement.setInt(1, start);
 				preparedStatement.setInt(2, offset);
-				if (orderby != null) {
-					preparedStatement.setString(3, orderby);
-				}
+
 			}
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {

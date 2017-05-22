@@ -87,15 +87,16 @@ public class ComputerService {
 	 * @param itemPerPage .
 	 * @param researchString .
 	 * @return List of computerDTO corresponding to page "pageNumber"
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString,String orderBy) throws DTOException {
+	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString, String orderBy)
+			throws DTOException {
 
 		List<ComputerEntity> computerEntities = null;
 		if (itemPerPage == null) {
-			computerEntities = computerDao.getComputers(start, 10, researchString,orderBy);
+			computerEntities = computerDao.getComputers(start, 10, researchString, orderBy);
 		} else if (StringUtils.isNumeric(itemPerPage)) {
-			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString,orderBy);
+			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString, orderBy);
 		}
 		return computerEntities;
 	}
@@ -104,7 +105,7 @@ public class ComputerService {
 	 * get total item of table.
 	 * @param researchString .
 	 * @return integer
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public int getTotalItem(String researchString) throws DTOException {
 
@@ -117,7 +118,7 @@ public class ComputerService {
 	 * @throws DTOException 
 	 */
 	public void deleteComputer(String[] computerIdString) throws DTOException {
-		
+
 		computerDao.deleteComputers(computerIdString);
 	}
 

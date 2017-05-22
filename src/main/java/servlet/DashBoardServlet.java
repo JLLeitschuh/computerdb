@@ -19,6 +19,7 @@ import mapper.ComputerDTOMapper;
 import model.ComputerEntity;
 import service.ComputerService;
 import ui.Page;
+import static log.LoggerSing.getLog;
 
 /**
  * Servlet implementation class DashBoardServlet.
@@ -54,6 +55,7 @@ public class DashBoardServlet extends HttpServlet {
 		String searchString = request.getParameter("search");
 		String page = request.getParameter("page");
 		String itemNumber = request.getParameter("item_number");
+		String orderBy = request.getParameter("orderby");
 
 		logger.info("GET " + pageComputer.getCurrentPage());
 
@@ -62,8 +64,8 @@ public class DashBoardServlet extends HttpServlet {
 		try {
 			pageComputer.setNumberTotalItems(computerService.getTotalItem(searchString));
 		} catch (DTOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			logger.error(e.getMessage());
 		}
 
 		logger.info("TotalItems " + pageComputer.getNumberTotalItems());
@@ -87,28 +89,30 @@ public class DashBoardServlet extends HttpServlet {
 			start = (pageComputer.getCurrentPage() - 1) * 10;
 		}
 
-		logger.info("NumberPage " + pageComputer.getNumberPage());
+		getLog().logInfo("OrderBy " + orderBy);
 
 		List<ComputerEntity> computerList = null;
 		try {
-			computerList = computerService.getComputers(start, itemNumber, searchString, null);
+			computerList = computerService.getComputers(start, itemNumber, searchString, orderBy);
+			if (computerList == null || pageComputer.getCurrentPage() < 0
+					|| (pageComputer.getCurrentPage() > pageComputer.getNumberPage())) {
+				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+			} else {
+
+				pageComputer.setItems(ComputerDTOMapper.createComputerDTOList(computerList));
+				request.setAttribute("search", searchString);
+				request.setAttribute("page", pageComputer);
+				request.setAttribute("orderby", orderBy);
+				request.setAttribute("item_number", itemNumber);
+				request.setAttribute("computerList", computerList);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+			}
 		} catch (DTOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		if (computerList == null || pageComputer.getCurrentPage() < 0
-				|| (pageComputer.getCurrentPage() > pageComputer.getNumberPage())) {
+			logger.error(e.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-		} else {
-
-			pageComputer.setItems(ComputerDTOMapper.createComputerDTOList(computerList));
-			request.setAttribute("search", searchString);
-			request.setAttribute("page", pageComputer);
-			request.setAttribute("item_number", itemNumber);
-			request.setAttribute("computerList", computerList);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
 		}
+
 	}
 
 	/**
@@ -124,11 +128,13 @@ public class DashBoardServlet extends HttpServlet {
 
 		try {
 			computerService.deleteComputer(selectedComputers);
-		} catch (DTOException e) {
+			doGet(request, response);
 
+		} catch (DTOException e) {
+			logger.error(e.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 		}
 
-		doGet(request, response);
 	}
 
 }

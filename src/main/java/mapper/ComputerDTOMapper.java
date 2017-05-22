@@ -44,18 +44,22 @@ public class ComputerDTOMapper {
 	 * create computer from computerDTO.
 	 * @param computerDTO .
 	 * @return Computer
+	 * @throws NullPointerException .
 	 */
 
-	public static ComputerEntity createComputer(ComputerDTO computerDTO) {
+	public static ComputerEntity createComputer(ComputerDTO computerDTO) throws NullPointerException {
 
 		ComputerBuilder computerBuilder = ComputerEntity.computerBuilder();
 
+		if (computerDTO.getName() == null || computerDTO.getName().trim().isEmpty()) {
+			throw new NullPointerException();
+		}
 		computerBuilder.id(computerDTO.getId()).name(computerDTO.getName());
 		computerBuilder.introduced(DataMapper.convertStringToDate(computerDTO.getIntroduced()));
 		computerBuilder.discontinued(DataMapper.convertStringToDate(computerDTO.getDiscontinued()));
-		
+
 		if (computerDTO.getCompanyName() != null && computerDTO.getCompanyId() > 0) {
-			
+
 			computerBuilder.company(new CompanyEntity(computerDTO.getCompanyId(), computerDTO.getCompanyName()));
 		}
 

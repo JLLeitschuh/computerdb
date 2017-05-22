@@ -33,7 +33,7 @@ public class EditComputerServlet extends HttpServlet {
 	Logger logger;
 
 	/**
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public EditComputerServlet() throws DTOException {
@@ -48,6 +48,8 @@ public class EditComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 * @param request .
 	 * @param response .
+	 * @throws ServletException .
+	 * @throws IOException .
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -56,9 +58,9 @@ public class EditComputerServlet extends HttpServlet {
 		ComputerDTO computer = null;
 		try {
 			computer = ComputerDTOMapper.createComputerDTO(computerService.getComputerById(computerId));
-		} catch (DTOException e1) {
+		} catch (DTOException e) {
 
-			e1.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		request.setAttribute("computerId", computerId);
@@ -69,12 +71,14 @@ public class EditComputerServlet extends HttpServlet {
 		} else {
 			try {
 				request.setAttribute("companyList", companyService.getCompanies());
+				request.setAttribute("computer", computer);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/editComputer.jsp").forward(request, response);
 			} catch (DTOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				logger.error(e.getMessage());
+				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 			}
-			request.setAttribute("computer", computer);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/editComputer.jsp").forward(request, response);
+
 		}
 	}
 
@@ -82,6 +86,8 @@ public class EditComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 * @param request .
 	 * @param response .
+	 * @throws ServletException .
+	 * @throws IOException .
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -106,8 +112,7 @@ public class EditComputerServlet extends HttpServlet {
 		try {
 			company = companyService.findCompanyById(companyId);
 		} catch (DTOException e) {
-
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		if (company != null) {
 			computerDTOBuilder.companyId(company.getId());
@@ -124,6 +129,9 @@ public class EditComputerServlet extends HttpServlet {
 			}
 		} catch (DTOException e) {
 
+			logger.error(e.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+		} catch (NullPointerException e) {
 			logger.error(e.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 		}

@@ -1,8 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags"%>
 <%@ attribute name="page" required="true" type="Object"
 	description="Pagination last display page"%>
 <%@ attribute name="search" required="true" type="java.lang.String"
 	description="search page"%>
+<%@ attribute name="item_number" required="true" type="java.lang.String"
+	description="number Of Item"%>
+<%@ attribute name="orderBy" required="true" type="java.lang.String"
+	description="sort by parameter name"%>
 
 <ul class="pagination">
 
@@ -23,6 +28,9 @@
 					<c:if test ="${not empty item_number}">
                <c:param name="item_number" value="${item_number}"/>
 					</c:if>
+						<c:if test ="${not empty orderby}">
+               <c:param name="orderby" value="${orderby}"/>
+					</c:if>
         						 </c:url>"
 		aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 	</a></li>
@@ -30,65 +38,29 @@
 		<c:choose>
 			<c:when test="${ page.numberPage  <= 6  }">
 				<c:forEach var="i" begin="1" end="${page.numberPage }">
-					<li><a
-						href="<c:url value="/dashboard">
-               <c:param name="page" value="${i}"/>
-               <c:if test ="${not empty search}">
-               <c:param name="search" value="${search}"/>
-					</c:if>
-					<c:if test ="${not empty item_number}">
-               <c:param name="item_number" value="${item_number}"/>
-					</c:if>
-        						 </c:url>"
-						onclick="">${i}</a></li>
+					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
+						itemNumber="${item_number}" />
 				</c:forEach>
 			</c:when>
 			<c:when
 				test="${ page.currentPage > 3  &&   page.currentPage +3 < page.numberPage }">
 				<c:forEach var="i" begin="${page.currentPage -2}"
 					end="${page.currentPage + 3 }">
-					<li><a
-						href="<c:url value="/dashboard">
-               <c:param name="page" value="${i}"/>
-               <c:if test ="${not empty search}">
-               <c:param name="search" value="${search}"/>
-					</c:if>
-					<c:if test ="${not empty item_number}">
-               <c:param name="item_number" value="${item_number}"/>
-					</c:if>
-        						 </c:url>"
-						onclick="">${i}</a></li>
+					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
+						itemNumber="${item_number}" />
 				</c:forEach>
 			</c:when>
 			<c:when test="${ page.currentPage  <= 3 }">
 				<c:forEach var="i" begin="1" end="6">
-					<li><a
-						href="<c:url value="/dashboard">
-               <c:param name="page" value="${i}"/>
-               <c:if test ="${not empty search}">
-               <c:param name="search" value="${search}"/>
-					</c:if>
-					<c:if test ="${not empty item_number}">
-               <c:param name="item_number" value="${item_number}"/>
-					</c:if>
-        						 </c:url>"
-						onclick="">${i}</a></li>
+					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
+						itemNumber="${item_number}" />
 				</c:forEach>
 			</c:when>
 			<c:when test="${ page.currentPage + 3 >= page.numberPage }">
 				<c:forEach var="i" begin="${page.numberPage-6}"
 					end="${page.numberPage }">
-					<li><a
-						href="<c:url value="/dashboard">
-               <c:param name="page" value="${i}"/>
-               <c:if test ="${not empty search}">
-               <c:param name="search" value="${search}"/>
-					</c:if>
-					<c:if test ="${not empty item_number}">
-               <c:param name="item_number" value="${item_number}"/>
-					</c:if>
-        						 </c:url>"
-						onclick="">${i}</a></li>
+					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
+						itemNumber="${item_number}" />
 				</c:forEach>
 			</c:when>
 		</c:choose>
@@ -109,6 +81,9 @@
 					</c:if>
 						<c:if test ="${not empty item_number}">
                <c:param name="item_number" value="${item_number}"/>
+					</c:if>
+					<c:if test ="${not empty orderby}">
+               <c:param name="orderby" value="${orderby}"/>
 					</c:if>
         						 </c:url>"
 		aria-label="Next"> <span aria-hidden="true">&raquo;</span>
