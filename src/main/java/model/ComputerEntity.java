@@ -24,6 +24,10 @@ public class ComputerEntity {
 		this.companyEntity = computerBuilder.company;
 	}
 
+	/**
+	 * return computer Builder.
+	 * @return Builder .
+	 */
 	public static ComputerBuilder computerBuilder() {
 
 		return new ComputerBuilder();

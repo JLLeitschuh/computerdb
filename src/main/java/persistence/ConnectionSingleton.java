@@ -1,7 +1,6 @@
 package persistence;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -13,7 +12,7 @@ import exception.DTOException;
 
 public class ConnectionSingleton {
 
-	private final static String DB_PROPERTIES = "/db.properties";
+	private static final String DB_PROPERTIES = "/db.properties";
 
 	// generate singleton which is loaded at the begining
 	private static ConnectionSingleton instance = new ConnectionSingleton();

@@ -1,7 +1,5 @@
 package persistence.dao;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -212,6 +210,13 @@ public class ComputerDao {
 
 	}
 
+	/**
+	 * delete item list and rollback if something went wrong.
+	 * @param idComputerList .
+	 * @param connect .
+	 * @param preparedStatement .
+	 * @throws DTOException .
+	 */
 	public void delete(String[] idComputerList, Connection connect, PreparedStatement preparedStatement)
 			throws DTOException {
 
@@ -226,7 +231,7 @@ public class ComputerDao {
 			connect.commit();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			// rollback if something went wrong
 			rollback(connect);
 			throw new DTOException(e.getMessage());
 		}
@@ -236,7 +241,7 @@ public class ComputerDao {
 	 * get number of item into computer db.
 	 * @param research .
 	 * @return item count into computer table
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public int getCount(String research) throws DTOException {
 
@@ -300,6 +305,8 @@ public class ComputerDao {
 	 * @param start .
 	 * @param offset .
 	 * @param researchString .
+	 * @param orderby .
+	 * @param order .
 	 * @return list of computer between begin and end
 	 * @throws DTOException .
 	 */

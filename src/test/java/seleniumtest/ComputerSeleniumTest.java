@@ -83,6 +83,11 @@ public class ComputerSeleniumTest {
 
 	}
 
+	/**
+	 * edit computer test.
+	 * @param timeStamp .
+	 * @throws Exception .
+	 */
 	public void testEditComputerSelenium(long timeStamp) throws Exception {
 
 		driver.get(baseUrl + "/computerdatabase/dashboard");
@@ -91,10 +96,12 @@ public class ComputerSeleniumTest {
 		driver.findElement(By.id("searchbox")).sendKeys("Test Selenium" + timeStamp);
 		driver.findElement(By.id("searchsubmit")).click();
 
+		// Search element and test if element is found.
 		WebElement div = driver.findElement(By.id("homeTitle"));
 		int numberComputerFound = Integer.parseInt(div.getText().replaceAll("\\D+", ""));
 		assertEquals(numberComputerFound, 1);
 
+		// search element and edit name .
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium");
 		driver.findElement(By.id("searchsubmit")).click();
@@ -110,17 +117,25 @@ public class ComputerSeleniumTest {
 		div = driver.findElement(By.id("homeTitle"));
 		numberComputerFound = Integer.parseInt(div.getText().replaceAll("\\D+", ""));
 
+		// Search element and test if element is found. after changing
 		assertEquals(numberComputerFound, 1);
-		
+
 		testDeleteComputerSelenium(timeStamp);
 	}
 
+	/**
+	 * test delete object.
+	 * @param timeStamp .
+	 */
 	public void testDeleteComputerSelenium(long timeStamp) {
+
 		driver.get(baseUrl + "/computerdatabase/dashboard");
 
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium" + timeStamp);
 		driver.findElement(By.id("searchsubmit")).click();
+
+		// Search object to delete and test if exists only once into database
 		WebElement div = driver.findElement(By.id("homeTitle"));
 		int numberComputerFound = Integer.parseInt(div.getText().replaceAll("\\D+", ""));
 		assertEquals(numberComputerFound, 1);
@@ -131,6 +146,7 @@ public class ComputerSeleniumTest {
 		assertTrue(
 				closeAlertAndGetItsText().matches("^Are you sure you want to delete the selected computers[\\s\\S]$"));
 
+		// Search object to test if it have been deleted
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium" + timeStamp);
 		driver.findElement(By.id("searchsubmit")).click();

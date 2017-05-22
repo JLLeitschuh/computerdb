@@ -21,6 +21,10 @@ import static persistence.dao.DaoUtils.*;
 public class CompanyDao {
 	public static final String COMPANY_TABLE_NAME = "company";
 
+	/**
+	 * DAO constructor .
+	 * @throws DTOException
+	 */
 	public CompanyDao() throws DTOException {
 
 	}

@@ -16,9 +16,7 @@ import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
 import mapper.ComputerDTOMapper;
-import mapper.ComputerMapper;
 import model.CompanyEntity;
-import model.ComputerEntity;
 import service.CompanyService;
 import service.ComputerService;
 
@@ -101,6 +99,7 @@ public class EditComputerServlet extends HttpServlet {
 		logger.info("computerId " + computerId);
 
 		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
+		// test computer Id before edit computer
 		if (computerId != null && StringUtils.isStrictlyNumeric(computerId)) {
 
 			computerDTOBuilder.id(Integer.parseInt(computerId));
@@ -109,11 +108,13 @@ public class EditComputerServlet extends HttpServlet {
 
 		CompanyEntity company = null;
 
+		// find corresponding company corresponding to company Id
 		try {
 			company = companyService.findCompanyById(companyId);
 		} catch (DTOException e) {
 			logger.error(e.getMessage());
 		}
+
 		if (company != null) {
 			computerDTOBuilder.companyId(company.getId());
 			computerDTOBuilder.companyName(company.getName());
@@ -122,6 +123,7 @@ public class EditComputerServlet extends HttpServlet {
 		try {
 			boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
 			logger.info("success " + success);
+			// test if update is successfull . If it's not, send error 500
 			if (!success) {
 				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 			} else {

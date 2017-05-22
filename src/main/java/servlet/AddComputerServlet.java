@@ -8,15 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
 import log.LoggerSing;
 import mapper.ComputerDTOMapper;
-import mapper.ComputerMapper;
+
 import model.CompanyEntity;
 import service.CompanyService;
 import service.ComputerService;
@@ -29,7 +26,7 @@ public class AddComputerServlet extends HttpServlet {
 	CompanyService companyService;
 
 	/**
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public AddComputerServlet() throws DTOException {
@@ -43,6 +40,8 @@ public class AddComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 * @param request .
 	 * @param response .
+	 *  @throws ServletException .
+	 * @throws IOException .
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -61,6 +60,8 @@ public class AddComputerServlet extends HttpServlet {
 	 * doPost.
 	 * @param request .
 	 * @param response .
+	 * @throws ServletException .
+	 * @throws IOException .
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -75,10 +76,11 @@ public class AddComputerServlet extends HttpServlet {
 
 		CompanyEntity company = null;
 
+		// look for company into database.
 		try {
 			company = companyService.findCompanyById(companyId);
 		} catch (DTOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		if (company != null) {
@@ -86,6 +88,7 @@ public class AddComputerServlet extends HttpServlet {
 			computerDTOBuilder.companyName(company.getName());
 		}
 
+		// Get computer data and insert new computer into database
 		try {
 			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
 			doGet(request, response);

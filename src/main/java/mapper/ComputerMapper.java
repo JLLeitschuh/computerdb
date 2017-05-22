@@ -15,7 +15,7 @@ public class ComputerMapper {
 	 *  create computer object from result set.
 	 * @param resultSet .
 	 * @return computer entity from result set
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public static ComputerEntity createComputer(ResultSet resultSet) throws DTOException {
 

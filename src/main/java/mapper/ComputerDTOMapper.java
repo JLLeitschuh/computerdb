@@ -51,6 +51,7 @@ public class ComputerDTOMapper {
 
 		ComputerBuilder computerBuilder = ComputerEntity.computerBuilder();
 
+
 		if (computerDTO.getName() == null || computerDTO.getName().trim().isEmpty()) {
 			throw new NullPointerException();
 		}

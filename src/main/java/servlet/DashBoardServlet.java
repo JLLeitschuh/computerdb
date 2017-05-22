@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -32,7 +31,7 @@ public class DashBoardServlet extends HttpServlet {
 	Logger logger;
 
 	/**
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DashBoardServlet() throws DTOException {
@@ -47,6 +46,8 @@ public class DashBoardServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 * @param request .
 	 * @param response .
+	 * @throws ServletException .
+	 * @throws IOException .
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -60,8 +61,9 @@ public class DashBoardServlet extends HttpServlet {
 
 		logger.info("GET " + pageComputer.getCurrentPage());
 
-		// get computer list with research param, if research is null all items
-		// are send by database.
+		// get computer list .If research is null return number of total item,
+		// else return list which contain only element with "search" String
+		// .
 		try {
 			pageComputer.setNumberTotalItems(computerService.getTotalItem(searchString));
 		} catch (DTOException e) {
@@ -75,13 +77,13 @@ public class DashBoardServlet extends HttpServlet {
 		if (page != null && StringUtils.isNumeric(page)) {
 			pageComputer.setCurrentPage(Integer.parseInt(page));
 		}
+		// Initiate current page to 1 for search, order by ...
 		if (page == null) {
 			pageComputer.setCurrentPage(1);
 		}
 
 		int start = 0;
-		// check if itemNumber is not null and numeric, if it's not itemNumber
-		// is 10 by default
+		// if there is no itemNumber, item per page is 10 by default.
 		if (itemNumber != null && StringUtils.isNumeric(itemNumber)) {
 			pageComputer.updateNumberPage(Integer.parseInt(itemNumber));
 			start = (pageComputer.getCurrentPage() - 1) * Integer.parseInt(itemNumber);
@@ -100,11 +102,13 @@ public class DashBoardServlet extends HttpServlet {
 		try {
 			computerList = computerService.getComputers(start, itemNumber, searchString, orderBy,
 					Integer.parseInt(order));
+			// Test not valid result
 			if (computerList == null || pageComputer.getCurrentPage() < 0
 					|| (pageComputer.getCurrentPage() > pageComputer.getNumberPage())) {
 				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 			} else {
 
+				// set all attribute and send it to the jsp
 				pageComputer.setItems(ComputerDTOMapper.createComputerDTOList(computerList));
 				request.setAttribute("search", searchString);
 				request.setAttribute("page", pageComputer);
@@ -126,11 +130,14 @@ public class DashBoardServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 * @param request .
 	 * @param response .
+	 *  @throws ServletException .
+	 * @throws IOException .
 	 */
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// delete all selected computer.
 		String[] selectedComputers = request.getParameter("selection").split(",");
 
 		try {
