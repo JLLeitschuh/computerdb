@@ -1,8 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ attribute name="search" required="true" type="java.lang.String"
 	description="search page"%>
-	<%@ attribute name="orderby" required="true" type="java.lang.String"
+<%@ attribute name="orderby" required="true" type="java.lang.String"
 	description="sort item"%>
+<%@ attribute name="order" required="true" type="java.lang.String"
+	description="sort item asc or desc"%>
 
 <div class="btn-group btn-group-sm pull-right" id="item_number"
 	role="group">
@@ -25,6 +27,7 @@
 					</c:if>
 					<c:if test ="${not empty orderby}">
                <c:param name="orderby" value="${orderby}"/>
+               <c:param name="order" value="${order}"/>
 					</c:if>
                </c:url>">
 		<button type="button" class="btn btn-default">50</button>

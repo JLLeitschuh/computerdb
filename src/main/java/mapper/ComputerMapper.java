@@ -4,13 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import dao.CompanyDao;
-import dto.ComputerDTO;
-import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
 import model.CompanyEntity;
 import model.ComputerEntity;
-import model.ComputerEntity.ComputerBuilder;
+import persistence.dao.CompanyDao;
 
 public class ComputerMapper {
 
@@ -40,6 +37,5 @@ public class ComputerMapper {
 
 		return null;
 	}
-
 
 }

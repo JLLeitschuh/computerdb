@@ -8,6 +8,8 @@
 	description="total number item"%>
 <%@ attribute name="orderby" required="true" type="java.lang.String"
 	description="sort by parameter selected"%>
+<%@ attribute name="order" required="true" type="java.lang.String"
+	description="sort by parameter selected"%>
 
 <li><a
 	href="<c:url value="/dashboard">
@@ -20,6 +22,8 @@
 					</c:if>
 								<c:if test ="${not empty orderby}">
                <c:param name="orderby" value="${orderby}"/>
-					</c:if>
+					</c:if>			
+               <c:param name="order" value="${order}"/>
+					
         						 </c:url>"
 	onclick="">${page}</a></li>

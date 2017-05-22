@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.mysql.jdbc.StringUtils;
 
-import dao.CompanyDao;
+import persistence.dao.CompanyDao;
 import dto.CompanyDTO;
 import exception.DTOException;
 import model.CompanyEntity;

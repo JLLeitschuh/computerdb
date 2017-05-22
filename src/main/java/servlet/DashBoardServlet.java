@@ -56,6 +56,7 @@ public class DashBoardServlet extends HttpServlet {
 		String page = request.getParameter("page");
 		String itemNumber = request.getParameter("item_number");
 		String orderBy = request.getParameter("orderby");
+		String order = request.getParameter("order");
 
 		logger.info("GET " + pageComputer.getCurrentPage());
 
@@ -89,11 +90,16 @@ public class DashBoardServlet extends HttpServlet {
 			start = (pageComputer.getCurrentPage() - 1) * 10;
 		}
 
-		getLog().logInfo("OrderBy " + orderBy);
+		if (order == null) {
+			order = "0";
+		}
+
+		getLog().logInfo("OrderBy " + orderBy + " order " + order);
 
 		List<ComputerEntity> computerList = null;
 		try {
-			computerList = computerService.getComputers(start, itemNumber, searchString, orderBy);
+			computerList = computerService.getComputers(start, itemNumber, searchString, orderBy,
+					Integer.parseInt(order));
 			if (computerList == null || pageComputer.getCurrentPage() < 0
 					|| (pageComputer.getCurrentPage() > pageComputer.getNumberPage())) {
 				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
@@ -103,6 +109,7 @@ public class DashBoardServlet extends HttpServlet {
 				request.setAttribute("search", searchString);
 				request.setAttribute("page", pageComputer);
 				request.setAttribute("orderby", orderBy);
+				request.setAttribute("order", order);
 				request.setAttribute("item_number", itemNumber);
 				request.setAttribute("computerList", computerList);
 				this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);

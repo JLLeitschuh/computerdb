@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dao.ComputerDao;
+import persistence.dao.ComputerDao;
 import dto.ComputerDTO;
 import exception.DTOException;
 import model.ComputerEntity;
@@ -89,14 +89,15 @@ public class ComputerService {
 	 * @return List of computerDTO corresponding to page "pageNumber"
 	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString, String orderBy)
-			throws DTOException {
+	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString, String orderBy,
+			int order) throws DTOException {
 
 		List<ComputerEntity> computerEntities = null;
 		if (itemPerPage == null) {
-			computerEntities = computerDao.getComputers(start, 10, researchString, orderBy);
+			computerEntities = computerDao.getComputers(start, 10, researchString, orderBy, order);
 		} else if (StringUtils.isNumeric(itemPerPage)) {
-			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString, orderBy);
+			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString, orderBy,
+					order);
 		}
 		return computerEntities;
 	}

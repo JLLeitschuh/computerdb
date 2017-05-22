@@ -7,8 +7,8 @@ import com.mysql.jdbc.StringUtils;
 
 import exception.DTOException;
 import model.ComputerEntity;
-import persistance.ConnectionSingleton;
-import persistance.Query;
+import persistence.ConnectionSingleton;
+import persistence.Query;
 import service.CompanyService;
 import service.ComputerService;
 

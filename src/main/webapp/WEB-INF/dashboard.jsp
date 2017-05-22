@@ -61,60 +61,21 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="cmp.name ASC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-up"></button>
-						</a> <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="cmp.name DESC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-down"></button>
-						</a>
-
+						<th>Computer name <mytag:sortby order="${order}"
+								orderby="cmp.name" />
 						</th>
-						<th>Introduced date <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="introduced ASC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-up"></button>
-						</a> <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="introduced DESC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-down"></button>
-						</a>
+						<th>Introduced date <mytag:sortby order="${order}"
+								orderby="introduced" />
 						</th>
 
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="discontinued ASC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-up"></button>
-						</a> <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="discontinued DESC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-down"></button>
-						</a>
-
+						<th>Discontinued date <mytag:sortby order="${order}"
+								orderby="discontinued" />
 						</th>
 
 						<!-- Table header for Company -->
-						<th>Company <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="cmpy.name ASC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-up"></button>
-						</a> <a
-							href="<c:url value="/dashboard">
-               				<c:param name="orderby" value="cmpy.name DESC"/>              
-        				</c:url>">
-								<button type="button" class="fa fa-sort-down"></button>
-						</a>
-
+						<th>Company <mytag:sortby order="${order}"
+								orderby="cmpy.name" />
 						</th>
 
 					</tr>
@@ -145,8 +106,8 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<mytag:pagination page="${page}" search="${search}"
-				orderBy="${orderby}" item_number="${ item_number }" />
-			<mytag:itemNumber search="${search}" orderby="${orderby}" />
+				orderBy="${orderby}" item_number="${ item_number }" order="${order}" />
+			<mytag:itemNumber search="${search}" orderby="${orderby}" order = "${order}" />
 		</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>

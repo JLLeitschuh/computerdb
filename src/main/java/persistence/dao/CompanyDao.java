@@ -1,4 +1,6 @@
-package dao;
+package persistence.dao;
+
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,9 +14,9 @@ import dto.CompanyDTO;
 import exception.DTOException;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
-import persistance.ConnectionSingleton;
+import persistence.ConnectionSingleton;
 
-import static dao.DaoUtils.*;
+import static persistence.dao.DaoUtils.*;
 
 public class CompanyDao {
 	public static final String COMPANY_TABLE_NAME = "company";

@@ -70,7 +70,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 						<input type="hidden" name="computerId" value="${computerId}" /> 
-							<input type="submit" value="Edit" class="btn btn-primary">
+							<input type="submit" id ="edit" value="Edit" class="btn btn-primary">
 							or <a href="<c:url value="/dashboard"></c:url>" class="btn btn-default">Cancel</a>
 						</div>
 					</form>

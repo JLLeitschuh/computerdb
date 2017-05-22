@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.exceptions.verification.NeverWantedButInvoked;
 
-import dao.ComputerDao;
+import persistence.dao.ComputerDao;
 import dto.ComputerDTO;
 import exception.DTOException;
 

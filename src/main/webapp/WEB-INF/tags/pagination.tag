@@ -8,6 +8,8 @@
 	description="number Of Item"%>
 <%@ attribute name="orderBy" required="true" type="java.lang.String"
 	description="sort by parameter name"%>
+<%@ attribute name="order" required="true" type="java.lang.String"
+	description="sort by parameter name"%>
 
 <ul class="pagination">
 
@@ -31,39 +33,38 @@
 						<c:if test ="${not empty orderby}">
                <c:param name="orderby" value="${orderby}"/>
 					</c:if>
+					<c:param name="order" value="${order}"/>
         						 </c:url>"
 		aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 	</a></li>
 	<c:if test="${page.currentPage > 0 && page.numberPage > 0 }">
 		<c:choose>
 			<c:when test="${ page.numberPage  <= 6  }">
-				<c:forEach var="i" begin="1" end="${page.numberPage }">
-					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
-						itemNumber="${item_number}" />
-				</c:forEach>
+				<c:set var="begin" scope="session" value="1" />
+				<c:set var="end" scope="session" value="${page.numberPage}" />
+			</c:when>
+			<c:when test="${ page.currentPage  <= 3 }">
+				<c:set var="begin" scope="session" value="1" />
+				<c:set var="end" scope="session" value="6" />
 			</c:when>
 			<c:when
 				test="${ page.currentPage > 3  &&   page.currentPage +3 < page.numberPage }">
-				<c:forEach var="i" begin="${page.currentPage -2}"
-					end="${page.currentPage + 3 }">
-					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
-						itemNumber="${item_number}" />
-				</c:forEach>
-			</c:when>
-			<c:when test="${ page.currentPage  <= 3 }">
-				<c:forEach var="i" begin="1" end="6">
-					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
-						itemNumber="${item_number}" />
-				</c:forEach>
+
+				<c:set var="begin" scope="session" value="${page.currentPage -2}" />
+				<c:set var="end" scope="session" value="${page.currentPage + 3 }" />
+
 			</c:when>
 			<c:when test="${ page.currentPage + 3 >= page.numberPage }">
-				<c:forEach var="i" begin="${page.numberPage-6}"
-					end="${page.numberPage }">
-					<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
-						itemNumber="${item_number}" />
-				</c:forEach>
+
+				<c:set var="begin" scope="session" value="${page.numberPage-6}" />
+				<c:set var="end" scope="session" value="${page.numberPage}" />
+
 			</c:when>
 		</c:choose>
+		<c:forEach var="i" begin="${begin}" end="${end }">
+			<mytag:paramtag page="${i}" search="${search}" orderby="${orderby}"
+				itemNumber="${item_number}" order = "${ order}" />
+		</c:forEach>
 	</c:if>
 	<li><a
 		href="<c:url value="/dashboard">
@@ -85,6 +86,7 @@
 					<c:if test ="${not empty orderby}">
                <c:param name="orderby" value="${orderby}"/>
 					</c:if>
+					<c:param name="order" value="${order}"/>
         						 </c:url>"
 		aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 	</a></li>

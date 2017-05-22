@@ -1,4 +1,6 @@
-package dao;
+package persistence.dao;
+
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +14,9 @@ import exception.DTOException;
 import log.LoggerSing;
 import mapper.ComputerMapper;
 import model.ComputerEntity;
-import persistance.ConnectionSingleton;
-import static dao.DaoUtils.*;
+import persistence.ConnectionSingleton;
+
+import static persistence.dao.DaoUtils.*;
 
 public class ComputerDao {
 
@@ -300,7 +303,7 @@ public class ComputerDao {
 	 * @return list of computer between begin and end
 	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers(int start, int offset, String researchString, String orderby)
+	public List<ComputerEntity> getComputers(int start, int offset, String researchString, String orderby, int order)
 			throws DTOException {
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		PreparedStatement preparedStatement = null;
@@ -315,6 +318,11 @@ public class ComputerDao {
 			}
 			if (orderby != null) {
 				query.append(" Order By " + orderby);
+				if (order == 0) {
+					query.append(" ASC ");
+				} else {
+					query.append(" DESC ");
+				}
 
 			}
 			query.append(" Limit ?,? ");
