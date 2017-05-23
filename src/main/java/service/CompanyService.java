@@ -8,6 +8,7 @@ import com.mysql.jdbc.StringUtils;
 import persistence.dao.CompanyDao;
 import dto.CompanyDTO;
 import exception.DTOException;
+import mapper.CompanyMapper;
 import model.CompanyEntity;
 
 public class CompanyService {
@@ -16,7 +17,7 @@ public class CompanyService {
 
 	/**
 	 * Company Service constructor.
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public CompanyService() throws DTOException {
 		companyDao = new CompanyDao();
@@ -26,7 +27,7 @@ public class CompanyService {
 	 * find company into db by id.
 	 * @param strId .
 	 * @return CompanyDTO corresponding to object company with id "strId"
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 
 	public CompanyEntity findCompanyById(String strId) throws DTOException {
@@ -42,7 +43,7 @@ public class CompanyService {
 	/**
 	 *  get companyDTO company list.
 	 * @return list of companyDTO corresponding to companies object into db
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public List<CompanyDTO> getCompanies() throws DTOException {
 
@@ -50,7 +51,7 @@ public class CompanyService {
 		List<CompanyEntity> companies = companyDao.getAll();
 
 		for (CompanyEntity company : companies) {
-			companyDTOs.add(companyDao.createCompanyDTO(company));
+			companyDTOs.add(CompanyMapper.createCompanyDTO(company));
 		}
 
 		return companyDTOs;

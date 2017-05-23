@@ -3,6 +3,7 @@ package mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import dto.CompanyDTO;
 import model.CompanyEntity;
 
 public class CompanyMapper {
@@ -23,5 +24,25 @@ public class CompanyMapper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * create companyDTO object from companyEntity object.
+	 * @param company company which will be map to DTO
+	 * @return CompanyDto corresponding to company parameter
+	 */
+	public static  CompanyDTO createCompanyDTO(CompanyEntity company) {
+
+		return new CompanyDTO(company.getId(), company.getName());
+	}
+
+	/**
+	 * create Company Object with companyDTO.
+	 * @param companyDTO DTO to company entity .
+	 * @return new CompanyEntity
+	 */
+	public static CompanyEntity createCompany(CompanyDTO companyDTO) {
+
+		return new CompanyEntity(companyDTO.getId(), companyDTO.getName());
 	}
 }

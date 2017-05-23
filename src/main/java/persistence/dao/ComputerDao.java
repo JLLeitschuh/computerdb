@@ -20,10 +20,6 @@ public class ComputerDao {
 
 	public static final String COMPUTER_TABLE_NAME = "computer";
 
-	public ComputerDao() throws DTOException {
-
-	}
-
 	/**
 	 * find computer with specific id.
 	 * @param id .
@@ -36,7 +32,6 @@ public class ComputerDao {
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
-		Statement statement = null;
 		ComputerEntity computer = null;
 		try {
 
@@ -53,7 +48,7 @@ public class ComputerDao {
 			// TODO Auto-generated catch block
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, resultSet, statement);
+			close(preparedStatement, resultSet, null);
 			closeConnection(connect);
 		}
 		return computer;
@@ -79,6 +74,7 @@ public class ComputerDao {
 		List<String> idComputerList = new ArrayList<String>();
 		try {
 
+			// Select all computer which attach to the company id.
 			preparedStatement = (PreparedStatement) connect
 					.prepareStatement("Select *  FROM " + COMPUTER_TABLE_NAME + " WHERE companyid =?");
 			preparedStatement.setInt(1, companyId);
@@ -87,8 +83,11 @@ public class ComputerDao {
 				idComputerList.add(resultSet.getString(1));
 			}
 
+			// delete all computer, if something went wrong a rollback is done
+			// and delete method throw a DTOException.
 			delete(idComputerList.toArray(new String[0]), connect, preparedStatement);
 
+			// delete company if everything is ok
 			preparedStatement = (PreparedStatement) connect
 					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE companyid =?");
 			preparedStatement.setInt(1, companyId);
@@ -98,6 +97,9 @@ public class ComputerDao {
 		} catch (SQLException e) {
 			rollback(connect);
 			throw new DTOException(e.getMessage());
+		} catch (DTOException dtoException) {
+			rollback(connect);
+			throw new DTOException(dtoException.getMessage());
 		} finally {
 
 			close(preparedStatement, resultSet, null);
@@ -132,7 +134,7 @@ public class ComputerDao {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			throw new DTOException(e.getMessage());
 
 		} finally {
@@ -173,7 +175,7 @@ public class ComputerDao {
 			return count > 0 ? true : false;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, null, null);
@@ -202,8 +204,11 @@ public class ComputerDao {
 		}
 		try {
 			delete(idComputerList, connect, preparedStatement);
+			connect.commit();
+		} catch (SQLException e) {
+			rollback(connect);
+			new DTOException(e.getMessage());
 		} finally {
-
 			closeConnection(connect);
 
 		}
@@ -211,13 +216,13 @@ public class ComputerDao {
 	}
 
 	/**
-	 * delete item list and rollback if something went wrong.
+	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly
 	 * @param idComputerList .
 	 * @param connect .
 	 * @param preparedStatement .
 	 * @throws DTOException .
 	 */
-	public void delete(String[] idComputerList, Connection connect, PreparedStatement preparedStatement)
+	private void delete(String[] idComputerList, Connection connect, PreparedStatement preparedStatement)
 			throws DTOException {
 
 		try {
@@ -228,17 +233,15 @@ public class ComputerDao {
 				preparedStatement.setString(1, id);
 				preparedStatement.executeUpdate();
 			}
-			connect.commit();
 
 		} catch (SQLException e) {
-			// rollback if something went wrong
-			rollback(connect);
+
 			throw new DTOException(e.getMessage());
 		}
 	}
 
 	/**
-	 * get number of item into computer db.
+	 * get number verything okof item into computer db.
 	 * @param research .
 	 * @return item count into computer table
 	 * @throws DTOException .

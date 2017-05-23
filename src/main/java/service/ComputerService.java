@@ -10,7 +10,7 @@ import persistence.dao.ComputerDao;
 import dto.ComputerDTO;
 import exception.DTOException;
 import model.ComputerEntity;
-import ui.Page;
+
 
 public class ComputerService {
 
@@ -22,7 +22,7 @@ public class ComputerService {
 
 	/**
 	 * constructor.
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public ComputerService() throws DTOException {
 		// PropertyConfigurator.configure("/main/resources/log4j.properties");
@@ -35,7 +35,7 @@ public class ComputerService {
 	/**
 	 * insert new computer into db.
 	 * @param computerEntity .
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public void insertComputer(ComputerEntity computerEntity) throws DTOException {
 
@@ -46,7 +46,7 @@ public class ComputerService {
 	 * get computer by id.
 	 * @param strId .
 	 * @return ComputerDTO corresponding to computer object with id strId
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public ComputerEntity getComputerById(String strId) throws DTOException {
 
@@ -62,7 +62,7 @@ public class ComputerService {
 	 * update computer into db.
 	 * @param computerEntity .
 	 * @return Computer which been update
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public boolean update(ComputerEntity computerEntity) throws DTOException {
 
@@ -73,7 +73,7 @@ public class ComputerService {
 	/**
 	 * get Computers list.
 	 * @return list of computerDTO
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public List<ComputerEntity> getComputers() throws DTOException {
 
@@ -86,6 +86,8 @@ public class ComputerService {
 	 * @param start .
 	 * @param itemPerPage .
 	 * @param researchString .
+	 * @param orderBy .
+	 * @param order .
 	 * @return List of computerDTO corresponding to page "pageNumber"
 	 * @throws DTOException .
 	 */
@@ -93,6 +95,7 @@ public class ComputerService {
 			int order) throws DTOException {
 
 		List<ComputerEntity> computerEntities = null;
+		// if itemPerPage is not define, value is 10.
 		if (itemPerPage == null) {
 			computerEntities = computerDao.getComputers(start, 10, researchString, orderBy, order);
 		} else if (StringUtils.isNumeric(itemPerPage)) {
@@ -115,8 +118,8 @@ public class ComputerService {
 
 	/**
 	 * delete computer with id strId.
-	 * @param strId .
-	 * @throws DTOException 
+	 * @param computerIdString .
+	 * @throws DTOException .
 	 */
 	public void deleteComputer(String[] computerIdString) throws DTOException {
 

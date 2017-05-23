@@ -23,7 +23,7 @@ public class CompanyDao {
 
 	/**
 	 * DAO constructor .
-	 * @throws DTOException
+	 * @throws DTOException .
 	 */
 	public CompanyDao() throws DTOException {
 
@@ -71,26 +71,6 @@ public class CompanyDao {
 	}
 
 	/**
-	 * create companyDTO object from companyEntity object.
-	 * @param company company which will be map to DTO
-	 * @return CompanyDto corresponding to company parameter
-	 */
-	public CompanyDTO createCompanyDTO(CompanyEntity company) {
-
-		return new CompanyDTO(company.getId(), company.getName());
-	}
-
-	/**
-	 * create Company Object with companyDTO.
-	 * @param companyDTO DTO to company entity .
-	 * @return new CompanyEntity
-	 */
-	public CompanyEntity createCompany(CompanyDTO companyDTO) {
-
-		return new CompanyEntity(companyDTO.getId(), companyDTO.getName());
-	}
-
-	/**
 	 * get all company from company table.
 	 * @return list of companies
 	 * @throws DTOException .
@@ -118,6 +98,7 @@ public class CompanyDao {
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(null, resultSet, statement);
+			closeConnection(connect);
 		}
 
 	}
