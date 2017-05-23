@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.mysql.jdbc.StringUtils;
 
 import exception.DTOException;
+import model.CompanyEntity;
 import model.ComputerEntity;
 import persistence.ConnectionSingleton;
 import persistence.Query;
@@ -44,11 +45,12 @@ public class Menu {
 			System.out.println("Update existing computer write 4 ");
 			System.out.println("Display one Computer write 5 ");
 			System.out.println("Delete  Computer write 6 ");
-			System.out.println("Write 7 to quit ");
+			System.out.println("Delete  Company write 7 ");
+			System.out.println("Write 8 to quit ");
 			String choice = in.nextLine();
 
 			if (StringUtils.isStrictlyNumeric(choice)) {
-				if (Integer.parseInt(choice) == 7) {
+				if (Integer.parseInt(choice) == 8) {
 					keepChoose = false;
 					try {
 						ConnectionSingleton.getInstance().getConnection().close();
@@ -94,6 +96,9 @@ public class Menu {
 		case Query.DELETECOMPUTERBYID:
 			deleteComputerById();
 			break;
+		case Query.DELETECOMPANYBYID:
+			deleteCompanyById();
+			break;
 
 		default:
 			System.out.println("Choice must be between 1 and 6, try again");
@@ -115,7 +120,7 @@ public class Menu {
 
 			ComputerEntity computerModel = computerService.getComputerById(computerId);
 			if (computerModel != null) {
-				String [] computers = new String[]{computerId};
+				String[] computers = new String[] { computerId };
 				computerService.deleteComputer(computers);
 			} else {
 				System.out.println("This computer doesn't exist");
@@ -126,8 +131,30 @@ public class Menu {
 	}
 
 	/**
+	 * delete company from computer table.
+	 * @throws DTOException .
+	 */
+	public void deleteCompanyById() throws DTOException {
+
+		System.out.println("Delete company with id :");
+		String companyId = in.nextLine();
+
+		if (StringUtils.isStrictlyNumeric(companyId)) {
+
+			CompanyEntity company = companyService.findCompanyById(companyId);
+			if (company != null) {
+				computerService.deleteCompany(companyId);
+			} else {
+				System.out.println("This computer doesn't exist");
+			}
+
+		}
+
+	}
+
+	/**
 	 * display Computer with specific id.
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public void displayComputerById() throws DTOException {
 

@@ -76,7 +76,7 @@ public class ComputerDao {
 
 			// Select all computer which attach to the company id.
 			preparedStatement = (PreparedStatement) connect
-					.prepareStatement("Select *  FROM " + COMPUTER_TABLE_NAME + " WHERE companyid =?");
+					.prepareStatement("Select *  FROM " + COMPUTER_TABLE_NAME + " WHERE company_id =?");
 			preparedStatement.setInt(1, companyId);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -89,7 +89,7 @@ public class ComputerDao {
 
 			// delete company if everything is ok
 			preparedStatement = (PreparedStatement) connect
-					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE companyid =?");
+					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
 			preparedStatement.setInt(1, companyId);
 			preparedStatement.executeUpdate();
 			connect.commit();
