@@ -11,7 +11,6 @@ import dto.ComputerDTO;
 import exception.DTOException;
 import model.ComputerEntity;
 
-
 public class ComputerService {
 
 	ComputerDao computerDao;
@@ -124,6 +123,16 @@ public class ComputerService {
 	public void deleteComputer(String[] computerIdString) throws DTOException {
 
 		computerDao.deleteComputers(computerIdString);
+	}
+
+	/**
+	 * delete company with id strId.
+	 * @param companyId .
+	 * @throws DTOException .
+	 */
+	public void deleteCompany(String companyId) throws DTOException {
+
+		computerDao.deleteCompanyCascade(Integer.parseInt(companyId));
 	}
 
 }

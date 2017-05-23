@@ -8,5 +8,6 @@ public class Query {
 	public static final int UPDATECOMPUTER = 4;
 	public static final int DISPLAYCOMPUTERBYID = 5;
 	public static final int DELETECOMPUTERBYID = 6;
+	public static final int DELETECOMPANYBYID = 7;
 
 }
