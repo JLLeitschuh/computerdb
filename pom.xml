@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>computerdatabase</groupId>
 	<artifactId>computerdatabase</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<properties>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
