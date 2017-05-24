@@ -141,13 +141,7 @@ public class Menu {
 
 		if (StringUtils.isStrictlyNumeric(companyId)) {
 
-			CompanyEntity company = companyService.findCompanyById(companyId);
-			if (company != null) {
-				computerService.deleteComputerFromCompany(companyId);
-				companyService.deleteCompanyId(companyId);
-			} else {
-				System.out.println("This computer doesn't exist");
-			}
+			companyService.deleteCompanyId(companyId);
 
 		}
 

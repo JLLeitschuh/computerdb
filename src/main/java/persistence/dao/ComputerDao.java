@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exception.DTOException;
-import log.LoggerSing;
+import static log.LoggerSing.*;
 import mapper.ComputerMapper;
 import model.ComputerEntity;
 import persistence.ConnectionSingleton;
@@ -47,7 +47,7 @@ public class ComputerDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, resultSet, null);
@@ -56,6 +56,12 @@ public class ComputerDao {
 		return computer;
 	}
 
+	/**
+	 * get Computer list corresponding to company Id.
+	 * @param companyId .
+	 * @return computer list .
+	 * @throws DTOException .
+	 */
 	public List<String> getComputerFromCompany(int companyId) throws DTOException {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
@@ -76,12 +82,11 @@ public class ComputerDao {
 			return idComputerList;
 
 		} catch (SQLException e) {
-
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
-		} 
+		}
 
 	}
-
 
 	/**
 	 * create new computer into computer table.
@@ -108,7 +113,7 @@ public class ComputerDao {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 
 		} finally {
@@ -149,7 +154,7 @@ public class ComputerDao {
 			return count > 0 ? true : false;
 
 		} catch (SQLException e) {
-
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, null, null);
@@ -167,38 +172,19 @@ public class ComputerDao {
 	 * @param idComputerList .
 	 * @throws DTOException .
 	 */
-	public void deleteComputers(String[] idComputerList) throws DTOException {
+	public void deleteComputers(String[] idComputerList,Connection connect) throws DTOException {
 
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
-
-		try {
-			connect.setAutoCommit(false);
-		} catch (SQLException e) {
-
-			throw new DTOException(e.getMessage());
-		}
-
-		try {
-			delete(idComputerList, connect);
-			connect.commit();
-		} catch (SQLException e) {
-			rollback(connect);
-			new DTOException(e.getMessage());
-		} finally {
-			closeConnection(connect);
-
-		}
+			delete(idComputerList, connect);		
 
 	}
 
 	/**
-	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly
+	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly.
+	 * @param connect .
 	 * @param idComputerList .
-	 * @param preparedStatement .
 	 * @throws DTOException .
 	 */
-	private void delete(String[] idComputerList,Connection connect)
-			throws DTOException {
+	private void delete(String[] idComputerList, Connection connect) throws DTOException {
 
 		try {
 
@@ -209,7 +195,7 @@ public class ComputerDao {
 				preparedStatement.executeUpdate();
 			}
 		} catch (SQLException e) {
-
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 		}
 	}
@@ -239,6 +225,7 @@ public class ComputerDao {
 			resultSet.first();
 			return resultSet.getInt(1);
 		} catch (SQLException e) {
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(preparedStatement, resultSet, null);
@@ -268,7 +255,7 @@ public class ComputerDao {
 				computerList.add(computerEntity);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			closeConnection(connect);
@@ -311,7 +298,7 @@ public class ComputerDao {
 			}
 			query.append(" Limit ?,? ");
 
-			LoggerSing.getLog().logInfo(query.toString());
+			getLog().logInfo(query.toString());
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement(query.toString());
 
@@ -332,6 +319,7 @@ public class ComputerDao {
 				computerList.add(computerEntity);
 			}
 		} catch (SQLException e) {
+			getLog().logError(e.toString());
 			throw new DTOException(e.getMessage());
 
 		} finally {

@@ -14,6 +14,7 @@ import mapper.CompanyMapper;
 import model.CompanyEntity;
 import model.ComputerEntity;
 import persistence.ConnectionSingleton;
+import static log.LoggerSing.*;
 
 import static persistence.dao.DaoUtils.*;
 
@@ -55,7 +56,7 @@ public class CompanyDao {
 			}
 			return companyModel;
 		} catch (SQLException e) {
-
+			getLog().logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 
 		} finally {
@@ -63,6 +64,7 @@ public class CompanyDao {
 			try {
 				connect.close();
 			} catch (SQLException e) {
+				getLog().logError(e.getMessage());
 				throw new DTOException(e.getMessage());
 			}
 		}
@@ -93,7 +95,7 @@ public class CompanyDao {
 			}
 			return companyList;
 		} catch (SQLException e) {
-
+			getLog().logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(null, resultSet, statement);
@@ -102,30 +104,26 @@ public class CompanyDao {
 
 	}
 
-	public void deleteCompanyId(int companyId) throws DTOException {
+	/**
+	 * delete Company with id "companyId".
+	 * @param companyId .
+	 * @throws DTOException .
+	 */
 
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
+	public void deleteCompanyId(int companyId, Connection connect) throws DTOException {
+
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 
-		try {
-			connect.setAutoCommit(false);
-		} catch (SQLException e1) {
-			throw new DTOException(e1.getMessage());
-
-		}
 		try {
 			preparedStatement = (PreparedStatement) connect
 					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
 			preparedStatement.setInt(1, companyId);
 			preparedStatement.executeUpdate();
-			connect.commit();
 
 		} catch (SQLException e) {
-
+			getLog().logError(e.getMessage());
 			throw new DTOException(e.getMessage());
-		} finally {
-			close(preparedStatement, resultSet, null);
 		}
 
 	}

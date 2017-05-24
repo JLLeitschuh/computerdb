@@ -1,7 +1,6 @@
 package service;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -125,22 +124,15 @@ public class ComputerService {
 	 * @throws DTOException .
 	 */
 	public void deleteComputer(String[] computerIdString) throws DTOException {
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
+		try{
+			computerDao.deleteComputers(computerIdString, connect);
+		}catch(DTOException e){
+			
+		}finally{
+			
+		}
 
-			computerDao.deleteComputers(computerIdString);
-
-	}
-
-	/**
-	 * delete company with id strId.
-	 * @param companyId .
-	 * @throws DTOException .
-	 */
-	public void deleteComputerFromCompany(String companyId) throws DTOException {
-
-		
-		List<String> computerIdList = computerDao.getComputerFromCompany(Integer.parseInt(companyId));
-		computerDao.deleteComputers(computerIdList.toArray(new String[0]));
-		
 	}
 
 }
