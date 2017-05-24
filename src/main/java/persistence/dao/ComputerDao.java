@@ -30,10 +30,10 @@ public class ComputerDao {
 
 	private static final ComputerDao COMPUTER_DAO = new ComputerDao();
 
-	private ComputerDao(){
-		
+	private ComputerDao() {
+
 	}
-	
+
 	public static ComputerDao getComputerDao() {
 		return COMPUTER_DAO;
 
@@ -192,6 +192,27 @@ public class ComputerDao {
 
 		delete(idComputerList, connect);
 
+	}
+
+	/**
+	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly.
+	 * @param connect .
+	 * @param companyId .
+	 * @throws DTOException .
+	 */
+	public void deleteComputerFromCompany(int companyId, Connection connect) throws DTOException {
+
+		try {
+
+			PreparedStatement preparedStatement = (PreparedStatement) connect
+					.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE company_id =?");
+			preparedStatement.setInt(1, companyId);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.logError(e.toString());
+			throw new DTOException(e.getMessage());
+		}
 	}
 
 	/**

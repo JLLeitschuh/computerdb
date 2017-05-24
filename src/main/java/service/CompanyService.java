@@ -1,6 +1,5 @@
 package service;
 
-import java.io.Closeable;
 import static persistence.dao.DaoUtils.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,12 +30,12 @@ public class CompanyService {
 	 * Company Service constructor.
 	 * @throws DTOException .
 	 */
-	private CompanyService(){
+	private CompanyService() {
 		companyDao = CompanyDao.getCompanyDao();
-		computerDao =ComputerDao.getComputerDao();
+		computerDao = ComputerDao.getComputerDao();
 	}
-	
-	public static CompanyService getCompanyService(){
+
+	public static CompanyService getCompanyService() {
 		return COMPANY_SERVICE;
 	}
 
@@ -73,16 +72,16 @@ public class CompanyService {
 
 		return companyDTOs;
 	}
-	
+
 	/**
-	 * 
-	 * @param id
-	 * @throws DTOException
+	 * delete Company .
+	 * @param id .
+	 * @throws DTOException .
 	 */
 	public void deleteCompanyId(String id) throws DTOException {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
-		List<String> computerIdList = computerDao.getComputerFromCompany(Integer.parseInt(id));
+
 		try {
 			connect.setAutoCommit(false);
 		} catch (SQLException e1) {
@@ -90,21 +89,11 @@ public class CompanyService {
 			e1.printStackTrace();
 		}
 		try {
-			computerDao.deleteComputers(computerIdList.toArray(new String[0]), connect);
+			computerDao.deleteComputerFromCompany(Integer.parseInt(id), connect);
 			companyDao.deleteCompanyId(Integer.parseInt(id), connect);
-			try {
-				connect.commit();
-			} catch (SQLException e) {
-				logger.logError(e.getMessage());
-				throw new DTOException(e.getMessage());
-			}
+			commit(connect);
 		} catch (DTOException e) {
-			try {
-				connect.rollback();
-			} catch (SQLException e1) {
-				logger.logError(e.getMessage());
-				throw new DTOException(e1.getMessage());
-			}
+			rollback(connect);
 
 		} finally {
 			closeConnection(connect);
