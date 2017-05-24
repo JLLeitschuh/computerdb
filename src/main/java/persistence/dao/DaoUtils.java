@@ -60,29 +60,29 @@ public class DaoUtils {
 			throw new DTOException("autocommit failed "+e.getMessage());
 		}
 	}
-	public static void commit(Connection connect) throws DTOException{
+	public static void commit(Connection connect) {
 		try {
 			connect.commit();
 		} catch (SQLException e) {
-			throw new DTOException("autocommit failed "+e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
-	public static void closeConnection(Connection connect) throws DTOException {
+	public static void closeConnection(Connection connect)  {
 		try {
 			connect.close();
 			
 			
 		} catch (SQLException e) {
-			throw new DTOException("close failed "+e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	public static void rollback(Connection connect) throws DTOException {
+	public static void rollback(Connection connect) {
 
 		try {
 			connect.rollback();
 		} catch (SQLException e) {
-			throw new DTOException("rollback failed "+e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

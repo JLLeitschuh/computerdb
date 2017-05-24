@@ -77,15 +77,8 @@ public class DashboardServlet extends HttpServlet {
 
 		// delete all selected computer.
 		String[] selectedComputers = request.getParameter("selection").split(",");
-
-		try {
-			computerService.deleteComputer(selectedComputers);
-			doGet(request, response);
-
-		} catch (DTOException e) {
-			logger.logError(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-		}
+		computerService.deleteComputer(selectedComputers);
+		doGet(request, response);
 
 	}
 

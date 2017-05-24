@@ -28,9 +28,10 @@ public class ComputerService {
 	String research = "";
 	Logger logger;
 
-	public static ComputerService getComputerService(){
+	public static ComputerService getComputerService() {
 		return COMPUTER_SERVICE;
 	}
+
 	/**
 	 * constructor.
 	 * @throws DTOException .
@@ -112,12 +113,8 @@ public class ComputerService {
 
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			try {
-				closeConnection(connection);
-			} catch (DTOException e) {
+			closeConnection(connection);
 
-				e.printStackTrace();
-			}
 		}
 
 	}
@@ -138,14 +135,19 @@ public class ComputerService {
 	 * @param computerIdString .
 	 * @throws DTOException .
 	 */
-	public void deleteComputer(String[] computerIdString) throws DTOException {
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
+	public void deleteComputer(String[] computerIdString) {
+		Connection connect = null;
 		try {
+			connect = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connect, false);
 			computerDao.deleteComputers(computerIdString, connect);
 		} catch (DTOException e) {
 
-		} finally {
+			commit(connect);
 
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			closeConnection(connect);
 		}
 
 	}
