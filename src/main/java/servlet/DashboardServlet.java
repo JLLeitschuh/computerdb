@@ -34,7 +34,7 @@ public class DashboardServlet extends HttpServlet {
 	public DashboardServlet() throws DTOException {
 		super();
 		computerService = ComputerService.getComputerService();
-		
+
 		// TODO Auto-generated constructor stub
 	}
 
