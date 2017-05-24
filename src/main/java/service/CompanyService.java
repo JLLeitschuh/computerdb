@@ -1,15 +1,20 @@
 package service;
 
+import java.io.Closeable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.jdbc.StringUtils;
 
+import persistence.ConnectionSingleton;
 import persistence.dao.CompanyDao;
 import dto.CompanyDTO;
 import exception.DTOException;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
+import static persistence.dao.DaoUtils.*;
 
 public class CompanyService {
 
@@ -55,6 +60,12 @@ public class CompanyService {
 		}
 
 		return companyDTOs;
+	}
+
+	public void deleteCompanyId(String id) throws DTOException {
+
+		companyDao.deleteCompanyId(Integer.parseInt(id));
+
 	}
 
 }

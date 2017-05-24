@@ -56,23 +56,11 @@ public class ComputerDao {
 		return computer;
 	}
 
-	/**
-	 * delete all computer from company.
-	 * @param companyId .
-	 * @return ComputerEntity .
-	 * @throws DTOException .
-	 */
-	public ComputerEntity deleteCompanyCascade(int companyId) throws DTOException {
+	public List<String> getComputerFromCompany(int companyId) throws DTOException {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
-		try {
-			connect.setAutoCommit(false);
-		} catch (SQLException e2) {
-			new DTOException(e2.getMessage());
-		}
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
-		ComputerEntity computer = null;
 		List<String> idComputerList = new ArrayList<String>();
 		try {
 
@@ -85,31 +73,15 @@ public class ComputerDao {
 				idComputerList.add(resultSet.getString(1));
 			}
 
-			// delete all computer, if something went wrong a rollback is done
-			// and delete method throw a DTOException.
-			delete(idComputerList.toArray(new String[0]), preparedStatement);
-
-			// delete company if everything is ok
-			preparedStatement = (PreparedStatement) connect
-					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
-			preparedStatement.setInt(1, companyId);
-			preparedStatement.executeUpdate();
-			connect.commit();
+			return idComputerList;
 
 		} catch (SQLException e) {
-			rollback(connect);
+
 			throw new DTOException(e.getMessage());
-		} catch (DTOException dtoException) {
-			rollback(connect);
-			throw new DTOException(dtoException.getMessage());
-		} finally {
+		} 
 
-			close(preparedStatement, resultSet, null);
-			closeConnection(connect);
-
-		}
-		return computer;
 	}
+
 
 	/**
 	 * create new computer into computer table.
@@ -198,14 +170,16 @@ public class ComputerDao {
 	public void deleteComputers(String[] idComputerList) throws DTOException {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
-		PreparedStatement preparedStatement = null;
+
 		try {
 			connect.setAutoCommit(false);
-		} catch (SQLException e2) {
-			new DTOException(e2.getMessage());
+		} catch (SQLException e) {
+
+			throw new DTOException(e.getMessage());
 		}
+
 		try {
-			delete(idComputerList, preparedStatement);
+			delete(idComputerList, connect);
 			connect.commit();
 		} catch (SQLException e) {
 			rollback(connect);
@@ -223,12 +197,13 @@ public class ComputerDao {
 	 * @param preparedStatement .
 	 * @throws DTOException .
 	 */
-	private void delete(String[] idComputerList, PreparedStatement preparedStatement) throws DTOException {
+	public void delete(String[] idComputerList,Connection connect)
+			throws DTOException {
 
 		try {
-			Connection connect = ConnectionSingleton.getInstance().getConnection();
+
 			for (String id : idComputerList) {
-				preparedStatement = (PreparedStatement) connect
+				PreparedStatement preparedStatement = (PreparedStatement) connect
 						.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE id =?");
 				preparedStatement.setString(1, id);
 				preparedStatement.executeUpdate();
