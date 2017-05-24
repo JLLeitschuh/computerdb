@@ -61,20 +61,20 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <mytag:sortby order="${order}"
+						<th>Computer name <mytag:sortby order="${page.pageRequest.sort}"
 								orderby="cmp.name" />
 						</th>
-						<th>Introduced date <mytag:sortby order="${order}"
+						<th>Introduced date <mytag:sortby order="${page.pageRequest.sort}"
 								orderby="introduced" />
 						</th>
 
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date <mytag:sortby order="${order}"
+						<th>Discontinued date <mytag:sortby order="${page.pageRequest.sort}"
 								orderby="discontinued" />
 						</th>
 
 						<!-- Table header for Company -->
-						<th>Company <mytag:sortby order="${order}"
+						<th>Company <mytag:sortby order="${page.pageRequest.sort}"
 								orderby="cmpy.name" />
 						</th>
 
@@ -105,9 +105,8 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<mytag:pagination page="${page}" search="${search}"
-				orderBy="${orderby}" item_number="${ item_number }" order="${order}" />
-			<mytag:itemNumber search="${search}" orderby="${orderby}" order = "${order}" />
+			<mytag:pagination page="${page}" />
+			<mytag:itemNumber page="${page}" />
 		</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>

@@ -15,6 +15,7 @@ import persistence.dao.CompanyDao;
 import persistence.dao.ComputerDao;
 import dto.CompanyDTO;
 import exception.DTOException;
+import log.LoggerSing;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
 import static persistence.dao.DaoUtils.*;
@@ -23,14 +24,20 @@ public class CompanyService {
 
 	CompanyDao companyDao;
 	ComputerDao computerDao;
+	LoggerSing logger = new LoggerSing(this.getClass());
+	private static final CompanyService COMPANY_SERVICE = new CompanyService();
 
 	/**
 	 * Company Service constructor.
 	 * @throws DTOException .
 	 */
-	public CompanyService() throws DTOException {
-		companyDao = new CompanyDao();
-		computerDao = new ComputerDao();
+	private CompanyService(){
+		companyDao = CompanyDao.getCompanyDao();
+		computerDao =ComputerDao.getComputerDao();
+	}
+	
+	public static CompanyService getCompanyService(){
+		return COMPANY_SERVICE;
 	}
 
 	/**
@@ -66,7 +73,12 @@ public class CompanyService {
 
 		return companyDTOs;
 	}
-
+	
+	/**
+	 * 
+	 * @param id
+	 * @throws DTOException
+	 */
 	public void deleteCompanyId(String id) throws DTOException {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
@@ -83,14 +95,14 @@ public class CompanyService {
 			try {
 				connect.commit();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.logError(e.getMessage());
+				throw new DTOException(e.getMessage());
 			}
 		} catch (DTOException e) {
 			try {
 				connect.rollback();
 			} catch (SQLException e1) {
-				getLog().logError(e.getMessage());
+				logger.logError(e.getMessage());
 				throw new DTOException(e1.getMessage());
 			}
 

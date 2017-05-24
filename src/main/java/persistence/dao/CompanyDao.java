@@ -10,6 +10,7 @@ import java.util.List;
 
 import dto.CompanyDTO;
 import exception.DTOException;
+import log.LoggerSing;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
 import model.ComputerEntity;
@@ -21,14 +22,16 @@ import static persistence.dao.DaoUtils.*;
 public class CompanyDao {
 	public static final String COMPANY_TABLE_NAME = "company";
 
-	/**
-	 * DAO constructor .
-	 * @throws DTOException .
-	 */
-	public CompanyDao() throws DTOException {
+	LoggerSing logger = new LoggerSing(this.getClass());
+	private final static CompanyDao COMPANY_DAO = new CompanyDao();
 
+	
+	private CompanyDao(){
+		
 	}
-
+	public static CompanyDao getCompanyDao(){
+		return COMPANY_DAO;
+	}
 	/**
 	 * find company with specific id.
 	 * @param id for company to find
@@ -56,7 +59,7 @@ public class CompanyDao {
 			}
 			return companyModel;
 		} catch (SQLException e) {
-			getLog().logError(e.getMessage());
+			logger.logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 
 		} finally {
@@ -64,7 +67,7 @@ public class CompanyDao {
 			try {
 				connect.close();
 			} catch (SQLException e) {
-				getLog().logError(e.getMessage());
+				logger.logError(e.getMessage());
 				throw new DTOException(e.getMessage());
 			}
 		}
@@ -95,7 +98,7 @@ public class CompanyDao {
 			}
 			return companyList;
 		} catch (SQLException e) {
-			getLog().logError(e.getMessage());
+			logger.logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(null, resultSet, statement);
@@ -122,7 +125,7 @@ public class CompanyDao {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			getLog().logError(e.getMessage());
+			logger.logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 		}
 

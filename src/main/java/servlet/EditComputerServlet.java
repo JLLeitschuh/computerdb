@@ -36,9 +36,9 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	public EditComputerServlet() throws DTOException {
 		super();
-		computerService = new ComputerService();
-		companyService = new CompanyService();
-		logger = LoggerFactory.getLogger(DashBoardServlet.class);
+		computerService = ComputerService.getComputerService();
+		companyService = CompanyService.getCompanyService();
+		logger = LoggerFactory.getLogger(DashboardServlet.class);
 		// TODO Auto-generated constructor stub
 	}
 

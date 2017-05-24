@@ -53,7 +53,14 @@ public class DaoUtils {
 
 	}
 
-	public static void autoCommit(Connection connect) throws DTOException{
+	public static void autoCommit(Connection connect,boolean autoCommit) throws DTOException{
+		try {
+			connect.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			throw new DTOException("autocommit failed "+e.getMessage());
+		}
+	}
+	public static void commit(Connection connect) throws DTOException{
 		try {
 			connect.commit();
 		} catch (SQLException e) {

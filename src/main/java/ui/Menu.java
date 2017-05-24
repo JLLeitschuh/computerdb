@@ -24,8 +24,8 @@ public class Menu {
 	 * @throws DTOException 
 	 */
 	public Menu() throws DTOException {
-		computerService = new ComputerService();
-		companyService = new CompanyService();
+		computerService = ComputerService.getComputerService();
+		companyService = CompanyService.getCompanyService();
 		in = new Scanner(System.in);
 	}
 

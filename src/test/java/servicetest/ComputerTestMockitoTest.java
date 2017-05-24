@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.ComputerEntity;
+import model.Page;
 import service.ComputerService;
-import ui.Page;
 
 public class ComputerTestMockitoTest {
 

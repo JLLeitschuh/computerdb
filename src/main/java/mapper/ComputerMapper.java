@@ -20,7 +20,7 @@ public class ComputerMapper {
 	public static ComputerEntity createComputer(ResultSet resultSet) throws DTOException {
 
 		try {
-			CompanyDao companyDao = new CompanyDao();
+			CompanyDao companyDao = CompanyDao.getCompanyDao();
 			int id = resultSet.getInt(1);
 			String name = resultSet.getString(2);
 			LocalDate introduced = resultSet.getDate(3) == null ? null : resultSet.getDate(3).toLocalDate();
