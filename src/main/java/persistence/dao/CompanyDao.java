@@ -1,7 +1,5 @@
 package persistence.dao;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +12,7 @@ import dto.CompanyDTO;
 import exception.DTOException;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
+import model.ComputerEntity;
 import persistence.ConnectionSingleton;
 
 import static persistence.dao.DaoUtils.*;
@@ -99,6 +98,34 @@ public class CompanyDao {
 		} finally {
 			close(null, resultSet, statement);
 			closeConnection(connect);
+		}
+
+	}
+
+	public void deleteCompanyId(int companyId) throws DTOException {
+
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connect.setAutoCommit(false);
+		} catch (SQLException e1) {
+			throw new DTOException(e1.getMessage());
+
+		}
+		try {
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
+			preparedStatement.setInt(1, companyId);
+			preparedStatement.executeUpdate();
+			connect.commit();
+
+		} catch (SQLException e) {
+
+			throw new DTOException(e.getMessage());
+		} finally {
+			close(preparedStatement, resultSet, null);
 		}
 
 	}

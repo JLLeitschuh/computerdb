@@ -1,15 +1,19 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import persistence.ConnectionSingleton;
 import persistence.dao.ComputerDao;
 import dto.ComputerDTO;
 import exception.DTOException;
 import model.ComputerEntity;
+import static persistence.dao.DaoUtils.*;
 
 public class ComputerService {
 
@@ -122,7 +126,27 @@ public class ComputerService {
 	 */
 	public void deleteComputer(String[] computerIdString) throws DTOException {
 
-		computerDao.deleteComputers(computerIdString);
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
+		try {
+			connect.setAutoCommit(false);
+		} catch (SQLException e) {
+
+			new DTOException(e.getMessage());
+		}
+		try {
+			computerDao.deleteComputers(computerIdString);
+		} catch (DTOException exception) {
+			try {
+				connect.rollback();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+			new DTOException(exception.getMessage());
+		} finally {
+			closeConnection(connect);
+		}
+
 	}
 
 	/**
@@ -130,9 +154,12 @@ public class ComputerService {
 	 * @param companyId .
 	 * @throws DTOException .
 	 */
-	public void deleteCompany(String companyId) throws DTOException {
+	public void deleteComputerFromCompany(String companyId) throws DTOException {
 
-		computerDao.deleteCompanyCascade(Integer.parseInt(companyId));
+		
+		List<String> computerIdList = computerDao.getComputerFromCompany(Integer.parseInt(companyId));
+		computerDao.deleteComputers(computerIdList.toArray(new String[0]));
+		
 	}
 
 }

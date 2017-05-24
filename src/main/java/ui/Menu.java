@@ -143,7 +143,8 @@ public class Menu {
 
 			CompanyEntity company = companyService.findCompanyById(companyId);
 			if (company != null) {
-				computerService.deleteCompany(companyId);
+				computerService.deleteComputerFromCompany(companyId);
+				companyService.deleteCompanyId(companyId);
 			} else {
 				System.out.println("This computer doesn't exist");
 			}
@@ -247,7 +248,7 @@ public class Menu {
 
 	/**
 	 * display all computers from computer table.
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public void displayComputerList() throws DTOException {
 		computerService.getComputers();
@@ -255,7 +256,7 @@ public class Menu {
 
 	/**
 	 * display all company from company table.
-	 * @throws DTOException 
+	 * @throws DTOException .
 	 */
 	public void displayCompanyList() throws DTOException {
 		companyService.getCompanies();

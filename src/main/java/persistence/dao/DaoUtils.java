@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import exception.DTOException;
+import persistence.ConnectionSingleton;
 
 public class DaoUtils {
 
@@ -62,6 +63,8 @@ public class DaoUtils {
 	public static void closeConnection(Connection connect) throws DTOException {
 		try {
 			connect.close();
+			
+			
 		} catch (SQLException e) {
 			throw new DTOException("close failed "+e.getMessage());
 		}

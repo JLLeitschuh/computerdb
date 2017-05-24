@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="mytag" tagdir="/WEB-INF/tags"%>
 <html>
 <head>
@@ -21,7 +21,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.numberTotalItems} Computers found</h1>
+			<h1 id="homeTitle">${page.numberTotalItems} Computers found </h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
