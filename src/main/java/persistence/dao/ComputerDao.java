@@ -197,7 +197,7 @@ public class ComputerDao {
 	 * @param preparedStatement .
 	 * @throws DTOException .
 	 */
-	public void delete(String[] idComputerList,Connection connect)
+	private void delete(String[] idComputerList,Connection connect)
 			throws DTOException {
 
 		try {

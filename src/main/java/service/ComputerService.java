@@ -126,26 +126,7 @@ public class ComputerService {
 	 */
 	public void deleteComputer(String[] computerIdString) throws DTOException {
 
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
-		try {
-			connect.setAutoCommit(false);
-		} catch (SQLException e) {
-
-			new DTOException(e.getMessage());
-		}
-		try {
 			computerDao.deleteComputers(computerIdString);
-		} catch (DTOException exception) {
-			try {
-				connect.rollback();
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-			new DTOException(exception.getMessage());
-		} finally {
-			closeConnection(connect);
-		}
 
 	}
 
