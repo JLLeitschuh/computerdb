@@ -120,22 +120,13 @@ public class EditComputerServlet extends HttpServlet {
 			computerDTOBuilder.companyName(company.getName());
 		}
 
-		try {
-			boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-			logger.info("success " + success);
-			// test if update is successfull . If it's not, send error 500
-			if (!success) {
-				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-			} else {
-				doGet(request, response);
-			}
-		} catch (DTOException e) {
-
-			logger.error(e.getMessage());
+		boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		logger.info("success " + success);
+		// test if update is successfull . If it's not, send error 500
+		if (!success) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-		} catch (NullPointerException e) {
-			logger.error(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+		} else {
+			doGet(request, response);
 		}
 
 	}

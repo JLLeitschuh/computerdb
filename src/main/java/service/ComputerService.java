@@ -3,6 +3,8 @@ package service;
 import java.sql.Connection;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import persistence.dao.DaoUtils;
 import dto.ComputerDTO;
 import exception.DTOException;
 import mapper.ComputerDTOMapper;
+import model.CompanyEntity;
 import model.ComputerEntity;
 import model.Page;
 import model.PageRequest;
@@ -49,9 +52,14 @@ public class ComputerService {
 	 * @param computerEntity .
 	 * @throws DTOException .
 	 */
-	public void insertComputer(ComputerEntity computerEntity) throws DTOException {
+	public void insertComputer(ComputerEntity computerEntity) {
 
-		computerDao.create(computerEntity);
+		try {
+
+			computerDao.create(computerEntity);
+		} catch (DTOException dtoException) {
+			throw new RuntimeException(dtoException.getMessage());
+		}
 	}
 
 	/**
@@ -62,12 +70,26 @@ public class ComputerService {
 	 */
 	public ComputerEntity getComputerById(String strId) throws DTOException {
 
-		if (StringUtils.isNumeric(strId)) {
-			int id = Integer.parseInt(strId);
-			return computerDao.find(id);
-		}
+		Connection connection = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connection, false);
+			if (StringUtils.isNumeric(strId)) {
+				int id = Integer.parseInt(strId);
+				ComputerEntity computerEntity = computerDao.find(id);
+				commit(connection);
+				return computerEntity;
 
-		return null;
+			}
+
+			return null;
+		} catch (DTOException e) {
+
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			closeConnection(connection);
+
+		}
 	}
 
 	/**
@@ -76,9 +98,13 @@ public class ComputerService {
 	 * @return Computer which been update
 	 * @throws DTOException .
 	 */
-	public boolean update(ComputerEntity computerEntity) throws DTOException {
+	public boolean update(ComputerEntity computerEntity) {
 
-		return computerDao.update(computerEntity);
+		try {
+			return computerDao.update(computerEntity);
+		} catch (DTOException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 
 	}
 
@@ -102,6 +128,7 @@ public class ComputerService {
 
 			autoCommit(connection, false);
 			int numberTotalPage = computerDao.getCount(pageRequest.getResearch(), connection);
+			logger.info("number Item " + numberTotalPage);
 			page.setNumberTotalItems(numberTotalPage, pageRequest);
 			int start = (pageRequest.getPage() - 1) * pageRequest.getItemNumber();
 			List<ComputerEntity> computerEntities = computerDao.getComputers(start, pageRequest, connection);

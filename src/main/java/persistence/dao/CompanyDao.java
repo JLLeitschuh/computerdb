@@ -25,13 +25,14 @@ public class CompanyDao {
 	LoggerSing logger = new LoggerSing(this.getClass());
 	private final static CompanyDao COMPANY_DAO = new CompanyDao();
 
-	
-	private CompanyDao(){
-		
+	private CompanyDao() {
+
 	}
-	public static CompanyDao getCompanyDao(){
+
+	public static CompanyDao getCompanyDao() {
 		return COMPANY_DAO;
 	}
+
 	/**
 	 * find company with specific id.
 	 * @param id for company to find
@@ -63,13 +64,8 @@ public class CompanyDao {
 			throw new DTOException(e.getMessage());
 
 		} finally {
-			close(preparedStatement, resultSet, null);
-			try {
-				connect.close();
-			} catch (SQLException e) {
-				logger.logError(e.getMessage());
-				throw new DTOException(e.getMessage());
-			}
+			close(resultSet, preparedStatement);
+			closeConnection(connect);
 		}
 
 	}
@@ -101,7 +97,7 @@ public class CompanyDao {
 			logger.logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(null, resultSet, statement);
+			close(resultSet, statement);
 			closeConnection(connect);
 		}
 
@@ -127,6 +123,9 @@ public class CompanyDao {
 		} catch (SQLException e) {
 			logger.logError(e.getMessage());
 			throw new DTOException(e.getMessage());
+		} finally {
+			close(resultSet, preparedStatement);
+			closeConnection(connect);
 		}
 
 	}

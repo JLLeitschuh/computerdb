@@ -44,25 +44,20 @@ public class ConnectionSingleton {
 	 */
 	public Connection getConnection() throws DTOException {
 
-		/*
-		 * if (THREAD_LOCAL.get() == null) { try {
-		 * THREAD_LOCAL.set(datasource.getConnection());
-		 * 
-		 * } catch (SQLException e) { throw new
-		 * DTOException("Connection failed " + e.getMessage()); } } else { try {
-		 * if (THREAD_LOCAL.get().isClosed()) { THREAD_LOCAL.remove();
-		 * THREAD_LOCAL.set(datasource.getConnection()); } } catch (SQLException
-		 * e) { throw new DTOException("Connection failed " + e.getMessage()); }
-		 * }
-		 * 
-		 * return THREAD_LOCAL.get();
-		 */
 		try {
-			return datasource.getConnection();
+			if (THREAD_LOCAL.get() == null) {
+				System.out.println("Connection : Connection is null");
+				THREAD_LOCAL.set(datasource.getConnection());
+			}
 		} catch (SQLException e) {
 			throw new DTOException("Connection failed " + e.getMessage());
 		}
+		return THREAD_LOCAL.get();
 
+	}
+
+	public ThreadLocal<Connection> getThreadLocal() {
+		return THREAD_LOCAL;
 	}
 
 }

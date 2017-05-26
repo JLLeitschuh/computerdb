@@ -15,8 +15,8 @@ import exception.DTOException;
 import log.LoggerSing;
 import model.Page;
 import model.PageRequest;
-import service.CompanyService;
 import service.ComputerService;
+
 
 /**
  * Servlet implementation class DashBoardServlet.
@@ -35,7 +35,6 @@ public class DashboardServlet extends HttpServlet {
 		super();
 		computerService = ComputerService.getComputerService();
 
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -34,7 +34,6 @@ public class AddComputerServlet extends HttpServlet {
 		super();
 		computerService = ComputerService.getComputerService();
 		companyService = CompanyService.getCompanyService();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -90,16 +89,9 @@ public class AddComputerServlet extends HttpServlet {
 		}
 
 		// Get computer data and insert new computer into database
-		try {
-			computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-			doGet(request, response);
-		} catch (DTOException e) {
-			logger.logError(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-		} catch (NullPointerException e) {
-			logger.logError(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-		}
+
+		computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		doGet(request, response);
 
 	}
 

@@ -30,9 +30,6 @@ public class ComputerDao {
 
 	private static final ComputerDao COMPUTER_DAO = new ComputerDao();
 
-	private ComputerDao() {
-
-	}
 
 	public static ComputerDao getComputerDao() {
 		return COMPUTER_DAO;
@@ -66,7 +63,7 @@ public class ComputerDao {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, resultSet, null);
+			close(resultSet, preparedStatement);
 			closeConnection(connect);
 		}
 		return computer;
@@ -100,6 +97,8 @@ public class ComputerDao {
 		} catch (SQLException e) {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
+		} finally {
+			close(resultSet, preparedStatement);
 		}
 
 	}
@@ -133,7 +132,7 @@ public class ComputerDao {
 			throw new DTOException(e.getMessage());
 
 		} finally {
-			close(preparedStatement, null, null);
+			close(null, preparedStatement);
 			closeConnection(connect);
 		}
 
@@ -173,12 +172,8 @@ public class ComputerDao {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, null, null);
-			try {
-				connect.close();
-			} catch (SQLException e) {
-				throw new DTOException(e.getMessage());
-			}
+			close(null, preparedStatement);
+			closeConnection(connect);
 		}
 
 	}
@@ -201,10 +196,9 @@ public class ComputerDao {
 	 * @throws DTOException .
 	 */
 	public void deleteComputerFromCompany(int companyId, Connection connect) throws DTOException {
-
+		PreparedStatement preparedStatement = null;
 		try {
-
-			PreparedStatement preparedStatement = (PreparedStatement) connect
+			preparedStatement = (PreparedStatement) connect
 					.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE company_id =?");
 			preparedStatement.setInt(1, companyId);
 			preparedStatement.executeUpdate();
@@ -212,6 +206,9 @@ public class ComputerDao {
 		} catch (SQLException e) {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
+		} finally {
+			close(null, preparedStatement);
+			closeConnection(connect);
 		}
 	}
 
@@ -265,7 +262,7 @@ public class ComputerDao {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, resultSet, null);
+			close(resultSet, preparedStatement);
 			closeConnection(connect);
 		}
 
@@ -299,15 +296,8 @@ public class ComputerDao {
 			throw new DTOException(e.getMessage());
 		} finally {
 
-			close(preparedStatement, resultSet, null);
-			try {
-				if (connect.getAutoCommit()) {
-					closeConnection(connect);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			close(resultSet, preparedStatement);
+			closeConnection(connect);
 		}
 
 	}
@@ -328,7 +318,6 @@ public class ComputerDao {
 			resultSet = statement.executeQuery("SELECT * FROM " + COMPUTER_TABLE_NAME);
 
 			while (resultSet.next()) {
-
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
 				computerList.add(computerEntity);
 			}
@@ -336,8 +325,9 @@ public class ComputerDao {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(null, resultSet, statement);
+
 			closeConnection(connect);
+			close(resultSet, statement);
 
 		}
 		return computerList;
@@ -408,15 +398,8 @@ public class ComputerDao {
 			throw new DTOException(e.getMessage());
 
 		} finally {
-			close(preparedStatement, resultSet, null);
-			try {
-				if (connect.getAutoCommit()) {
-					closeConnection(connect);
-				}
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
+			close(resultSet, preparedStatement);
+			closeConnection(connect);
 		}
 
 		return computerList;

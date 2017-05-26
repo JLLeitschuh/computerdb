@@ -31,7 +31,7 @@ public class ComputerMapper {
 					.discontinued(discontinued).company(companyEntity).build();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
