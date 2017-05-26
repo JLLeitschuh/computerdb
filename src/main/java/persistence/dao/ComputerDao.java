@@ -185,7 +185,7 @@ public class ComputerDao {
 	 */
 	public void deleteComputers(String[] idComputerList, Connection connect) throws DTOException {
 
-		delete(idComputerList, connect);
+		delete(idComputerList);
 
 	}
 
@@ -195,8 +195,9 @@ public class ComputerDao {
 	 * @param companyId .
 	 * @throws DTOException .
 	 */
-	public void deleteComputerFromCompany(int companyId, Connection connect) throws DTOException {
+	public void deleteComputerFromCompany(int companyId) throws DTOException {
 		PreparedStatement preparedStatement = null;
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		try {
 			preparedStatement = (PreparedStatement) connect
 					.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE company_id =?");
@@ -218,8 +219,9 @@ public class ComputerDao {
 	 * @param idComputerList .
 	 * @throws DTOException .
 	 */
-	private void delete(String[] idComputerList, Connection connect) throws DTOException {
+	private void delete(String[] idComputerList) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		try {
 
 			for (String id : idComputerList) {

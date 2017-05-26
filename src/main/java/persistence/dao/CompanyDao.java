@@ -109,8 +109,9 @@ public class CompanyDao {
 	 * @throws DTOException .
 	 */
 
-	public void deleteCompanyId(int companyId, Connection connect) throws DTOException {
+	public void deleteCompanyId(int companyId) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 

@@ -89,8 +89,8 @@ public class CompanyService {
 			e1.printStackTrace();
 		}
 		try {
-			computerDao.deleteComputerFromCompany(Integer.parseInt(id), connect);
-			companyDao.deleteCompanyId(Integer.parseInt(id), connect);
+			computerDao.deleteComputerFromCompany(Integer.parseInt(id));
+			companyDao.deleteCompanyId(Integer.parseInt(id));
 			commit(connect);
 		} catch (DTOException e) {
 			rollback(connect);
