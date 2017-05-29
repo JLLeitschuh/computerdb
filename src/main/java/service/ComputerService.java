@@ -113,9 +113,26 @@ public class ComputerService {
 	 * @return list of computerDTO
 	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers() throws DTOException {
+	public List<ComputerEntity> getComputers() {
 
-		return computerDao.getAll();
+		Connection connection = null;
+		List<ComputerEntity> list = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connection, false);
+
+			list = computerDao.getAll();
+			commit(connection);
+
+		} catch (DTOException exception) {
+
+			rollback(connection);
+			new RuntimeException(exception.getMessage());
+		} finally {
+			closeConnection(connection);
+		}
+
+		return list;
 
 	}
 
@@ -168,9 +185,10 @@ public class ComputerService {
 			connect = ConnectionSingleton.getInstance().getConnection();
 			autoCommit(connect, false);
 			computerDao.deleteComputers(computerIdString, connect);
+			commit(connect);
 		} catch (DTOException e) {
 
-			commit(connect);
+			rollback(connect);
 
 			throw new RuntimeException(e.getMessage());
 		} finally {

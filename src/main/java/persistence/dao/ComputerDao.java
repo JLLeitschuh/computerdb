@@ -30,7 +30,6 @@ public class ComputerDao {
 
 	private static final ComputerDao COMPUTER_DAO = new ComputerDao();
 
-
 	public static ComputerDao getComputerDao() {
 		return COMPUTER_DAO;
 
@@ -323,16 +322,16 @@ public class ComputerDao {
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
 				computerList.add(computerEntity);
 			}
+			return computerList;
 		} catch (SQLException e) {
 			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 
-			closeConnection(connect);
 			close(resultSet, statement);
+			closeConnection(connect);
 
 		}
-		return computerList;
 
 	}
 
@@ -394,6 +393,7 @@ public class ComputerDao {
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
 				computerList.add(computerEntity);
 			}
+			return computerList;
 		} catch (SQLException e) {
 
 			logger.logError(e.getMessage());
@@ -403,8 +403,6 @@ public class ComputerDao {
 			close(resultSet, preparedStatement);
 			closeConnection(connect);
 		}
-
-		return computerList;
 
 	}
 
