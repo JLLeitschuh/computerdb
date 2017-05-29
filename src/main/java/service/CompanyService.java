@@ -5,9 +5,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import static log.LoggerSing.*;
 
-import com.mysql.jdbc.StringUtils;
+
 
 import persistence.ConnectionSingleton;
 import persistence.dao.CompanyDao;
@@ -48,7 +51,7 @@ public class CompanyService {
 
 	public CompanyEntity findCompanyById(String strId) throws DTOException {
 
-		if (strId != null && StringUtils.isStrictlyNumeric(strId)) {
+		if (strId != null && StringUtils.isNumeric(strId)) {
 			int id = Integer.parseInt(strId);
 			return companyDao.find(id);
 		}

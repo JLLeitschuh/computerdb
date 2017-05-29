@@ -3,7 +3,7 @@ package ui;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import com.mysql.jdbc.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import exception.DTOException;
 import model.CompanyEntity;
@@ -49,7 +49,7 @@ public class Menu {
 			System.out.println("Write 8 to quit ");
 			String choice = in.nextLine();
 
-			if (StringUtils.isStrictlyNumeric(choice)) {
+			if (StringUtils.isNumeric(choice)) {
 				if (Integer.parseInt(choice) == 8) {
 					keepChoose = false;
 					try {
@@ -116,7 +116,7 @@ public class Menu {
 		System.out.println("Delete computer with id :");
 		String computerId = in.nextLine();
 
-		if (StringUtils.isStrictlyNumeric(computerId)) {
+		if (StringUtils.isNumeric(computerId)) {
 
 			ComputerEntity computerModel = computerService.getComputerById(computerId);
 			if (computerModel != null) {
@@ -139,7 +139,7 @@ public class Menu {
 		System.out.println("Delete company with id :");
 		String companyId = in.nextLine();
 
-		if (StringUtils.isStrictlyNumeric(companyId)) {
+		if (StringUtils.isNumeric(companyId)) {
 
 			companyService.deleteCompanyId(companyId);
 
@@ -157,7 +157,7 @@ public class Menu {
 		System.out.println("Choose Computer ID to display details ");
 
 		String computerId = in.nextLine();
-		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
+		boolean isComputerIdOk = StringUtils.isNumeric(computerId);
 
 		if (isComputerIdOk) {
 			ComputerEntity computer = computerService.getComputerById(computerId);
@@ -182,7 +182,7 @@ public class Menu {
 		System.out.println("Choose Computer To update with id ");
 
 		String computerId = in.nextLine();
-		boolean isComputerIdOk = StringUtils.isStrictlyNumeric(computerId);
+		boolean isComputerIdOk = StringUtils.isNumeric(computerId);
 
 		if (isComputerIdOk) {
 			updateComputer(computerId);

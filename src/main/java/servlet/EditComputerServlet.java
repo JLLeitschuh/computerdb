@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysql.jdbc.StringUtils;
 
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
@@ -100,7 +100,7 @@ public class EditComputerServlet extends HttpServlet {
 
 		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
 		// test computer Id before edit computer
-		if (computerId != null && StringUtils.isStrictlyNumeric(computerId)) {
+		if (computerId != null && StringUtils.isNumeric(computerId)) {
 
 			computerDTOBuilder.id(Integer.parseInt(computerId));
 		}
