@@ -10,14 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import static log.LoggerSing.*;
 
-
-
 import persistence.ConnectionSingleton;
 import persistence.dao.CompanyDao;
 import persistence.dao.ComputerDao;
 import dto.CompanyDTO;
 import exception.DTOException;
-import log.LoggerSing;
 import mapper.CompanyMapper;
 import model.CompanyEntity;
 import static persistence.dao.DaoUtils.*;
@@ -26,7 +23,7 @@ public class CompanyService {
 
 	CompanyDao companyDao;
 	ComputerDao computerDao;
-	LoggerSing logger = new LoggerSing(this.getClass());
+
 	private static final CompanyService COMPANY_SERVICE = new CompanyService();
 
 	/**
@@ -49,11 +46,16 @@ public class CompanyService {
 	 * @throws DTOException .
 	 */
 
-	public CompanyEntity findCompanyById(String strId) throws DTOException {
+	public CompanyEntity findCompanyById(String strId) {
 
-		if (strId != null && StringUtils.isNumeric(strId)) {
-			int id = Integer.parseInt(strId);
-			return companyDao.find(id);
+		try {
+			if (strId != null && StringUtils.isNumeric(strId)) {
+				int id = Integer.parseInt(strId);
+				return companyDao.find(id);
+			}
+		} catch (DTOException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 		return null;
 
@@ -62,12 +64,17 @@ public class CompanyService {
 	/**
 	 *  get companyDTO company list.
 	 * @return list of companyDTO corresponding to companies object into db
-	 * @throws DTOException .
 	 */
-	public List<CompanyDTO> getCompanies() throws DTOException {
+	public List<CompanyDTO> getCompanies()  {
 
 		List<CompanyDTO> companyDTOs = new ArrayList<CompanyDTO>();
-		List<CompanyEntity> companies = companyDao.getAll();
+		List<CompanyEntity> companies;
+		try {
+			companies = companyDao.getAll();
+		} catch (DTOException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+		}
 
 		for (CompanyEntity company : companies) {
 			companyDTOs.add(CompanyMapper.createCompanyDTO(company));
@@ -81,15 +88,19 @@ public class CompanyService {
 	 * @param id .
 	 * @throws DTOException .
 	 */
-	public void deleteCompanyId(String id) throws DTOException {
+	public void deleteCompanyId(String id) {
 
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
+		Connection connect = null;
 
 		try {
+			connect = ConnectionSingleton.getInstance().getConnection();
 			connect.setAutoCommit(false);
 		} catch (SQLException e1) {
-
-			e1.printStackTrace();
+			logger.error(e1.getMessage());
+			throw new RuntimeException(e1.getMessage());
+		} catch (DTOException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 		try {
 			computerDao.deleteComputerFromCompany(Integer.parseInt(id));
@@ -97,7 +108,8 @@ public class CompanyService {
 			commit(connect);
 		} catch (DTOException e) {
 			rollback(connect);
-
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		} finally {
 			closeConnection(connect);
 		}

@@ -6,16 +6,16 @@
 	<version>1.3</version>
 	<properties>
 		<hikari.version>2.6.1</hikari.version>
-        <mysql.version>5.1.42</mysql.version>
-    	<apache.version>3.1</apache.version>
-    	<servlet.version>3.1.0</servlet.version>
-    	<servlet.jsp.version>2.1</servlet.jsp.version>
-    	<jstl.version>1.2</jstl.version>
-    	<slf4.api.version>1.7.25</slf4.api.version>
-    	<slf4.version>1.7.5</slf4.version>
-    	<junit.version>4.12</junit.version>
-    	<mockito.version>1.9.5</mockito.version>
-    	<selenium.version>3.4.0</selenium.version>
+		<mysql.version>5.1.42</mysql.version>
+		<apache.version>3.1</apache.version>
+		<servlet.version>3.1.0</servlet.version>
+		<servlet.jsp.version>2.1</servlet.jsp.version>
+		<jstl.version>1.2</jstl.version>
+		<slf4.api.version>1.7.25</slf4.api.version>
+		<slf4.version>1.7.5</slf4.version>
+		<junit.version>4.12</junit.version>
+		<mockito.version>1.9.5</mockito.version>
+		<selenium.version>3.4.0</selenium.version>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 	<packaging>war</packaging>
@@ -38,7 +38,7 @@
 					<server>TomcatServer</server>
 					<path>/computerdatabase</path>
 					<username>admin</username>
-        			<password>password</password>
+					<password>password</password>
 				</configuration>
 			</plugin>
 			<!-- checkstyle -->
@@ -87,9 +87,9 @@
 			<version>${slf4.api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4.version}</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- HikariCP poolConnection to -->

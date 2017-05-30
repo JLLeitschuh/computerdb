@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dto.ComputerDTO;
 import exception.DTOException;
-import log.LoggerSing;
+import log.LoggerSing.*;
 import model.Page;
 import model.PageRequest;
 import service.ComputerService;
@@ -25,7 +25,6 @@ import service.ComputerService;
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ComputerService computerService;
-	LoggerSing logger = new LoggerSing(this.getClass());
 
 	/**
 	 * @throws DTOException .

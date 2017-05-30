@@ -9,11 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.taglibs.standard.lang.jstl.Logger;
-
 import exception.DTOException;
-import log.LoggerSing;
-
 import static log.LoggerSing.*;
 import mapper.ComputerMapper;
 import model.ComputerEntity;
@@ -26,7 +22,6 @@ import static persistence.ConnectionLocalThread.*;
 public class ComputerDao {
 
 	public static final String COMPUTER_TABLE_NAME = "computer";
-	LoggerSing logger = new LoggerSing(this.getClass());
 
 	private static final ComputerDao COMPUTER_DAO = new ComputerDao();
 
@@ -59,7 +54,7 @@ public class ComputerDao {
 			}
 
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(resultSet, preparedStatement);
@@ -94,7 +89,7 @@ public class ComputerDao {
 			return idComputerList;
 
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(resultSet, preparedStatement);
@@ -127,7 +122,7 @@ public class ComputerDao {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 
 		} finally {
@@ -168,7 +163,7 @@ public class ComputerDao {
 			return count > 0 ? true : false;
 
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(null, preparedStatement);
@@ -180,6 +175,7 @@ public class ComputerDao {
 	/**
 	 * delete computer from computer table.
 	 * @param idComputerList .
+	 * @param connect .
 	 * @throws DTOException .
 	 */
 	public void deleteComputers(String[] idComputerList, Connection connect) throws DTOException {
@@ -190,7 +186,6 @@ public class ComputerDao {
 
 	/**
 	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly.
-	 * @param connect .
 	 * @param companyId .
 	 * @throws DTOException .
 	 */
@@ -204,7 +199,7 @@ public class ComputerDao {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(null, preparedStatement);
@@ -214,7 +209,6 @@ public class ComputerDao {
 
 	/**
 	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly.
-	 * @param connect .
 	 * @param idComputerList .
 	 * @throws DTOException .
 	 */
@@ -230,7 +224,7 @@ public class ComputerDao {
 				preparedStatement.executeUpdate();
 			}
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		}
 	}
@@ -260,7 +254,7 @@ public class ComputerDao {
 			resultSet.first();
 			return resultSet.getInt(1);
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 			close(resultSet, preparedStatement);
@@ -293,7 +287,7 @@ public class ComputerDao {
 			resultSet.first();
 			return resultSet.getInt(1);
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 
@@ -324,7 +318,7 @@ public class ComputerDao {
 			}
 			return computerList;
 		} catch (SQLException e) {
-			logger.logError(e.toString());
+			logger.error(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
 
@@ -373,7 +367,7 @@ public class ComputerDao {
 			}
 			query.append(" Limit ?,? ");
 
-			logger.logInfo(query.toString());
+			logger.info(query.toString());
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement(query.toString());
 
@@ -396,7 +390,7 @@ public class ComputerDao {
 			return computerList;
 		} catch (SQLException e) {
 
-			logger.logError(e.getMessage());
+			logger.error(e.getMessage());
 			throw new DTOException(e.getMessage());
 
 		} finally {

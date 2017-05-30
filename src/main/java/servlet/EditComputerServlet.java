@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
@@ -67,15 +66,10 @@ public class EditComputerServlet extends HttpServlet {
 		if (computer == null) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
 		} else {
-			try {
-				request.setAttribute("companyList", companyService.getCompanies());
-				request.setAttribute("computer", computer);
-				this.getServletContext().getRequestDispatcher("/WEB-INF/editComputer.jsp").forward(request, response);
-			} catch (DTOException e) {
 
-				logger.error(e.getMessage());
-				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-			}
+			request.setAttribute("companyList", companyService.getCompanies());
+			request.setAttribute("computer", computer);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/editComputer.jsp").forward(request, response);
 
 		}
 	}
@@ -109,11 +103,8 @@ public class EditComputerServlet extends HttpServlet {
 		CompanyEntity company = null;
 
 		// find corresponding company corresponding to company Id
-		try {
-			company = companyService.findCompanyById(companyId);
-		} catch (DTOException e) {
-			logger.error(e.getMessage());
-		}
+
+		company = companyService.findCompanyById(companyId);
 
 		if (company != null) {
 			computerDTOBuilder.companyId(company.getId());

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
-import log.LoggerSing;
+import log.LoggerSing.*;
 import mapper.ComputerDTOMapper;
 
 import model.CompanyEntity;
@@ -24,7 +24,6 @@ public class AddComputerServlet extends HttpServlet {
 
 	ComputerService computerService;
 	CompanyService companyService;
-	LoggerSing logger = new LoggerSing(this.getClass());
 
 	/**
 	 * @throws DTOException .
@@ -46,12 +45,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		try {
-			request.setAttribute("companyList", companyService.getCompanies());
-		} catch (DTOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		request.setAttribute("companyList", companyService.getCompanies());
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(request, response);
 	}
@@ -77,12 +71,9 @@ public class AddComputerServlet extends HttpServlet {
 		CompanyEntity company = null;
 
 		// look for company into database.
-		try {
-			company = companyService.findCompanyById(companyId);
-		} catch (DTOException e) {
 
-			e.printStackTrace();
-		}
+		company = companyService.findCompanyById(companyId);
+
 		if (company != null) {
 			computerDTOBuilder.companyId(company.getId());
 			computerDTOBuilder.companyName(company.getName());

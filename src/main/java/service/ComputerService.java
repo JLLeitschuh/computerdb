@@ -20,6 +20,7 @@ import model.ComputerEntity;
 import model.Page;
 import model.PageRequest;
 
+import static log.LoggerSing.logger;
 import static persistence.dao.DaoUtils.*;
 
 public class ComputerService {
@@ -58,6 +59,7 @@ public class ComputerService {
 
 			computerDao.create(computerEntity);
 		} catch (DTOException dtoException) {
+			logger.error(dtoException.getMessage());
 			throw new RuntimeException(dtoException.getMessage());
 		}
 	}
@@ -84,8 +86,9 @@ public class ComputerService {
 
 			return null;
 		} catch (DTOException e) {
-
+			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
+
 		} finally {
 			closeConnection(connection);
 
@@ -103,6 +106,7 @@ public class ComputerService {
 		try {
 			return computerDao.update(computerEntity);
 		} catch (DTOException e) {
+			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
 
@@ -124,10 +128,11 @@ public class ComputerService {
 			list = computerDao.getAll();
 			commit(connection);
 
-		} catch (DTOException exception) {
+		} catch (DTOException e) {
 
 			rollback(connection);
-			new RuntimeException(exception.getMessage());
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		} finally {
 			closeConnection(connection);
 		}
@@ -154,7 +159,8 @@ public class ComputerService {
 			return page;
 
 		} catch (DTOException e) {
-
+			rollback(connection);
+			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		} finally {
 			closeConnection(connection);
@@ -190,6 +196,7 @@ public class ComputerService {
 
 			rollback(connect);
 
+			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		} finally {
 			closeConnection(connect);
