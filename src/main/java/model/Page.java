@@ -1,4 +1,4 @@
-package ui;
+package model;
 
 import java.util.List;
 
@@ -6,15 +6,26 @@ public class Page<T> {
 
 	int numberTotalItems = 0;
 	List<T> items;
-	int currentPage = 1;
 	int numberPage;
+	PageRequest pageRequest;
+
+	public PageRequest getPageRequest() {
+		return pageRequest;
+	}
+
+
+	public void setNumberPage(int numberPage) {
+		this.numberPage = numberPage;
+	}
 
 	public int getNumberTotalItems() {
 		return numberTotalItems;
 	}
 
-	public void setNumberTotalItems(int numberTotalItems) {
+	public void setNumberTotalItems(int numberTotalItems,PageRequest pageRequest) {
 		this.numberTotalItems = numberTotalItems;
+		this.pageRequest = pageRequest;
+		updateNumberPage(pageRequest.itemNumber);
 	}
 
 	public List<T> getItems() {
@@ -23,14 +34,6 @@ public class Page<T> {
 
 	public void setItems(List<T> items) {
 		this.items = items;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
 	}
 
 	/**

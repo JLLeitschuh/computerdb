@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.ComputerEntity;
+import model.Page;
 import service.ComputerService;
-import ui.Page;
 
 public class ComputerTestMockitoTest {
 
@@ -58,7 +58,7 @@ public class ComputerTestMockitoTest {
 
 		Mockito.when(computerDTO.getId()).thenReturn(43);
 		Mockito.when(computerDTO.getName()).thenReturn("name");
-		Mockito.when(computerDTO.getCompanyId()).thenReturn(1);
+		//Mockito.when(computerDTO.getCompanyId()).thenReturn(1);
 		Mockito.when(computerDTO.getIntroduced()).thenReturn("1955-01-01");
 		Mockito.when(computerDTO.getDiscontinued()).thenReturn("1955-01-01");
 

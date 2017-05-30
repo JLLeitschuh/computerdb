@@ -9,10 +9,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.taglibs.standard.lang.jstl.Logger;
+
 import exception.DTOException;
+import log.LoggerSing;
+
 import static log.LoggerSing.*;
 import mapper.ComputerMapper;
 import model.ComputerEntity;
+import model.PageRequest;
 import persistence.ConnectionSingleton;
 
 import static persistence.dao.DaoUtils.*;
@@ -21,6 +26,14 @@ import static persistence.ConnectionLocalThread.*;
 public class ComputerDao {
 
 	public static final String COMPUTER_TABLE_NAME = "computer";
+	LoggerSing logger = new LoggerSing(this.getClass());
+
+	private static final ComputerDao COMPUTER_DAO = new ComputerDao();
+
+	public static ComputerDao getComputerDao() {
+		return COMPUTER_DAO;
+
+	}
 
 	/**
 	 * find computer with specific id.
@@ -28,7 +41,6 @@ public class ComputerDao {
 	 * @return computer entity find
 	 * @throws DTOException .
 	 */
-
 	public ComputerEntity find(int id) throws DTOException {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
@@ -47,10 +59,10 @@ public class ComputerDao {
 			}
 
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, resultSet, null);
+			close(resultSet, preparedStatement);
 			closeConnection(connect);
 		}
 		return computer;
@@ -82,8 +94,10 @@ public class ComputerDao {
 			return idComputerList;
 
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
+		} finally {
+			close(resultSet, preparedStatement);
 		}
 
 	}
@@ -113,11 +127,11 @@ public class ComputerDao {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 
 		} finally {
-			close(preparedStatement, null, null);
+			close(null, preparedStatement);
 			closeConnection(connect);
 		}
 
@@ -154,15 +168,11 @@ public class ComputerDao {
 			return count > 0 ? true : false;
 
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, null, null);
-			try {
-				connect.close();
-			} catch (SQLException e) {
-				throw new DTOException(e.getMessage());
-			}
+			close(null, preparedStatement);
+			closeConnection(connect);
 		}
 
 	}
@@ -172,10 +182,34 @@ public class ComputerDao {
 	 * @param idComputerList .
 	 * @throws DTOException .
 	 */
-	public void deleteComputers(String[] idComputerList,Connection connect) throws DTOException {
+	public void deleteComputers(String[] idComputerList, Connection connect) throws DTOException {
 
-			delete(idComputerList, connect);		
+		delete(idComputerList);
 
+	}
+
+	/**
+	 * delete item list. private method because there is no gestion of rollback if something went wrong. Not supposed ti be used directly.
+	 * @param connect .
+	 * @param companyId .
+	 * @throws DTOException .
+	 */
+	public void deleteComputerFromCompany(int companyId) throws DTOException {
+		PreparedStatement preparedStatement = null;
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
+		try {
+			preparedStatement = (PreparedStatement) connect
+					.prepareStatement("Delete From " + COMPUTER_TABLE_NAME + " WHERE company_id =?");
+			preparedStatement.setInt(1, companyId);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.logError(e.toString());
+			throw new DTOException(e.getMessage());
+		} finally {
+			close(null, preparedStatement);
+			closeConnection(connect);
+		}
 	}
 
 	/**
@@ -184,8 +218,9 @@ public class ComputerDao {
 	 * @param idComputerList .
 	 * @throws DTOException .
 	 */
-	private void delete(String[] idComputerList, Connection connect) throws DTOException {
+	private void delete(String[] idComputerList) throws DTOException {
 
+		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		try {
 
 			for (String id : idComputerList) {
@@ -195,7 +230,7 @@ public class ComputerDao {
 				preparedStatement.executeUpdate();
 			}
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		}
 	}
@@ -225,10 +260,44 @@ public class ComputerDao {
 			resultSet.first();
 			return resultSet.getInt(1);
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
-			close(preparedStatement, resultSet, null);
+			close(resultSet, preparedStatement);
+			closeConnection(connect);
+		}
+
+	}
+
+	/**
+	 * get number verything okof item into computer db.
+	 * @param research .
+	 * @return item count into computer table
+	 * @throws DTOException .
+	 */
+	public int getCount(String research, Connection connect) throws DTOException {
+
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+
+		StringBuilder query = new StringBuilder("SELECT Count(*) FROM " + COMPUTER_TABLE_NAME);
+		if (research != null) {
+			query.append(" Where name like ?");
+		}
+		try {
+			preparedStatement = (PreparedStatement) connect.prepareStatement(query.toString());
+			if (research != null) {
+				preparedStatement.setString(1, "%" + research + "%");
+			}
+			resultSet = preparedStatement.executeQuery();
+			resultSet.first();
+			return resultSet.getInt(1);
+		} catch (SQLException e) {
+			logger.logError(e.toString());
+			throw new DTOException(e.getMessage());
+		} finally {
+
+			close(resultSet, preparedStatement);
 			closeConnection(connect);
 		}
 
@@ -243,24 +312,26 @@ public class ComputerDao {
 
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
-		Statement statement;
+		Statement statement = null;
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		try {
 			statement = (Statement) connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * FROM " + COMPUTER_TABLE_NAME);
 
 			while (resultSet.next()) {
-
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
 				computerList.add(computerEntity);
 			}
+			return computerList;
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+			logger.logError(e.toString());
 			throw new DTOException(e.getMessage());
 		} finally {
+
+			close(resultSet, statement);
 			closeConnection(connect);
+
 		}
-		return computerList;
 
 	}
 
@@ -274,22 +345,26 @@ public class ComputerDao {
 	 * @return list of computer between begin and end
 	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers(int start, int offset, String researchString, String orderby, int order)
+	public List<ComputerEntity> getComputers(int start, PageRequest pageRequest, Connection connect)
 			throws DTOException {
+
 		ArrayList<ComputerEntity> computerList = new ArrayList<>();
 		PreparedStatement preparedStatement = null;
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		ResultSet resultSet = null;
+		String researchString = pageRequest.getResearch();
+		String orderby = pageRequest.getOrderBy();
+		int offset = pageRequest.getItemNumber();
+		int sort = pageRequest.getSort();
 
 		try {
 			StringBuilder query = new StringBuilder("SELECT * FROM " + COMPUTER_TABLE_NAME + " cmp LEFT JOIN "
 					+ CompanyDao.COMPANY_TABLE_NAME + " cmpy ON cmpy.id = cmp.company_id ");
-			if (researchString != null) {
+			if (pageRequest.getResearch() != null) {
 				query.append(" WHERE cmp.name like ?");
 			}
 			if (orderby != null) {
 				query.append(" Order By " + orderby);
-				if (order == 0) {
+				if (sort == 0) {
 					query.append(" ASC ");
 				} else {
 					query.append(" DESC ");
@@ -298,7 +373,7 @@ public class ComputerDao {
 			}
 			query.append(" Limit ?,? ");
 
-			getLog().logInfo(query.toString());
+			logger.logInfo(query.toString());
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement(query.toString());
 
@@ -318,16 +393,16 @@ public class ComputerDao {
 				ComputerEntity computerEntity = ComputerMapper.createComputer(resultSet);
 				computerList.add(computerEntity);
 			}
+			return computerList;
 		} catch (SQLException e) {
-			getLog().logError(e.toString());
+
+			logger.logError(e.getMessage());
 			throw new DTOException(e.getMessage());
 
 		} finally {
-			close(preparedStatement, resultSet, null);
+			close(resultSet, preparedStatement);
 			closeConnection(connect);
 		}
-
-		return computerList;
 
 	}
 

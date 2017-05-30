@@ -1,7 +1,5 @@
 package persistence.dao;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +17,7 @@ public class DaoUtils {
 	 * @param resultSet .
 	 * @param statement .
 	 */
-	public static void close(PreparedStatement preparedStatement, ResultSet resultSet, Statement statement) {
+	public static void close(ResultSet resultSet, Statement statement) {
 
 		try {
 			if (statement != null) {
@@ -27,16 +25,7 @@ public class DaoUtils {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			if (preparedStatement != null) {
-				preparedStatement.close();
-			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -47,35 +36,51 @@ public class DaoUtils {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
 	}
 
-	public static void autoCommit(Connection connect) throws DTOException{
+	public static void autoCommit(Connection connect, boolean autoCommit) throws DTOException {
 		try {
-			connect.commit();
+			connect.setAutoCommit(autoCommit);
 		} catch (SQLException e) {
-			throw new DTOException("autocommit failed "+e.getMessage());
-		}
-	}
-	public static void closeConnection(Connection connect) throws DTOException {
-		try {
-			connect.close();
-			
-			
-		} catch (SQLException e) {
-			throw new DTOException("close failed "+e.getMessage());
+			throw new DTOException("autocommit failed " + e.getMessage());
 		}
 	}
 
-	public static void rollback(Connection connect) throws DTOException {
+	public static void commit(Connection connect) {
+		try {
+			connect.commit();
+			connect.setAutoCommit(true);
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+
+	public static void closeConnection(Connection connect) {
+		try {
+			
+			if (connect.getAutoCommit()) {
+				System.out.println("Connection :Close Connection ");
+				connect.close();
+				ConnectionSingleton.getInstance().getThreadLocal().remove();
+			}else{
+				System.out.println("Connection :don't close ");
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+
+	public static void rollback(Connection connect) {
 
 		try {
 			connect.rollback();
 		} catch (SQLException e) {
-			throw new DTOException("rollback failed "+e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

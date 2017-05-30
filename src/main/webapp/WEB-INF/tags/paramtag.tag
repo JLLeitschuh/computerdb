@@ -17,8 +17,8 @@
                <c:if test ="${not empty search}">
                <c:param name="search" value="${search}"/>
 					</c:if>
-					<c:if test ="${not empty item_number}">
-               <c:param name="item_number" value="${item_number}"/>
+					<c:if test ="${not empty itemNumber}">
+               <c:param name="item_number" value="${itemNumber}"/>
 					</c:if>
 								<c:if test ="${not empty orderby}">
                <c:param name="orderby" value="${orderby}"/>

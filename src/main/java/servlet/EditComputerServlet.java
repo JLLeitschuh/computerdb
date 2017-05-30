@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysql.jdbc.StringUtils;
 
 import dto.ComputerDTO;
 import dto.ComputerDTO.ComputerDTOBuilder;
@@ -36,9 +36,9 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	public EditComputerServlet() throws DTOException {
 		super();
-		computerService = new ComputerService();
-		companyService = new CompanyService();
-		logger = LoggerFactory.getLogger(DashBoardServlet.class);
+		computerService = ComputerService.getComputerService();
+		companyService = CompanyService.getCompanyService();
+		logger = LoggerFactory.getLogger(DashboardServlet.class);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -100,7 +100,7 @@ public class EditComputerServlet extends HttpServlet {
 
 		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
 		// test computer Id before edit computer
-		if (computerId != null && StringUtils.isStrictlyNumeric(computerId)) {
+		if (computerId != null && StringUtils.isNumeric(computerId)) {
 
 			computerDTOBuilder.id(Integer.parseInt(computerId));
 		}
@@ -120,22 +120,13 @@ public class EditComputerServlet extends HttpServlet {
 			computerDTOBuilder.companyName(company.getName());
 		}
 
-		try {
-			boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-			logger.info("success " + success);
-			// test if update is successfull . If it's not, send error 500
-			if (!success) {
-				this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-			} else {
-				doGet(request, response);
-			}
-		} catch (DTOException e) {
-
-			logger.error(e.getMessage());
+		boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		logger.info("success " + success);
+		// test if update is successfull . If it's not, send error 500
+		if (!success) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
-		} catch (NullPointerException e) {
-			logger.error(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/500.jsp").forward(request, response);
+		} else {
+			doGet(request, response);
 		}
 
 	}

@@ -3,15 +3,23 @@ package service;
 import java.sql.Connection;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import persistence.ConnectionSingleton;
 import persistence.dao.ComputerDao;
+import persistence.dao.DaoUtils;
 import dto.ComputerDTO;
 import exception.DTOException;
+import mapper.ComputerDTOMapper;
+import model.CompanyEntity;
 import model.ComputerEntity;
+import model.Page;
+import model.PageRequest;
+
 import static persistence.dao.DaoUtils.*;
 
 public class ComputerService {
@@ -19,18 +27,23 @@ public class ComputerService {
 	ComputerDao computerDao;
 	CompanyService companyService;
 	List<ComputerDTO> computerDTOList;
+	private static final ComputerService COMPUTER_SERVICE = new ComputerService();
 	String research = "";
 	Logger logger;
+
+	public static ComputerService getComputerService() {
+		return COMPUTER_SERVICE;
+	}
 
 	/**
 	 * constructor.
 	 * @throws DTOException .
 	 */
-	public ComputerService() throws DTOException {
+	private ComputerService() {
 		// PropertyConfigurator.configure("/main/resources/log4j.properties");
 		logger = LoggerFactory.getLogger(getClass());
-		companyService = new CompanyService();
-		computerDao = new ComputerDao();
+		companyService = CompanyService.getCompanyService();
+		computerDao = ComputerDao.getComputerDao();
 
 	}
 
@@ -39,9 +52,14 @@ public class ComputerService {
 	 * @param computerEntity .
 	 * @throws DTOException .
 	 */
-	public void insertComputer(ComputerEntity computerEntity) throws DTOException {
+	public void insertComputer(ComputerEntity computerEntity) {
 
-		computerDao.create(computerEntity);
+		try {
+
+			computerDao.create(computerEntity);
+		} catch (DTOException dtoException) {
+			throw new RuntimeException(dtoException.getMessage());
+		}
 	}
 
 	/**
@@ -52,12 +70,26 @@ public class ComputerService {
 	 */
 	public ComputerEntity getComputerById(String strId) throws DTOException {
 
-		if (StringUtils.isNumeric(strId)) {
-			int id = Integer.parseInt(strId);
-			return computerDao.find(id);
-		}
+		Connection connection = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connection, false);
+			if (StringUtils.isNumeric(strId)) {
+				int id = Integer.parseInt(strId);
+				ComputerEntity computerEntity = computerDao.find(id);
+				commit(connection);
+				return computerEntity;
 
-		return null;
+			}
+
+			return null;
+		} catch (DTOException e) {
+
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			closeConnection(connection);
+
+		}
 	}
 
 	/**
@@ -66,9 +98,13 @@ public class ComputerService {
 	 * @return Computer which been update
 	 * @throws DTOException .
 	 */
-	public boolean update(ComputerEntity computerEntity) throws DTOException {
+	public boolean update(ComputerEntity computerEntity) {
 
-		return computerDao.update(computerEntity);
+		try {
+			return computerDao.update(computerEntity);
+		} catch (DTOException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 
 	}
 
@@ -77,34 +113,54 @@ public class ComputerService {
 	 * @return list of computerDTO
 	 * @throws DTOException .
 	 */
-	public List<ComputerEntity> getComputers() throws DTOException {
+	public List<ComputerEntity> getComputers() {
 
-		return computerDao.getAll();
+		Connection connection = null;
+		List<ComputerEntity> list = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connection, false);
+
+			list = computerDao.getAll();
+			commit(connection);
+
+		} catch (DTOException exception) {
+
+			rollback(connection);
+			new RuntimeException(exception.getMessage());
+		} finally {
+			closeConnection(connection);
+		}
+
+		return list;
 
 	}
 
-	/**
-	 * get computer List from pageNumber.
-	 * @param start .
-	 * @param itemPerPage .
-	 * @param researchString .
-	 * @param orderBy .
-	 * @param order .
-	 * @return List of computerDTO corresponding to page "pageNumber"
-	 * @throws DTOException .
-	 */
-	public List<ComputerEntity> getComputers(int start, String itemPerPage, String researchString, String orderBy,
-			int order) throws DTOException {
+	public Page<ComputerDTO> getPage(PageRequest pageRequest) {
 
-		List<ComputerEntity> computerEntities = null;
-		// if itemPerPage is not define, value is 10.
-		if (itemPerPage == null) {
-			computerEntities = computerDao.getComputers(start, 10, researchString, orderBy, order);
-		} else if (StringUtils.isNumeric(itemPerPage)) {
-			computerEntities = computerDao.getComputers(start, Integer.parseInt(itemPerPage), researchString, orderBy,
-					order);
+		Connection connection = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			Page<ComputerDTO> page = new Page<ComputerDTO>();
+
+			autoCommit(connection, false);
+			int numberTotalPage = computerDao.getCount(pageRequest.getResearch(), connection);
+			logger.info("number Item " + numberTotalPage);
+			page.setNumberTotalItems(numberTotalPage, pageRequest);
+			int start = (pageRequest.getPage() - 1) * pageRequest.getItemNumber();
+			List<ComputerEntity> computerEntities = computerDao.getComputers(start, pageRequest, connection);
+			page.setItems(ComputerDTOMapper.createComputerDTOList(computerEntities));
+			commit(connection);
+			return page;
+
+		} catch (DTOException e) {
+
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			closeConnection(connection);
+
 		}
-		return computerEntities;
+
 	}
 
 	/**
@@ -123,14 +179,20 @@ public class ComputerService {
 	 * @param computerIdString .
 	 * @throws DTOException .
 	 */
-	public void deleteComputer(String[] computerIdString) throws DTOException {
-		Connection connect = ConnectionSingleton.getInstance().getConnection();
-		try{
+	public void deleteComputer(String[] computerIdString) {
+		Connection connect = null;
+		try {
+			connect = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connect, false);
 			computerDao.deleteComputers(computerIdString, connect);
-		}catch(DTOException e){
-			
-		}finally{
-			
+			commit(connect);
+		} catch (DTOException e) {
+
+			rollback(connect);
+
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			closeConnection(connect);
 		}
 
 	}

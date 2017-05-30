@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import static log.LoggerSing.*;
 
 import exception.DTOException;
 
@@ -19,6 +18,8 @@ public class ConnectionSingleton {
 	private static ConnectionSingleton instance = new ConnectionSingleton();
 
 	private DataSource datasource;
+
+	private static final ThreadLocal<Connection> THREAD_LOCAL = new ThreadLocal<Connection>();
 
 	/**
 	 * Singleton constructor.
@@ -44,11 +45,19 @@ public class ConnectionSingleton {
 	public Connection getConnection() throws DTOException {
 
 		try {
-			return datasource.getConnection();
+			if (THREAD_LOCAL.get() == null) {
+				System.out.println("Connection : Connection is null");
+				THREAD_LOCAL.set(datasource.getConnection());
+			}
 		} catch (SQLException e) {
 			throw new DTOException("Connection failed " + e.getMessage());
 		}
+		return THREAD_LOCAL.get();
 
+	}
+
+	public ThreadLocal<Connection> getThreadLocal() {
+		return THREAD_LOCAL;
 	}
 
 }

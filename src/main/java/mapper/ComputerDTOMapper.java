@@ -51,7 +51,6 @@ public class ComputerDTOMapper {
 
 		ComputerBuilder computerBuilder = ComputerEntity.computerBuilder();
 
-
 		if (computerDTO.getName() == null || computerDTO.getName().trim().isEmpty()) {
 			throw new NullPointerException();
 		}
@@ -59,8 +58,7 @@ public class ComputerDTOMapper {
 		computerBuilder.introduced(DataMapper.convertStringToDate(computerDTO.getIntroduced()));
 		computerBuilder.discontinued(DataMapper.convertStringToDate(computerDTO.getDiscontinued()));
 
-		if (computerDTO.getCompanyName() != null && computerDTO.getCompanyId() > 0) {
-
+		if(computerDTO.getCompanyName()!=null){
 			computerBuilder.company(new CompanyEntity(computerDTO.getCompanyId(), computerDTO.getCompanyName()));
 		}
 
@@ -68,7 +66,6 @@ public class ComputerDTOMapper {
 
 	}
 
-	
 	/**
 	 * create computerDTO list from computer list.
 	 * @param computerList .
