@@ -1,5 +1,6 @@
-from maven:3.5.0-jdk-8-onbuild
+# Pull base image
+From tomcat:8-jre8
 
-COPY . /usr/src/app
 
-RUN ["mvn", "package"]
+# Copy to images tomcat path
+ADD target/*.war /usr/local/tomcat/webapps/
