@@ -60,28 +60,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String computerName = request.getParameter("computerName");
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
-		String companyId = request.getParameter("companyId");
-
-		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
-		computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
-
-		CompanyEntity company = null;
-
-		// look for company into database.
-
-		company = companyService.findCompanyById(companyId);
-
-		if (company != null) {
-			computerDTOBuilder.companyId(company.getId());
-			computerDTOBuilder.companyName(company.getName());
-		}
-
-		// Get computer data and insert new computer into database
-
-		computerService.insertComputer(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		computerService.insertComputer(request);
 		doGet(request, response);
 
 	}

@@ -58,7 +58,7 @@ public class ComputerDTOMapper {
 		computerBuilder.introduced(DataMapper.convertStringToDate(computerDTO.getIntroduced()));
 		computerBuilder.discontinued(DataMapper.convertStringToDate(computerDTO.getDiscontinued()));
 
-		if(computerDTO.getCompanyName()!=null){
+		if (computerDTO.getCompanyName() != null) {
 			computerBuilder.company(new CompanyEntity(computerDTO.getCompanyId(), computerDTO.getCompanyName()));
 		}
 
@@ -81,4 +81,6 @@ public class ComputerDTOMapper {
 		return computerDTOList;
 
 	}
+	
+
 }

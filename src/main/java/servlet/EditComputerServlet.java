@@ -84,34 +84,9 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String computerId = request.getParameter("computerId");
-		String computerName = request.getParameter("computerName");
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
-		String companyId = request.getParameter("companyId");
 
-		logger.info("computerId " + computerId);
 
-		ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
-		// test computer Id before edit computer
-		if (computerId != null && StringUtils.isNumeric(computerId)) {
-
-			computerDTOBuilder.id(Integer.parseInt(computerId));
-		}
-		computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
-
-		CompanyEntity company = null;
-
-		// find corresponding company corresponding to company Id
-
-		company = companyService.findCompanyById(companyId);
-
-		if (company != null) {
-			computerDTOBuilder.companyId(company.getId());
-			computerDTOBuilder.companyName(company.getName());
-		}
-
-		boolean success = computerService.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+		boolean success = computerService.update(request);
 		logger.info("success " + success);
 		// test if update is successfull . If it's not, send error 500
 		if (!success) {

@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.util.List;
 
 import javax.management.RuntimeErrorException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ import persistence.ConnectionSingleton;
 import persistence.dao.ComputerDao;
 import persistence.dao.DaoUtils;
 import dto.ComputerDTO;
+import dto.ComputerDTO.ComputerDTOBuilder;
 import exception.DTOException;
 import mapper.ComputerDTOMapper;
 import model.CompanyEntity;
@@ -65,6 +68,49 @@ public class ComputerService {
 	}
 
 	/**
+	 * insert new computer into db.
+	 * @param request .
+	 */
+	public void insertComputer(HttpServletRequest request) {
+
+		Connection connection = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connection, false);
+
+			String computerName = request.getParameter("computerName");
+			String introduced = request.getParameter("introduced");
+			String discontinued = request.getParameter("discontinued");
+			String companyId = request.getParameter("companyId");
+
+			ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
+			computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
+
+			CompanyEntity company = null;
+
+			// look for company into database.
+
+			company = companyService.findCompanyById(companyId);
+
+			if (company != null) {
+				computerDTOBuilder.companyId(company.getId());
+				computerDTOBuilder.companyName(company.getName());
+			}
+			computerDao.create(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+			commit(connection);
+
+		} catch (DTOException e) {
+			rollback(connection);
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+
+		} finally {
+			closeConnection(connection);
+
+		}
+	}
+
+	/**
 	 * get computer by id.
 	 * @param strId .
 	 * @return ComputerDTO corresponding to computer object with id strId
@@ -86,6 +132,7 @@ public class ComputerService {
 
 			return null;
 		} catch (DTOException e) {
+			rollback(connection);
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 
@@ -93,6 +140,61 @@ public class ComputerService {
 			closeConnection(connection);
 
 		}
+	}
+
+	/**
+	 * update computer into db.
+	 * @param computerEntity .
+	 * @return Computer which been update
+	 * @throws DTOException .
+	 */
+	public boolean update(HttpServletRequest request) {
+
+		Connection connection = null;
+		try {
+			connection = ConnectionSingleton.getInstance().getConnection();
+			autoCommit(connection, false);
+
+			String computerId = request.getParameter("computerId");
+			String computerName = request.getParameter("computerName");
+			String introduced = request.getParameter("introduced");
+			String discontinued = request.getParameter("discontinued");
+			String companyId = request.getParameter("companyId");
+
+			logger.info("computerId " + computerId);
+
+			ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
+			// test computer Id before edit computer
+			if (computerId != null && StringUtils.isNumeric(computerId)) {
+
+				computerDTOBuilder.id(Integer.parseInt(computerId));
+			}
+			computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
+
+			CompanyEntity company = null;
+
+			// find corresponding company corresponding to company Id
+
+			company = companyService.findCompanyById(companyId);
+
+			if (company != null) {
+				computerDTOBuilder.companyId(company.getId());
+				computerDTOBuilder.companyName(company.getName());
+			}
+			boolean success = computerDao.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+			commit(connection);
+			return success;
+
+		} catch (DTOException e) {
+			rollback(connection);
+			logger.error(e.getMessage());
+			throw new RuntimeException(e.getMessage());
+
+		} finally {
+			closeConnection(connection);
+
+		}
+
 	}
 
 	/**

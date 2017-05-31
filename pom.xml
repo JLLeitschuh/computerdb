@@ -12,7 +12,7 @@
 		<servlet.jsp.version>2.1</servlet.jsp.version>
 		<jstl.version>1.2</jstl.version>
 		<slf4.api.version>1.7.25</slf4.api.version>
-		<slf4.version>1.7.5</slf4.version>
+		<logback.version>1.2.3</logback.version>
 		<junit.version>4.12</junit.version>
 		<mockito.version>1.9.5</mockito.version>
 		<selenium.version>3.4.0</selenium.version>
@@ -89,7 +89,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- HikariCP poolConnection to -->
