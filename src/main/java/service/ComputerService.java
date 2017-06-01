@@ -118,7 +118,7 @@ public class ComputerService {
 	 * @return ComputerDTO corresponding to computer object with id strId
 	 * @throws DTOException .
 	 */
-	public ComputerEntity getComputerById(String strId) throws DTOException {
+	public ComputerEntity getComputerById(String strId) {
 
 		Connection connection = null;
 		try {
@@ -157,13 +157,13 @@ public class ComputerService {
 			connection = ConnectionSingleton.getInstance().getConnection();
 			autoCommit(connection, false);
 
-			String computerId = request.getParameter("computerId");
-			String computerName = request.getParameter("computerName");
+			String computerId = request.getParameter("id");
+			String computerName = request.getParameter("name");
 			String introduced = request.getParameter("introduced");
 			String discontinued = request.getParameter("discontinued");
 			String companyId = request.getParameter("companyId");
 
-			logger.info("computerId " + computerId);
+			logger.info("computerId Resquest" + computerId);
 
 			ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
 			// test computer Id before edit computer

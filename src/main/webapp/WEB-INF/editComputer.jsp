@@ -20,17 +20,17 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<div class="label label-default pull-right">id: 0</div>
+					<div class="label label-default pull-right">id: ${id}</div>
 					<h1>Edit Computer</h1>
 
 					<form action="editComputer" method="POST">
-						<input type="hidden" value="0" id="id" />
+						<input type="hidden" value="${id}" id="id" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" name="computerName"
-									id="computerName"
+								<label for="name">Computer name</label> <input
+									type="text" class="form-control" name="name"
+									id="name"
 									<c:if test="${not empty computer.name }" >
 									value="<c:out value="${computer.name}"/>"
 									</c:if>
@@ -69,7 +69,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-						<input type="hidden" name="computerId" value="${computerId}" /> 
+						<input type="hidden" name="id" value="${id}" /> 
 							<input type="submit" id ="edit" value="Edit" class="btn btn-primary">
 							or <a href="<c:url value="/dashboard"></c:url>" class="btn btn-default">Cancel</a>
 						</div>

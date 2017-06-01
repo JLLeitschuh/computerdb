@@ -51,16 +51,13 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String computerId = request.getParameter("computerId");
+		String computerId = request.getParameter("id");
 		ComputerDTO computer = null;
-		try {
-			computer = ComputerDTOMapper.createComputerDTO(computerService.getComputerById(computerId));
-		} catch (DTOException e) {
 
-			logger.error(e.getMessage());
-		}
+		logger.info("ID COMPUTER " + computerId);
+		computer = ComputerDTOMapper.createComputerDTO(computerService.getComputerById(computerId));
 
-		request.setAttribute("computerId", computerId);
+		request.setAttribute("id", computerId);
 
 		// If computer doesn't exist, error is send
 		if (computer == null) {
@@ -83,8 +80,6 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-
 
 		boolean success = computerService.update(request);
 		logger.info("success " + success);

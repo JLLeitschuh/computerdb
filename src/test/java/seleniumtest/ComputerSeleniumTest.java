@@ -106,8 +106,8 @@ public class ComputerSeleniumTest {
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium");
 		driver.findElement(By.id("searchsubmit")).click();
 		driver.findElement(By.linkText("Test Selenium" + timeStamp)).click();
-		driver.findElement(By.id("computerName")).sendKeys(Keys.DELETE);
-		driver.findElement(By.id("computerName")).sendKeys("Selenium" + timeStamp);
+		driver.findElement(By.id("name")).sendKeys(Keys.DELETE);
+		driver.findElement(By.id("name")).sendKeys("Selenium" + timeStamp);
 		driver.findElement(By.id("edit")).click();
 		driver.findElement(By.linkText("Cancel")).click();
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
