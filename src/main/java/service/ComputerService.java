@@ -78,7 +78,7 @@ public class ComputerService {
 			connection = ConnectionSingleton.getInstance().getConnection();
 			autoCommit(connection, false);
 
-			String computerName = request.getParameter("computerName");
+			String computerName = request.getParameter("name");
 			String introduced = request.getParameter("introduced");
 			String discontinued = request.getParameter("discontinued");
 			String companyId = request.getParameter("companyId");
@@ -91,11 +91,13 @@ public class ComputerService {
 			// look for company into database.
 
 			company = companyService.findCompanyById(companyId);
-
+			logger.info("insert name = " + computerName + " introduced = " + introduced + " discontinued = "
+					+ discontinued + " companyId = " + companyId);
 			if (company != null) {
 				computerDTOBuilder.companyId(company.getId());
 				computerDTOBuilder.companyName(company.getName());
 			}
+			logger.info("company name  = "+computerDTOBuilder.build().getCompanyName() +  " companyId = " + computerDTOBuilder.build().getCompanyId());
 			computerDao.create(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
 			commit(connection);
 

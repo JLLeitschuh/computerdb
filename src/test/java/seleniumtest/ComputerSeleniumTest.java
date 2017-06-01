@@ -47,8 +47,8 @@ public class ComputerSeleniumTest {
 
 		long timeStamp = System.currentTimeMillis();
 		// Set value to add new computer
-		driver.findElement(By.id("computerName")).sendKeys(Keys.DELETE);
-		driver.findElement(By.id("computerName")).sendKeys("Test Selenium" + timeStamp);
+		driver.findElement(By.id("name")).sendKeys(Keys.DELETE);
+		driver.findElement(By.id("name")).sendKeys("Test Selenium" + timeStamp);
 
 		driver.findElement(By.id("introduced")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("introduced")).sendKeys("01-01-2012");
