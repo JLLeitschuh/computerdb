@@ -15,9 +15,9 @@ public class DataMapper {
 
 	public static LocalDate convertStringToDate(String strDate) {
 
-		LoggerSing.logger.info("DATE " + strDate);
+		LoggerSing.logger.info("DATE INFO " + strDate);
 		if (strDate == null || strDate.equalsIgnoreCase("")) {
-			LoggerSing.logger.info("DATE KO");
+			LoggerSing.logger.info("DATE KO ");
 			return null;
 		}
 		try {
