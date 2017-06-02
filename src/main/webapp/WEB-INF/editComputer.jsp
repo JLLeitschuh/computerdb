@@ -12,8 +12,8 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="<c:url value="/dashboard"></c:url>" > Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="<c:url value="/dashboard"></c:url>">
+				Application - Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
@@ -28,9 +28,8 @@
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
-								<label for="name">Computer name</label> <input
-									type="text" class="form-control" name="name"
-									id="name"
+								<label for="name">Computer name</label> <input type="text"
+									class="form-control" name="name" id="name"
 									<c:if test="${not empty computer.name }" >
 									value="<c:out value="${computer.name}"/>"
 									</c:if>
@@ -69,9 +68,15 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-						<input type="hidden" name="id" value="${id}" /> 
-							<input type="submit" id ="edit" value="Edit" class="btn btn-primary">
-							or <a href="<c:url value="/dashboard"></c:url>" class="btn btn-default">Cancel</a>
+							<input type="hidden" name="id" value="${id}" /> <input
+								type="hidden" name="name_before" value="${computer.id}" /> <input
+								type="hidden" name="introduced_before" value="" ${computer.introduced}" />
+							<input type="hidden" name="discontinued_before" value="" ${computer.discontinued}" />
+							<input type="hidden" name="company_before" value="" ${computer.companyId}" />
+							<input type="submit" id="edit" value="Edit"
+								class="btn btn-primary"> or <a
+								href="<c:url value="/dashboard"></c:url>"
+								class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

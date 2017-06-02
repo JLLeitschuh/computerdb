@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import exception.DTOException;
 import static log.LoggerSing.*;
@@ -141,12 +143,97 @@ public class ComputerDao {
 
 	public boolean update(ComputerEntity computer) throws DTOException {
 
+		String statment = "UPDATE " + COMPUTER_TABLE_NAME + " SET ";
+
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		int numberItemUpdate = 0;
+		if (computer.getName() != null) {
+			statment += "name = ?";
+			numberItemUpdate++;
+			map.put("name", numberItemUpdate);
+		}
+		if (computer.getIntroduced() != null) {
+			if (numberItemUpdate == 0) {
+				statment += "introduced =?";
+			} else {
+				statment += ",introduced =?";
+			}
+			numberItemUpdate++;
+			map.put("introduced", numberItemUpdate);
+		}
+		if (computer.getDiscontinued() != null) {
+			if (numberItemUpdate == 0) {
+				statment += "discontinued =?";
+			} else {
+				statment += ",discontinued =?";
+			}
+			numberItemUpdate++;
+			map.put("discontinued", numberItemUpdate);
+		}
+		if (computer.getCompanyEntity() != null) {
+			if (numberItemUpdate == 0) {
+				statment += "company_id=?";
+			} else {
+				statment += ",company_id=?";
+			}
+			numberItemUpdate++;
+			map.put("company_id", numberItemUpdate);
+		}
+		statment += " WHERE id =?";
+
+		if (numberItemUpdate != 0) {
+			Connection connect = ConnectionSingleton.getInstance().getConnection();
+			PreparedStatement preparedStatement = null;
+			try {
+
+				preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " + COMPUTER_TABLE_NAME
+						+ " SET name = ?,introduced =?, discontinued=?,company_id=?" + " WHERE id =?");
+				if (map.containsKey("name")) {
+					preparedStatement.setString(map.get("name"), computer.getName());
+				}
+				if (map.containsKey("introduced")) {
+					preparedStatement.setString(map.get("introduced"), computer.getIntroduced().toString());
+				}
+				if (map.containsKey("discontinued")) {
+					preparedStatement.setString(map.get("discontinued"), computer.getDiscontinued().toString());
+				}
+				if (map.containsKey("company_id")) {
+					preparedStatement.setInt(map.get("company_id"), computer.getCompanyEntity().getId());
+				}
+				
+				int count = preparedStatement.executeUpdate();
+
+				return count > 0 ? true : false;
+
+			} catch (SQLException e) {
+				logger.error(e.toString());
+				throw new DTOException(e.getMessage());
+			} finally {
+				close(null, preparedStatement);
+				closeConnection(connect);
+			}
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
+	 * update computer into computer table.
+	 * @param computer .
+	 * @return update computer;
+	 * @throws DTOException .
+	 */
+
+	public boolean updateOld(ComputerEntity computer) throws DTOException {
+
 		Connection connect = ConnectionSingleton.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
 
 			preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " + COMPUTER_TABLE_NAME
 					+ " SET name = ?,introduced =?, discontinued=?,company_id=?" + " WHERE id =?");
+
 			preparedStatement.setString(1, computer.getName());
 			preparedStatement.setString(2,
 					computer.getIntroduced() == null ? null : computer.getIntroduced().toString());
