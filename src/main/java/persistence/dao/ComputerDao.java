@@ -181,13 +181,14 @@ public class ComputerDao {
 		}
 		statment += " WHERE id =?";
 
+		logger.info("STATMENT " + statment);
+
 		if (numberItemUpdate != 0) {
 			Connection connect = ConnectionSingleton.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			try {
 
-				preparedStatement = (PreparedStatement) connect.prepareStatement("UPDATE " + COMPUTER_TABLE_NAME
-						+ " SET name = ?,introduced =?, discontinued=?,company_id=?" + " WHERE id =?");
+				preparedStatement = (PreparedStatement) connect.prepareStatement(statment);
 				if (map.containsKey("name")) {
 					preparedStatement.setString(map.get("name"), computer.getName());
 				}
@@ -200,7 +201,7 @@ public class ComputerDao {
 				if (map.containsKey("company_id")) {
 					preparedStatement.setInt(map.get("company_id"), computer.getCompanyEntity().getId());
 				}
-				
+				preparedStatement.setInt(numberItemUpdate + 1, computer.getId());
 				int count = preparedStatement.executeUpdate();
 
 				return count > 0 ? true : false;

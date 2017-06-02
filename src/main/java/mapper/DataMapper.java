@@ -3,6 +3,7 @@ package mapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import log.LoggerSing;
 
 public class DataMapper {
 
@@ -14,13 +15,15 @@ public class DataMapper {
 
 	public static LocalDate convertStringToDate(String strDate) {
 
-		if (strDate.equalsIgnoreCase("")) {
+		LoggerSing.logger.info("DATE " + strDate);
+		if (strDate == null || strDate.equalsIgnoreCase("")) {
+			LoggerSing.logger.info("DATE KO");
 			return null;
 		}
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate localeDate = LocalDate.parse(strDate, formatter);
-
+			LoggerSing.logger.info("DATE OK");
 			return localeDate;
 
 		} catch (Exception e) {
@@ -30,6 +33,5 @@ public class DataMapper {
 
 		return null;
 	}
-
 
 }

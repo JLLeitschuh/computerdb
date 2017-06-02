@@ -97,7 +97,8 @@ public class ComputerService {
 				computerDTOBuilder.companyId(company.getId());
 				computerDTOBuilder.companyName(company.getName());
 			}
-			logger.info("company name  = "+computerDTOBuilder.build().getCompanyName() +  " companyId = " + computerDTOBuilder.build().getCompanyId());
+			logger.info("company name  = " + computerDTOBuilder.build().getCompanyName() + " companyId = "
+					+ computerDTOBuilder.build().getCompanyId());
 			computerDao.create(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
 			commit(connection);
 
@@ -162,7 +163,7 @@ public class ComputerService {
 			String introduced = request.getParameter("introduced");
 			String discontinued = request.getParameter("discontinued");
 			String companyId = request.getParameter("companyId");
-				
+
 			String computername_before = request.getParameter("name_before");
 			String introduced_before = request.getParameter("introduced_before");
 			String discontinued_before = request.getParameter("discontinued_before");
@@ -176,15 +177,29 @@ public class ComputerService {
 
 				computerDTOBuilder.id(Integer.parseInt(computerId));
 			}
-			
-			computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
+			if (computername_before.equals(computerName)) {
+				computerDTOBuilder.name(null);
+			} else {
+				computerDTOBuilder.name(computerName);
+			}
+			if (introduced_before.equals(introduced)) {
+				computerDTOBuilder.introduced(null);
+			}
+			if (discontinued_before.equals(discontinued_before)) {
+				computerDTOBuilder.discontinued(null);
 
+			} else {
+				computerDTOBuilder.discontinued(discontinued);
+			}
 			CompanyEntity company = null;
 
 			// find corresponding company corresponding to company Id
 
 			company = companyService.findCompanyById(companyId);
-
+			if (companyId_before.equals(companyId)) {
+				computerDTOBuilder.companyId(company.getId());
+				computerDTOBuilder.companyName(null);
+			}
 			if (company != null) {
 				computerDTOBuilder.companyId(company.getId());
 				computerDTOBuilder.companyName(company.getName());
@@ -256,6 +271,7 @@ public class ComputerService {
 		Connection connection = null;
 		try {
 			connection = ConnectionSingleton.getInstance().getConnection();
+			logger.info("Connection "+ connection);
 			Page<ComputerDTO> page = new Page<ComputerDTO>();
 
 			autoCommit(connection, false);
@@ -267,7 +283,7 @@ public class ComputerService {
 			page.setItems(ComputerDTOMapper.createComputerDTOList(computerEntities));
 			commit(connection);
 			return page;
-
+			
 		} catch (DTOException e) {
 			rollback(connection);
 			logger.error(e.getMessage());
