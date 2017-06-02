@@ -162,11 +162,7 @@ public class ComputerService {
 			String introduced = request.getParameter("introduced");
 			String discontinued = request.getParameter("discontinued");
 			String companyId = request.getParameter("companyId");
-				
-			String computername_before = request.getParameter("name_before");
-			String introduced_before = request.getParameter("introduced_before");
-			String discontinued_before = request.getParameter("discontinued_before");
-			String companyId_before = request.getParameter("company_before");
+
 
 			logger.info("computerId Resquest" + computerId);
 
