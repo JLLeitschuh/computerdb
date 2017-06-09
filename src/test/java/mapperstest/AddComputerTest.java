@@ -6,17 +6,28 @@ import java.util.List;
 
 import org.junit.Test;
 
-import dto.ComputerDTO.ComputerDTOBuilder;
-import exception.DTOException;
-import mapper.ComputerDTOMapper;
-import model.ComputerEntity;
-import service.ComputerService;
+import com.ebiz.computerdatabase.dto.ComputerDTO.ComputerDTOBuilder;
+import com.ebiz.computerdatabase.exception.DTOException;
+import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
+import com.ebiz.computerdatabase.model.ComputerEntity;
+import com.ebiz.computerdatabase.service.ComputerService;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:WEB-INF/spring/applicationContext.xml")
+@Component
 public class AddComputerTest {
+
+	@Autowired
+	ComputerService computerService;
 
 	@Test
 	public void addComputer() {
-		ComputerService computerService = ComputerService.getComputerService();
+
 		int computerTotal = 0;
 
 		try {
@@ -61,7 +72,7 @@ public class AddComputerTest {
 	}
 
 	public int searchComputer(String name) {
-		ComputerService computerService = ComputerService.getComputerService();
+
 		int computerTotal = 0;
 		try {
 			computerTotal = computerService.getTotalItem(name);
