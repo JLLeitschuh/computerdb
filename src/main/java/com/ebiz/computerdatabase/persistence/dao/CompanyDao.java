@@ -19,7 +19,7 @@ import static com.ebiz.computerdatabase.log.LoggerSing.logger;
 
 
 @Repository
-public class CompanyDao {
+public class CompanyDao extends IDao{
 
 	public static final String COMPANY_TABLE_NAME = "company";
 
@@ -27,7 +27,7 @@ public class CompanyDao {
 	@Autowired
 	@Resource(name = "dataSource")
 	private DataSource dataSource;
-	
+
 
 	/**
 	 * find company with specific id.
@@ -39,30 +39,30 @@ public class CompanyDao {
 	public CompanyEntity find(int id) throws DTOException {
 		// TODO Auto-generated method stub
 
-		Connection connect = DataSourceUtils.getConnection(dataSource);
-		CompanyEntity companyModel = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		try {
+		return usingConnection(connect -> {
+			CompanyEntity companyModel = null;
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			try {
 
-			preparedStatement = (PreparedStatement) connect
-					.prepareStatement("SELECT * FROM " + COMPANY_TABLE_NAME + " WHERE id =?");
-			preparedStatement.setInt(1, id);
-			resultSet = preparedStatement.executeQuery();
+				preparedStatement = (PreparedStatement) connect
+						.prepareStatement("SELECT * FROM " + COMPANY_TABLE_NAME + " WHERE id =?");
+				preparedStatement.setInt(1, id);
+				resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.first()) {
+				if (resultSet.first()) {
 
-				companyModel = CompanyMapper.createCompany(resultSet);
+					companyModel = CompanyMapper.createCompany(resultSet);
+				}
+				return companyModel;
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DTOException(e.getMessage());
+
+			} finally {
+				close(resultSet, preparedStatement);
 			}
-			return companyModel;
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			throw new DTOException(e.getMessage());
-
-		} finally {
-			close(resultSet, preparedStatement);
-			DataSourceUtils.releaseConnection(connect, dataSource);
-		}
+		});
 
 	}
 
@@ -74,28 +74,28 @@ public class CompanyDao {
 
 	public List<CompanyEntity> getAll() throws DTOException {
 
-		Connection connect = DataSourceUtils.getConnection(dataSource);;
-		ArrayList<CompanyEntity> companyList = new ArrayList<>();
-		ResultSet resultSet = null;
-		Statement statement = null;
-		try {
-			statement = (Statement) connect.createStatement();
-			resultSet = statement.executeQuery("SELECT * FROM " + COMPANY_TABLE_NAME);
-			while (resultSet.next()) {
+		return usingConnection(connect -> {
+			ArrayList<CompanyEntity> companyList = new ArrayList<>();
+			ResultSet resultSet = null;
+			Statement statement = null;
+			try {
+				statement = (Statement) connect.createStatement();
+				resultSet = statement.executeQuery("SELECT * FROM " + COMPANY_TABLE_NAME);
+				while (resultSet.next()) {
 
-				CompanyEntity companyEntity = CompanyMapper.createCompany(resultSet);
-				companyList.add(companyEntity);
-				System.out.println("Value " + companyEntity.toString());
+					CompanyEntity companyEntity = CompanyMapper.createCompany(resultSet);
+					companyList.add(companyEntity);
+					System.out.println("Value " + companyEntity.toString());
 
+				}
+				return companyList;
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DTOException(e.getMessage());
+			} finally {
+				close(resultSet, statement);
 			}
-			return companyList;
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			throw new DTOException(e.getMessage());
-		} finally {
-			close(resultSet, statement);
-			DataSourceUtils.releaseConnection(connect, dataSource);;
-		}
+		});
 
 	}
 
@@ -107,23 +107,24 @@ public class CompanyDao {
 
 	public void deleteCompanyId(int companyId) throws DTOException {
 
-		Connection connect = DataSourceUtils.getConnection(dataSource);;
-		ResultSet resultSet = null;
-		PreparedStatement preparedStatement = null;
+		usingConnection(connect -> {
+			ResultSet resultSet = null;
+			PreparedStatement preparedStatement = null;
 
-		try {
-			preparedStatement = (PreparedStatement) connect
-					.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
-			preparedStatement.setInt(1, companyId);
-			preparedStatement.executeUpdate();
+			try {
+				preparedStatement = (PreparedStatement) connect
+						.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
+				preparedStatement.setInt(1, companyId);
+				preparedStatement.executeUpdate();
+				return true;
 
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			throw new DTOException(e.getMessage());
-		} finally {
-			close(resultSet, preparedStatement);
-			DataSourceUtils.releaseConnection(connect, dataSource);;
-		}
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DTOException(e.getMessage());
+			} finally {
+				close(resultSet, preparedStatement);
+			}
+		});
 
 	}
 

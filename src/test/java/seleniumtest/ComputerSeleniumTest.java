@@ -27,7 +27,7 @@ public class ComputerSeleniumTest {
 	@Test
 	public void testAddComputerSelenium() throws Exception {
 
-		driver.get(baseUrl + "/computerdatabase/dashboard");
+		driver.get(baseUrl + "/dashboard");
 
 		// keep total computer number found
 		WebElement div = driver.findElement(By.id("homeTitle"));
@@ -90,7 +90,7 @@ public class ComputerSeleniumTest {
 	 */
 	public void testEditComputerSelenium(long timeStamp) throws Exception {
 
-		driver.get(baseUrl + "/computerdatabase/dashboard");
+		driver.get(baseUrl + "/dashboard");
 
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Test Selenium" + timeStamp);
@@ -129,7 +129,7 @@ public class ComputerSeleniumTest {
 	 */
 	public void testDeleteComputerSelenium(long timeStamp) {
 
-		driver.get(baseUrl + "/computerdatabase/dashboard");
+		driver.get(baseUrl + "/dashboard");
 
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium" + timeStamp);
