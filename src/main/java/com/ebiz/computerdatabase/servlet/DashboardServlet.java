@@ -1,7 +1,6 @@
 package com.ebiz.computerdatabase.servlet;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
-import com.ebiz.computerdatabase.exception.DTOException;
 import com.ebiz.computerdatabase.model.Page;
 import com.ebiz.computerdatabase.model.PageRequest;
 import com.ebiz.computerdatabase.service.ComputerService;

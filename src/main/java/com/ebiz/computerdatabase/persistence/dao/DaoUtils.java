@@ -1,6 +1,8 @@
 package com.ebiz.computerdatabase.persistence.dao;
 
-import com.ebiz.computerdatabase.exception.DTOException;
+
+
+import com.ebiz.computerdatabase.exception.DAOException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -39,11 +41,11 @@ public class DaoUtils {
 
 	}
 
-	public static void autoCommit(Connection connect, boolean autoCommit) throws DTOException {
+	public static void autoCommit(Connection connect, boolean autoCommit) throws DAOException {
 		try {
 			connect.setAutoCommit(autoCommit);
 		} catch (SQLException e) {
-			throw new DTOException("autocommit failed " + e.getMessage());
+			throw new DAOException("autocommit failed " + e.getMessage());
 		}
 	}
 

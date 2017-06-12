@@ -1,6 +1,7 @@
 package com.ebiz.computerdatabase.servlet;
 
-import com.ebiz.computerdatabase.exception.DTOException;
+
+import com.ebiz.computerdatabase.mapper.RequestMapper;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		computerService.insertComputer(request);
+		computerService.insertComputer(RequestMapper.requestToDTO(request));
 		doGet(request, response);
 
 	}

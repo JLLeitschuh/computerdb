@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form"
+		   prefix="spr"%>
 <html>
 <head>
 <title>Computer Database</title>
@@ -24,7 +26,9 @@
 					<form action="addComputer" id="form-addComputer" accept-charset="utf-8" method="POST">
 						<fieldset>
 							<div class="form-group">
-								<label for="name">Computer name Test</label> <input
+								<label for="name">Computer name Test</label>
+
+								<input
 									type="text" class="form-control" name="name"
 									id="name" placeholder="Computer name"  required>
 							</div>

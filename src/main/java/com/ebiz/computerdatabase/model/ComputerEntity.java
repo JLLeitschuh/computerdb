@@ -8,7 +8,8 @@ public class ComputerEntity {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private CompanyEntity companyEntity;
+	private int companyId;
+	private String companyName;
 
 	/**
 	 * ComputerEntity constructor.
@@ -21,7 +22,8 @@ public class ComputerEntity {
 		this.name = computerBuilder.name;
 		this.introduced = computerBuilder.introduced;
 		this.discontinued = computerBuilder.discontinued;
-		this.companyEntity = computerBuilder.company;
+		this.companyId = computerBuilder.companyId;
+		this.companyName = computerBuilder.companyName;
 	}
 
 	/**
@@ -105,17 +107,16 @@ public class ComputerEntity {
 	 * get company companyModel.
 	 * @return company entity
 	 */
-	public CompanyEntity getCompanyEntity() {
-		return companyEntity;
+	public int getCompanyId() {
+		return companyId;
 	}
 
-	/**
-	 * set company Entity.
-	 * @param companyModel
-	 *            .
-	 */
-	public void setCompanyEntity(CompanyEntity companyModel) {
-		this.companyEntity = companyModel;
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	/**
@@ -130,7 +131,8 @@ public class ComputerEntity {
 		private String name;
 		private LocalDate introduced;
 		private LocalDate discontinued;
-		private CompanyEntity company;
+		private int companyId;
+		private  String companyName;
 
 		/**
 		 * Builder constructor.
@@ -180,12 +182,17 @@ public class ComputerEntity {
 
 		/**
 		 * set company entity.
-		 * @param company .
+		 * @param companyId .
 		 * @return computer builder
 		 */
 
-		public ComputerBuilder company(CompanyEntity company) {
-			this.company = company;
+		public ComputerBuilder companyId(int companyId) {
+			this.companyId = companyId;
+			return this;
+		}
+
+		public ComputerBuilder companyName(String companyName) {
+			this.companyName = companyName;
 			return this;
 		}
 
@@ -211,13 +218,8 @@ public class ComputerEntity {
 		strBuilder.append("name: " + this.name + ",");
 		strBuilder.append("introduced: " + this.introduced + ",");
 		strBuilder.append("discontinued: " + this.discontinued + ",");
-		if (companyEntity != null) {
-			strBuilder.append("companyId: " + this.companyEntity.getId());
-			strBuilder.append("companyName: " + this.companyEntity.getName());
-		} else {
-			strBuilder.append("companyId: " + null);
-			strBuilder.append("companyName: " + null);
-		}
+		strBuilder.append("companyId" +this.companyId);
+
 
 		return strBuilder.toString();
 	}

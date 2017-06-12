@@ -28,11 +28,10 @@ public class ComputerDTOMapper {
 			if (computer.getDiscontinued() != null) {
 				computerDTOBuilder.discontinued(computer.getDiscontinued().toString());
 			}
-			if (computer.getCompanyEntity() != null) {
 
-				computerDTOBuilder.companyId(computer.getCompanyEntity().getId());
-				computerDTOBuilder.companyName(computer.getCompanyEntity().getName());
-			}
+			computerDTOBuilder.companyId(computer.getCompanyId());
+			computerDTOBuilder.companyName(computer.getCompanyName());
+
 		}
 
 		return computerDTOBuilder.build();
@@ -56,10 +55,8 @@ public class ComputerDTOMapper {
 		computerBuilder.id(computerDTO.getId()).name(computerDTO.getName());
 		computerBuilder.introduced(DataMapper.convertStringToDate(computerDTO.getIntroduced()));
 		computerBuilder.discontinued(DataMapper.convertStringToDate(computerDTO.getDiscontinued()));
+		computerBuilder.companyId(computerDTO.getCompanyId());
 
-		if (computerDTO.getCompanyName() != null) {
-			computerBuilder.company(new CompanyEntity(computerDTO.getCompanyId(), computerDTO.getCompanyName()));
-		}
 
 		return computerBuilder.build();
 

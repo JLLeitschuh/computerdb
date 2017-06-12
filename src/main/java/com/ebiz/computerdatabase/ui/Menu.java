@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.ebiz.computerdatabase.exception.DTOException;
+import com.ebiz.computerdatabase.exception.DAOException;
 import com.ebiz.computerdatabase.model.CompanyEntity;
 import com.ebiz.computerdatabase.model.ComputerEntity;
 import com.ebiz.computerdatabase.persistence.Query;
@@ -23,19 +23,19 @@ public class Menu {
 
 	/**
 	 * constructor.
-	 * @throws DTOException 
+	 * @throws DAOException 
 	 */
-	public Menu() throws DTOException {
+	public Menu() throws DAOException {
 
 		in = new Scanner(System.in);
 	}
 
 	/**
 	 * make menu choice.
-	 * @throws DTOException
+	 * @throws DAOException
 	 * @throws NumberFormatException 
 	 */
-	public void chooseMenu() throws NumberFormatException, DTOException {
+	public void chooseMenu() throws NumberFormatException, DAOException {
 
 		boolean keepChoose = true;
 		while (keepChoose) {
@@ -67,9 +67,9 @@ public class Menu {
 	/**
 	 * choice statement with numeric selected by user.
 	 * @param numeric .
-	 * @throws DTOException 
+	 * @throws DAOException 
 	 */
-	public void choice(int numeric) throws DTOException {
+	public void choice(int numeric) throws DAOException {
 
 		switch (numeric) {
 
@@ -104,9 +104,9 @@ public class Menu {
 
 	/**
 	 * delete computer from computer table.
-	 * @throws DTOException 
+	 * @throws DAOException 
 	 */
-	public void deleteComputerById() throws DTOException {
+	public void deleteComputerById() throws DAOException {
 
 		System.out.println("Delete computer with id :");
 		String computerId = in.nextLine();
@@ -127,9 +127,9 @@ public class Menu {
 
 	/**
 	 * delete company from computer table.
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
-	public void deleteCompanyById() throws DTOException {
+	public void deleteCompanyById() throws DAOException {
 
 		System.out.println("Delete company with id :");
 		String companyId = in.nextLine();
@@ -144,9 +144,9 @@ public class Menu {
 
 	/**
 	 * display Computer with specific id.
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
-	public void displayComputerById() throws DTOException {
+	public void displayComputerById() throws DAOException {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer ID to display details ");
@@ -169,9 +169,9 @@ public class Menu {
 
 	/**
 	 * chooseComputerToUpdate.
-	 * @throws DTOException 
+	 * @throws DAOException 
 	 */
-	public void chooseComputerToUpdate() throws DTOException {
+	public void chooseComputerToUpdate() throws DAOException {
 
 		choice(Query.DISPLAYCOMPUTERLIST);
 		System.out.println("Choose Computer To update with id ");
@@ -189,9 +189,9 @@ public class Menu {
 	/**
 	 * update Computer with specific id.
 	 * @param idComputerUpdate .
-	 * @throws DTOException 
+	 * @throws DAOException 
 	 */
-	public void updateComputer(String idComputerUpdate) throws DTOException {
+	public void updateComputer(String idComputerUpdate) throws DAOException {
 
 		ComputerEntity computerModel = computerService.getComputerById(idComputerUpdate);
 		if (computerModel != null) {
@@ -237,17 +237,17 @@ public class Menu {
 
 	/**
 	 * display all computers from computer table.
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
-	public void displayComputerList() throws DTOException {
+	public void displayComputerList() throws DAOException {
 		computerService.getComputers();
 	}
 
 	/**
 	 * display all company from company table.
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
-	public void displayCompanyList() throws DTOException {
+	public void displayCompanyList() throws DAOException {
 		companyService.getCompanies();
 	}
 

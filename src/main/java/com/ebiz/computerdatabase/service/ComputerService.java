@@ -7,7 +7,7 @@ import com.ebiz.computerdatabase.model.ComputerEntity;
 import com.ebiz.computerdatabase.model.Page;
 import com.ebiz.computerdatabase.model.PageRequest;
 import com.ebiz.computerdatabase.persistence.dao.ComputerDao;
-import com.ebiz.computerdatabase.exception.DTOException;
+import com.ebiz.computerdatabase.exception.DAOException;
 import static com.ebiz.computerdatabase.persistence.dao.DaoUtils.*;
 
 
@@ -29,53 +29,21 @@ public class ComputerService {
 
     @Autowired
 	private ComputerDao computerDao;
-    @Autowired
-	private CompanyService companyService;
 
-	List<ComputerDTO> computerDTOList;
-	private static final ComputerService COMPUTER_SERVICE = new ComputerService();
-	String research = "";
+
 	Logger logger =LoggerFactory.getLogger(getClass());
 
 
 	/**
 	 * insert new computer into db.
-	 * @param computerEntity .
-	 * @throws DTOException .
-	 */
-	public void insertComputer(ComputerEntity computerEntity) {
-
-		try {
-
-			computerDao.create(computerEntity);
-		} catch (DTOException dtoException) {
-			logger.error(dtoException.getMessage());
-			throw new RuntimeException(dtoException.getMessage());
-		}
-	}
-
-	/**
-	 * insert new computer into db.
-	 * @param request .
+	 * @param computerDTO .
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void insertComputer(HttpServletRequest request) {
+	public void insertComputer(ComputerDTO computerDTO) {
 
 		try {
-			String computerName = request.getParameter("name");
-			String introduced = request.getParameter("introduced");
-			String discontinued = request.getParameter("discontinued");
-			String companyId = request.getParameter("companyId");
-
-			ComputerDTO.ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
-			computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
-			CompanyEntity company = companyService.findCompanyById(companyId);
-			if (company != null) {
-				computerDTOBuilder.companyId(company.getId());
-				computerDTOBuilder.companyName(company.getName());
-			}
-			computerDao.create(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
-		} catch (DTOException e) {
+			computerDao.create(ComputerDTOMapper.createComputer(computerDTO));
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 
@@ -86,7 +54,7 @@ public class ComputerService {
 	 * get computer by id.
 	 * @param strId .
 	 * @return ComputerDTO corresponding to computer object with id strId
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ComputerEntity getComputerById(String strId) {
@@ -98,7 +66,7 @@ public class ComputerService {
 				return computerEntity;
 			}
 			return null;
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
@@ -109,44 +77,15 @@ public class ComputerService {
 	/**
 	 * update computer into db.
 	 * @return Computer which been update
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
-	public boolean update(HttpServletRequest request) {
-
+	public boolean update(ComputerDTO computerDTO) {
 
 		try {
-			String computerId = request.getParameter("id");
-			String computerName = request.getParameter("name");
-			String introduced = request.getParameter("introduced");
-			String discontinued = request.getParameter("discontinued");
-			String companyId = request.getParameter("companyId");
-
-
-			logger.info("computerId Resquest" + computerId);
-
-			ComputerDTO.ComputerDTOBuilder computerDTOBuilder = ComputerDTO.getComputerDtoBuilder();
-			// test computer Id before edit computer
-			if (computerId != null && StringUtils.isNumeric(computerId)) {
-
-				computerDTOBuilder.id(Integer.parseInt(computerId));
-			}
-			
-			computerDTOBuilder.name(computerName).introduced(introduced).discontinued(discontinued);
-
-			CompanyEntity company = null;
-
-			// find corresponding company corresponding to company Id
-
-			company = companyService.findCompanyById(companyId);
-
-			if (company != null) {
-				computerDTOBuilder.companyId(company.getId());
-				computerDTOBuilder.companyName(company.getName());
-			}
-			boolean success = computerDao.update(ComputerDTOMapper.createComputer(computerDTOBuilder.build()));
+			boolean success = computerDao.update(ComputerDTOMapper.createComputer(computerDTO));
 			return success;
 
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
@@ -159,13 +98,13 @@ public class ComputerService {
 	 * update computer into db.
 	 * @param computerEntity .
 	 * @return Computer which been update
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 	public boolean update(ComputerEntity computerEntity) {
 
 		try {
 			return computerDao.update(computerEntity);
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
@@ -175,7 +114,7 @@ public class ComputerService {
 	/**
 	 * get Computers list.
 	 * @return list of computerDTO
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 	public List<ComputerEntity> getComputers() {
 
@@ -184,7 +123,7 @@ public class ComputerService {
 		try {
 			list = computerDao.getAll();
 
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
@@ -206,7 +145,7 @@ public class ComputerService {
 
 			return page;
 
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
@@ -217,9 +156,9 @@ public class ComputerService {
 	 * get total item of table.
 	 * @param researchString .
 	 * @return integer
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
-	public int getTotalItem(String researchString) throws DTOException {
+	public int getTotalItem(String researchString) throws DAOException {
 
 		return computerDao.getCount(researchString);
 	}
@@ -227,7 +166,7 @@ public class ComputerService {
 	/**
 	 * delete computer with id strId.
 	 * @param computerIdString .
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteComputer(String[] computerIdString) {
@@ -235,7 +174,7 @@ public class ComputerService {
 		try {
 			computerDao.deleteComputers(computerIdString);
 
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}

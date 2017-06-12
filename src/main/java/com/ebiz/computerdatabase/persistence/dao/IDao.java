@@ -1,7 +1,8 @@
 package com.ebiz.computerdatabase.persistence.dao;
 
-import com.ebiz.computerdatabase.exception.DTOException;
+import com.ebiz.computerdatabase.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -15,23 +16,24 @@ import java.sql.SQLException;
 @Repository
 public class IDao {
 
+
     @Autowired
-    protected DataSource ds;
+    protected DataSource dataSource;
+
     protected interface ConnectionConsumer<T> {
-        T consume(Connection conn) throws SQLException, DTOException;
+        T consume(JdbcTemplate jdbcTemplate) throws SQLException, DAOException;
     }
 
-    protected <T> T usingConnection(ConnectionConsumer<T> consumer) throws DTOException {
-        Connection connection = DataSourceUtils.getConnection(ds);
+    protected <T> T usingConnection(ConnectionConsumer<T> consumer) throws DAOException {
+
+        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
 
         try {
-            return consumer.consume(connection);
+            return consumer.consume(jdbcTemplateObject);
         }
         catch (SQLException ex) {
-            throw new DTOException(ex.getMessage());
+            throw new DAOException(ex.getMessage());
         }
-        finally {
-            DataSourceUtils.releaseConnection(connection, ds);
-        }
+
     }
 }

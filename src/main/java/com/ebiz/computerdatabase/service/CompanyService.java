@@ -1,7 +1,7 @@
 package com.ebiz.computerdatabase.service;
 
 import com.ebiz.computerdatabase.dto.CompanyDTO;
-import com.ebiz.computerdatabase.exception.DTOException;
+import com.ebiz.computerdatabase.exception.DAOException;
 import com.ebiz.computerdatabase.mapper.CompanyMapper;
 import com.ebiz.computerdatabase.model.CompanyEntity;
 import com.ebiz.computerdatabase.persistence.dao.CompanyDao;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,6 @@ import static com.ebiz.computerdatabase.log.LoggerSing.logger;
 @Service
 public class CompanyService {
 
-
-	@Autowired
-	private DataSource dataSource;
 
 	@Autowired
 	CompanyDao companyDao;
@@ -36,7 +32,7 @@ public class CompanyService {
 	 * find company into db by id.
 	 * @param strId .
 	 * @return CompanyDTO corresponding to object company with id "strId"
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 
 	public CompanyEntity findCompanyById(String strId) {
@@ -46,12 +42,11 @@ public class CompanyService {
 				int id = Integer.parseInt(strId);
 				return companyDao.find(id);
 			}
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
 		return null;
-
 	}
 
 	/**
@@ -64,7 +59,7 @@ public class CompanyService {
 		List<CompanyEntity> companies;
 		try {
 			companies = companyDao.getAll();
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
@@ -79,7 +74,7 @@ public class CompanyService {
 	/**
 	 * delete Company .
 	 * @param id .
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteCompanyId(String id) {
@@ -87,7 +82,7 @@ public class CompanyService {
 		try {
 			computerDao.deleteComputerFromCompany(Integer.parseInt(id));
 			companyDao.deleteCompanyId(Integer.parseInt(id));
-		} catch (DTOException e) {
+		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}

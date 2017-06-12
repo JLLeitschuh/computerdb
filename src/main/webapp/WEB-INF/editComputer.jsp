@@ -24,7 +24,7 @@
 					<h1>Edit Computer</h1>
 
 					<form action="editComputer" method="POST">
-						<input type="hidden" value="${id}" id="id" />
+						<input type="hidden" value="${id}" id="id" name="id" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
@@ -58,7 +58,7 @@
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId">
+									class="form-control" id="companyId" name="companyId">
 									<c:forEach items="${companyList}" var="company">
 										<option value="${company.id}"
 											${computer.companyId == company.id ? 'selected' : ' '}><c:out
@@ -68,11 +68,6 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="hidden" name="id" value="${id}" /> <input
-								type="hidden" name="name_before" value="${computer.id}" /> <input
-								type="hidden" name="introduced_before" value="" ${computer.introduced}" />
-							<input type="hidden" name="discontinued_before" value="" ${computer.discontinued}" />
-							<input type="hidden" name="company_before" value="" ${computer.companyId}" />
 							<input type="submit" id="edit" value="Edit"
 								class="btn btn-primary"> or <a
 								href="<c:url value="/dashboard"></c:url>"

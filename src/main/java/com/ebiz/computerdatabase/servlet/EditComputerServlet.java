@@ -1,8 +1,9 @@
 package com.ebiz.computerdatabase.servlet;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
-import com.ebiz.computerdatabase.exception.DTOException;
+
 import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
+import com.ebiz.computerdatabase.mapper.RequestMapper;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.slf4j.Logger;
@@ -79,7 +80,7 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		boolean success = computerService.update(request);
+		boolean success = computerService.update(RequestMapper.requestToDTO(request));
 		logger.info("success " + success);
 		// test if update is successfull . If it's not, send error 500
 		if (!success) {

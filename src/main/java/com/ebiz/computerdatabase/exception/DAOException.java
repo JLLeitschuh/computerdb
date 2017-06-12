@@ -1,12 +1,12 @@
 package com.ebiz.computerdatabase.exception;
 
-public class DTOException extends Exception {
+public class DAOException extends Exception {
 
 	/**
 	 * Exception constructor .
 	 * @param message .
 	 */
-	public DTOException(String message) {
+	public DAOException(String message) {
 		super(message);
 	}
 

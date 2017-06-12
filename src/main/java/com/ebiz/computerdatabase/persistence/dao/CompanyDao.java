@@ -1,9 +1,12 @@
 package com.ebiz.computerdatabase.persistence.dao;
 
-import com.ebiz.computerdatabase.exception.DTOException;
+import com.ebiz.computerdatabase.exception.DAOException;
 import com.ebiz.computerdatabase.mapper.CompanyMapper;
+import com.ebiz.computerdatabase.mapper.ComputerMapper;
 import com.ebiz.computerdatabase.model.CompanyEntity;
+import com.ebiz.computerdatabase.model.ComputerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -33,35 +36,19 @@ public class CompanyDao extends IDao{
 	 * find company with specific id.
 	 * @param id for company to find
 	 * @return CompanyEntity
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 
-	public CompanyEntity find(int id) throws DTOException {
+	public CompanyEntity find(int id) throws DAOException {
 		// TODO Auto-generated method stub
 
-		return usingConnection(connect -> {
-			CompanyEntity companyModel = null;
-			PreparedStatement preparedStatement = null;
-			ResultSet resultSet = null;
-			try {
+		return usingConnection(jdbcTemplateObject -> {
 
-				preparedStatement = (PreparedStatement) connect
-						.prepareStatement("SELECT * FROM " + COMPANY_TABLE_NAME + " WHERE id =?");
-				preparedStatement.setInt(1, id);
-				resultSet = preparedStatement.executeQuery();
+			CompanyEntity companyEntity = jdbcTemplateObject.queryForObject("SELECT * FROM " + COMPANY_TABLE_NAME + " WHERE id =?",
+					new Object[]{id}, new CompanyMapper());
 
-				if (resultSet.first()) {
+			return companyEntity;
 
-					companyModel = CompanyMapper.createCompany(resultSet);
-				}
-				return companyModel;
-			} catch (SQLException e) {
-				logger.error(e.getMessage());
-				throw new DTOException(e.getMessage());
-
-			} finally {
-				close(resultSet, preparedStatement);
-			}
 		});
 
 	}
@@ -69,61 +56,33 @@ public class CompanyDao extends IDao{
 	/**
 	 * get all company from company table.
 	 * @return list of companies
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 
-	public List<CompanyEntity> getAll() throws DTOException {
+	public List<CompanyEntity> getAll() throws DAOException {
 
-		return usingConnection(connect -> {
-			ArrayList<CompanyEntity> companyList = new ArrayList<>();
-			ResultSet resultSet = null;
-			Statement statement = null;
-			try {
-				statement = (Statement) connect.createStatement();
-				resultSet = statement.executeQuery("SELECT * FROM " + COMPANY_TABLE_NAME);
-				while (resultSet.next()) {
+		return usingConnection(jdbcTemplateObject->{
 
-					CompanyEntity companyEntity = CompanyMapper.createCompany(resultSet);
-					companyList.add(companyEntity);
-					System.out.println("Value " + companyEntity.toString());
+			List<CompanyEntity> companyList = jdbcTemplateObject.query("SELECT * FROM " + COMPANY_TABLE_NAME, new CompanyMapper());
+			return companyList;
 
-				}
-				return companyList;
-			} catch (SQLException e) {
-				logger.error(e.getMessage());
-				throw new DTOException(e.getMessage());
-			} finally {
-				close(resultSet, statement);
-			}
 		});
 
 	}
 
-	/**
+	/**R
 	 * delete Company with id "companyId".
 	 * @param companyId .
-	 * @throws DTOException .
+	 * @throws DAOException .
 	 */
 
-	public void deleteCompanyId(int companyId) throws DTOException {
+	public void deleteCompanyId(int companyId) throws DAOException {
 
-		usingConnection(connect -> {
-			ResultSet resultSet = null;
-			PreparedStatement preparedStatement = null;
+		usingConnection(jdbcTemplateObject -> {
 
-			try {
-				preparedStatement = (PreparedStatement) connect
-						.prepareStatement("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?");
-				preparedStatement.setInt(1, companyId);
-				preparedStatement.executeUpdate();
-				return true;
+			jdbcTemplateObject.update("DELETE  FROM " + CompanyDao.COMPANY_TABLE_NAME + " WHERE id =?",companyId);
+			return true;
 
-			} catch (SQLException e) {
-				logger.error(e.getMessage());
-				throw new DTOException(e.getMessage());
-			} finally {
-				close(resultSet, preparedStatement);
-			}
 		});
 
 	}

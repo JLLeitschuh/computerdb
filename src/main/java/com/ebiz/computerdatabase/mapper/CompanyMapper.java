@@ -2,30 +2,14 @@ package com.ebiz.computerdatabase.mapper;
 
 import com.ebiz.computerdatabase.dto.CompanyDTO;
 import com.ebiz.computerdatabase.model.CompanyEntity;
+import com.ebiz.computerdatabase.model.ComputerEntity;
+import org.springframework.jdbc.core.RowMapper;
 
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CompanyMapper {
-
-	/**
-	 *  createCompany from ResultSet.
-	 * @param resultSet .
-	 * @return company entity create from result set
-	 */
-	public static CompanyEntity createCompany(ResultSet resultSet) {
-
-		try {
-			int id = resultSet.getInt(1);
-			String name = resultSet.getString(2);
-			return new CompanyEntity(id, name);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+public class CompanyMapper implements RowMapper<CompanyEntity> {
 
 	/**
 	 * create companyDTO object from companyEntity object.
@@ -37,13 +21,13 @@ public class CompanyMapper {
 		return new CompanyDTO(company.getId(), company.getName());
 	}
 
-	/**
-	 * create Company Object with companyDTO.
-	 * @param companyDTO DTO to company entity .
-	 * @return new CompanyEntity
-	 */
-	public static CompanyEntity createCompany(CompanyDTO companyDTO) {
 
-		return new CompanyEntity(companyDTO.getId(), companyDTO.getName());
+	@Override
+	public CompanyEntity mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+
+		int id = resultSet.getInt(1);
+		String name = resultSet.getString(2);
+		return new CompanyEntity(id, name);
+
 	}
 }

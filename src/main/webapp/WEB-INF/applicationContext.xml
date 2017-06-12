@@ -32,6 +32,8 @@
             </props>
         </property>
     </bean>
+    <bean id="computerValidator"
+          class="com.ebiz.computerdatabase.validator.ComputerValidator"/>
 
     <context:annotation-config />
     <context:component-scan base-package="com.ebiz.computerdatabase"  />

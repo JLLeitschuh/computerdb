@@ -1,5 +1,8 @@
 package com.ebiz.computerdatabase.dto;
 
+import com.sun.istack.internal.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class ComputerDTO {
 
 	private int id;
@@ -8,6 +11,7 @@ public class ComputerDTO {
 	private String discontinued;
 	private int companyId;
 	private String companyName;
+
 
 	/**
 	 * Computer DTO constructor.
@@ -21,6 +25,7 @@ public class ComputerDTO {
 		this.discontinued = computerBuilder.discontinued;
 		this.companyId = computerBuilder.companyId;
 		this.companyName = computerBuilder.companyName;
+
 	}
 
 	public static ComputerDTOBuilder getComputerDtoBuilder() {
@@ -108,6 +113,7 @@ public class ComputerDTO {
 		 * @param name .
 		 * @return computer dto builder object
 		 */
+		@NotNull
 		public ComputerDTOBuilder name(String name) {
 			this.name = name;
 			return this;
@@ -118,6 +124,8 @@ public class ComputerDTO {
 		 * @param introduced .
 		 * @return computer dto builder object
 		 */
+		@DateTimeFormat(pattern="yyyy-MM-dd")
+		@NotNull
 		public ComputerDTOBuilder introduced(String introduced) {
 			this.introduced = introduced;
 			return this;
@@ -128,6 +136,8 @@ public class ComputerDTO {
 		 * @param discontinued .
 		 * @return computer dto builder object
 		 */
+		@DateTimeFormat(pattern="yyyy-MM-dd")
+		@NotNull
 		public ComputerDTOBuilder discontinued(String discontinued) {
 			this.discontinued = discontinued;
 			return this;
@@ -138,21 +148,16 @@ public class ComputerDTO {
 		 * @param companyId .
 		 * @return computer dto builder object
 		 */
-
+		@NotNull
 		public ComputerDTOBuilder companyId(int companyId) {
 			this.companyId = companyId;
 			return this;
 		}
-
-		/**
-		 * set company name.
-		 * @param companyName .
-		 * @return computer dto builder object
-		 */
-		public ComputerDTOBuilder companyName(String companyName) {
+		public ComputerDTOBuilder companyName(String companyName){
 			this.companyName = companyName;
 			return this;
 		}
+
 
 		/**
 		 * build computerDTO object.
