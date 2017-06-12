@@ -88,7 +88,7 @@
 								class="cb" value="${computer.id}"></td>
 							<td><a
 								href="<c:url value="/editComputer">
-               <c:param name="computerId" value="${computer.id}"/>
+               <c:param name="id" value="${computer.id}"/>
         						 </c:url>"
 								onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>

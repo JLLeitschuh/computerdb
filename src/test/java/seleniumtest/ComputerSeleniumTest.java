@@ -8,7 +8,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import log.LoggerSing;
+import com.ebiz.computerdatabase.log.LoggerSing;
 
 public class ComputerSeleniumTest {
 	private WebDriver driver;
@@ -27,7 +27,7 @@ public class ComputerSeleniumTest {
 	@Test
 	public void testAddComputerSelenium() throws Exception {
 
-		driver.get(baseUrl + "/computerdatabase/dashboard");
+		driver.get(baseUrl + "/dashboard");
 
 		// keep total computer number found
 		WebElement div = driver.findElement(By.id("homeTitle"));
@@ -47,8 +47,8 @@ public class ComputerSeleniumTest {
 
 		long timeStamp = System.currentTimeMillis();
 		// Set value to add new computer
-		driver.findElement(By.id("computerName")).sendKeys(Keys.DELETE);
-		driver.findElement(By.id("computerName")).sendKeys("Test Selenium" + timeStamp);
+		driver.findElement(By.id("name")).sendKeys(Keys.DELETE);
+		driver.findElement(By.id("name")).sendKeys("Test Selenium" + timeStamp);
 
 		driver.findElement(By.id("introduced")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("introduced")).sendKeys("01-01-2012");
@@ -90,7 +90,7 @@ public class ComputerSeleniumTest {
 	 */
 	public void testEditComputerSelenium(long timeStamp) throws Exception {
 
-		driver.get(baseUrl + "/computerdatabase/dashboard");
+		driver.get(baseUrl + "/dashboard");
 
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Test Selenium" + timeStamp);
@@ -106,8 +106,8 @@ public class ComputerSeleniumTest {
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium");
 		driver.findElement(By.id("searchsubmit")).click();
 		driver.findElement(By.linkText("Test Selenium" + timeStamp)).click();
-		driver.findElement(By.id("computerName")).sendKeys(Keys.DELETE);
-		driver.findElement(By.id("computerName")).sendKeys("Selenium" + timeStamp);
+		driver.findElement(By.id("name")).sendKeys(Keys.DELETE);
+		driver.findElement(By.id("name")).sendKeys("Selenium" + timeStamp);
 		driver.findElement(By.id("edit")).click();
 		driver.findElement(By.linkText("Cancel")).click();
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
@@ -129,7 +129,7 @@ public class ComputerSeleniumTest {
 	 */
 	public void testDeleteComputerSelenium(long timeStamp) {
 
-		driver.get(baseUrl + "/computerdatabase/dashboard");
+		driver.get(baseUrl + "/dashboard");
 
 		driver.findElement(By.id("searchbox")).sendKeys(Keys.DELETE);
 		driver.findElement(By.id("searchbox")).sendKeys("Selenium" + timeStamp);

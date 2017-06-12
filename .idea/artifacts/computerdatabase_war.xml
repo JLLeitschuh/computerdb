@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="computerdatabase:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="computerdatabase-1.3.war">
+      <element id="artifact" artifact-name="computerdatabase:war exploded" />
+    </root>
+  </artifact>
+</component>
