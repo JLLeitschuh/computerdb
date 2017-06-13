@@ -35,7 +35,7 @@ public class ComputerValidator implements Validator{
             errors.rejectValue("discontinued", "", new Object[]{"'discontinuedLocalDate'"}, "discontinued can't be null");
         }
         if(discontinuedLocalDate != null && discontinuedLocalDate.isBefore(introducedLocalDate)){
-            errors.rejectValue("isBefore", "", new Object[]{"'introducedLocalDate,discontinuedLocalDate'"}, "discontinued can't be before introduced");
+            errors.rejectValue("discontinued", "", new Object[]{"'introducedLocalDate,discontinuedLocalDate'"}, "discontinued can't be before introduced");
         }
     }
 }
