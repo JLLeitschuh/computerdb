@@ -28,8 +28,7 @@
 						<div class="form-group">
 							<label for="name">Computer name Test</label>
 							<spr:input path="name" class="form-control" />
-							<spr:errors path="name" class="form-control"  />
-
+                            <spr:errors path="name" class="form-control" />
 						</div>
 						<div class="form-group">
 							<label for="introduced">Introduced date (yyyy-mm-dd)</label>

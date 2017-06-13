@@ -2,11 +2,9 @@ package com.ebiz.computerdatabase.servlet;
 
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
-import com.ebiz.computerdatabase.log.LoggerSing;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.servlet.view.RedirectView;
 
 
 @RequestMapping("/")
@@ -45,11 +43,11 @@ public class AddComputerController{
 	}
 
 	@RequestMapping(value = "addComputer", method = RequestMethod.POST)
-	protected String addComputer(@Validated ComputerDTO computerDTO, BindingResult bindingResult,Model model) {
+	protected String addComputer(@Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model) {
 
+		model.addAttribute("computer",new ComputerDTO());
 		if (bindingResult.hasErrors()) {
 
-			model.addAttribute("computer",computerDTO);
 			return "404";
 		}
 		computerService.insertComputer(computerDTO);
