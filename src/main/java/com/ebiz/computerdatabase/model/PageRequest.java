@@ -3,28 +3,30 @@ package com.ebiz.computerdatabase.model;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 
 public class PageRequest {
 
-	String research;
-	int page;
-	int itemNumber;
+	String search;
+	int page =1;
+	int itemNumber=10;
 	String orderBy;
-	int sort;
+	int sort =1;
 	public static final int DEFAULT_NUMBER_PAGE = 1;
 	public static final int DEFAULT_ITEM_NUMBER = 10;
-	public static final int DEFAULT_SORT = 0;
+	public static final int DEFAULT_order = 0;
 
 
 
-	public PageRequest(HttpServletRequest request) {
+	public PageRequest(Map<String,String> map) {
 
-		this.research = request.getParameter("search");
-		setPage(request.getParameter("page"));
-		setItemNumber(request.getParameter("item_number"));
-		setOrderBy(request.getParameter("orderby"), request.getParameter("order"));
+		this.search = map.get("search");
+		setPage(map.get("page"));
+		setItem_number(map.get("itemNumber"));
+		setOrderBy(map.get("orderby"), map.get("sort"));
 	}
+
 
 	public void setPage(String page) {
 		if (page == null || !StringUtils.isNumeric(page)) {
@@ -34,21 +36,21 @@ public class PageRequest {
 		}
 	}
 
-	public void setItemNumber(String itemNumber) {
-		if (itemNumber == null || !StringUtils.isNumeric(itemNumber)) {
+	public void setItem_number(String item_number) {
+		if (item_number == null || !StringUtils.isNumeric(item_number)) {
 			this.itemNumber = DEFAULT_ITEM_NUMBER;
 		} else {
-			this.itemNumber = Integer.parseInt(itemNumber);
+			this.itemNumber = Integer.parseInt(item_number);
 		}
 	}
 
-	public void setOrderBy(String orderBy,String sort) {
+	public void setOrderBy(String orderBy,String order) {
 
 		this.orderBy = orderBy;
-		if (sort == null || !StringUtils.isNumeric(sort)) {
-			this.sort = DEFAULT_SORT;
+		if (order == null || !StringUtils.isNumeric(order)) {
+			this.sort = DEFAULT_order;
 		} else {
-			this.sort =Integer.parseInt(sort);
+			this.sort =Integer.parseInt(order);
 		}
 	}
 
@@ -69,9 +71,9 @@ public class PageRequest {
 		return sort;
 	}
 
-	public String getResearch() {
+	public String getSearch() {
 
-		return research;
+		return search;
 	}
 
 }

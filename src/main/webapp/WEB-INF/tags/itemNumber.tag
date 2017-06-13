@@ -3,13 +3,13 @@
 	description="search page"%>
 
 
-<div class="btn-group btn-group-sm pull-right" id="item_number"
+<div class="btn-group btn-group-sm pull-right" id="itemNumber"
 	role="group">
 	<a
 		href="<c:url value="/dashboard">
-               <c:param name="item_number" value="10"/>
-                  <c:if test ="${not empty page.pageRequest.research}">
-               <c:param name="search" value="${page.pageRequest.research}"/>
+               <c:param name="itemNumber" value="10"/>
+                  <c:if test ="${not empty page.pageRequest.search}">
+               <c:param name="search" value="${page.pageRequest.search}"/>
 					</c:if>
 					<c:if test ="${not empty page.pageRequest.orderBy}">
                <c:param name="orderby" value="${page.pageRequest.orderBy}"/>
@@ -19,9 +19,9 @@
 		<button type="button" class="btn btn-default">10</button>
 	</a> <a
 		href="<c:url value="/dashboard">
-               <c:param name="item_number" value="50"/>
-                <c:if test ="${not empty page.pageRequest.research}">
-               <c:param name="search" value="${page.pageRequest.research}"/>
+               <c:param name="itemNumber" value="50"/>
+                <c:if test ="${not empty page.pageRequest.search}">
+               <c:param name="search" value="${page.pageRequest.search}"/>
 					</c:if>
 					<c:if test ="${not empty page.pageRequest.orderBy}">
                <c:param name="orderby" value="${page.pageRequest.orderBy}"/>
@@ -31,9 +31,9 @@
 		<button type="button" class="btn btn-default">50</button>
 	</a> <a
 		href="<c:url value="/dashboard">
-               <c:param name="item_number" value="100"/>
-                 <c:if test ="${not empty page.pageRequest.research}">
-               <c:param name="search" value="${page.pageRequest.research}"/>
+               <c:param name="itemNumber" value="100"/>
+                 <c:if test ="${not empty page.pageRequest.search}">
+               <c:param name="search" value="${page.pageRequest.search}"/>
 					</c:if>
 					<c:if test ="${not empty page.pageRequest.orderBy}">
                <c:param name="orderby" value="${page.pageRequest.orderBy}"/>

@@ -160,13 +160,13 @@ public class ComputerDao extends IDao {
 		return usingConnection(jdbcTemplateObject-> {
 
 			List<ComputerEntity> computerList;
-			String researchString = pageRequest.getResearch();
+			String researchString = pageRequest.getSearch();
 			String orderby = pageRequest.getOrderBy();
 			int offset = pageRequest.getItemNumber();
 			int sort = pageRequest.getSort();
 			StringBuilder query = new StringBuilder("SELECT * FROM " + COMPUTER_TABLE_NAME + " cmp LEFT JOIN "
 					+ CompanyDao.COMPANY_TABLE_NAME + " cmpy ON cmpy.id = cmp.company_id ");
-			if (pageRequest.getResearch() != null) {
+			if (pageRequest.getSearch() != null) {
 				query.append(" WHERE cmp.name like ?");
 			}
 			if (orderby != null) {

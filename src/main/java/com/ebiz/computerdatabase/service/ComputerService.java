@@ -137,7 +137,7 @@ public class ComputerService {
 		try {
 
 			Page<ComputerDTO> page = new Page<ComputerDTO>();
-			int numberTotalPage = computerDao.getCount(pageRequest.getResearch());
+			int numberTotalPage = computerDao.getCount(pageRequest.getSearch());
 			page.setNumberTotalItems(numberTotalPage, pageRequest);
 			int start = (pageRequest.getPage() - 1) * pageRequest.getItemNumber();
 			List<ComputerEntity> computerEntities = computerDao.getComputers(start, pageRequest);

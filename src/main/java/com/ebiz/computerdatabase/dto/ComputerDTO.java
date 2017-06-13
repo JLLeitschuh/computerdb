@@ -12,7 +12,9 @@ public class ComputerDTO {
 	private int companyId;
 	private String companyName;
 
+	public ComputerDTO(){
 
+	}
 	/**
 	 * Computer DTO constructor.
 	 * @param computerBuilder .

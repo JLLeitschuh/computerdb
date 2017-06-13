@@ -1,6 +1,7 @@
 package com.ebiz.computerdatabase.controller;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
+import com.ebiz.computerdatabase.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -9,13 +10,18 @@ import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
  * Created by ebiz on 12/06/17.
  */
 @Controller
-public class AddComputerController {
+@RequestMapping("/addComputerSpr")
+class AddComputerController1 {
+
+    @Autowired
+    CompanyService companyService;
 
     @Autowired
     @Qualifier("computerValidator")
@@ -27,9 +33,11 @@ public class AddComputerController {
         return new ComputerDTO.ComputerDTOBuilder().build();
     }
 
-    @RequestMapping(value = "/addComputer", method = RequestMethod.GET)
+    @RequestMapping(value = "/addComputerSpr", method = RequestMethod.GET)
+    @ResponseBody
     public String saveEmployeePage(Model model) {
 
-        return "addComputer";
+        model.addAttribute("companyList", companyService.getCompanies());
+        return "addComputerStr";
     }
 }

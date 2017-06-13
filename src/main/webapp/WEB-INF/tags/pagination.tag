@@ -17,8 +17,8 @@
                <c:param name="page" value="${page.pageRequest.page}"/>
              </c:otherwise>
              </c:choose>
-               <c:if test ="${not empty page.pageRequest.research}">
-               <c:param name="search" value="${page.pageRequest.research}"/>
+               <c:if test ="${not empty page.pageRequest.search}">
+               <c:param name="search" value="${page.pageRequest.search}"/>
 					</c:if>
 					<c:if test ="${not empty page.pageRequest.itemNumber}">
                <c:param name="item_number" value="${page.pageRequest.itemNumber}"/>
@@ -55,7 +55,7 @@
 			</c:when>
 		</c:choose>
 		<c:forEach var="i" begin="${begin}" end="${end }">
-			<mytag:paramtag page="${i}" search="${ page.pageRequest.research}" orderby="${ page.pageRequest.orderBy}"
+			<mytag:paramtag page="${i}" search="${ page.pageRequest.search}" orderby="${ page.pageRequest.orderBy}"
 				itemNumber="${ page.pageRequest.itemNumber}" order = "${  page.pageRequest.sort}" />
 		</c:forEach>
 	</c:if>
@@ -70,8 +70,8 @@
                <c:param name="page" value="${page.pageRequest.page}"/>
              </c:otherwise>
              </c:choose>
-             <c:if test ="${not empty page.pageRequest.research}">
-               <c:param name="search" value="${page.pageRequest.research}"/>
+             <c:if test ="${not empty page.pageRequest.search}">
+               <c:param name="search" value="${page.pageRequest.search}"/>
 					</c:if>
 					<c:if test ="${not empty page.pageRequest.itemNumber}">
                <c:param name="item_number" value="${page.pageRequest.itemNumber}"/>

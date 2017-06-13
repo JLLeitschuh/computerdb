@@ -27,18 +27,16 @@
                     <fieldset>
                         <div class="form-group">
                             <label for="name">Computer name Test</label>
-                            <spr:input path="fname" />
+                            <spr:input path="name" />
 
                         </div>
                         <div class="form-group">
-                            <label for="introduced">Introduced date (yyyy-mm-dd)</label> <input
-                                type="date" class="form-control" name="introduced"
-                                id="introduced" placeholder="Introduced date" data-validation="date" data-validation-format="yyyy-mm-dd">
+                            <label for="introduced">Introduced date (yyyy-mm-dd)</label>
+                            <spr:input path="introduced" />
                         </div>
                         <div class="form-group">
-                            <label for="discontinued">Discontinued date (yyyy-mm-dd)</label> <input
-                                type="date" class="form-control" name="discontinued"
-                                id="discontinued" placeholder="Discontinued date" data-validation="date" data-validation-format="yyyy-mm-dd">
+                            <label for="discontinued">Discontinued date (yyyy-mm-dd)</label>
+                            <spr:input path="discontinued" />
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label> <select

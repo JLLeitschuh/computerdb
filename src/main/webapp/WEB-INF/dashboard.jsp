@@ -61,20 +61,20 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <mytag:sortby order="${page.pageRequest.sort}"
+						<th>Computer name <mytag:sortby sort="${page.pageRequest.sort}"
 								orderby="cmp.name" />
 						</th>
-						<th>Introduced date <mytag:sortby order="${page.pageRequest.sort}"
+						<th>Introduced date <mytag:sortby sort="${page.pageRequest.sort}"
 								orderby="introduced" />
 						</th>
 
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date <mytag:sortby order="${page.pageRequest.sort}"
+						<th>Discontinued date <mytag:sortby sort="${page.pageRequest.sort}"
 								orderby="discontinued" />
 						</th>
 
 						<!-- Table header for Company -->
-						<th>Company <mytag:sortby order="${page.pageRequest.sort}"
+						<th>Company <mytag:sortby sort="${page.pageRequest.sort}"
 								orderby="cmpy.name" />
 						</th>
 
