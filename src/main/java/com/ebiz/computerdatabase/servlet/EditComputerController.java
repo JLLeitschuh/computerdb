@@ -2,6 +2,7 @@ package com.ebiz.computerdatabase.servlet;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
 
+import com.ebiz.computerdatabase.log.LoggerSing;
 import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
@@ -10,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +35,14 @@ public class EditComputerController {
 	@Autowired
 	CompanyService companyService;
 
-	Logger logger = LoggerFactory.getLogger(this.getClass());;
+	@Autowired
+	private Validator computerValidator;
+
+	@InitBinder
+	private void initBinder(WebDataBinder binder) {
+		binder.addValidators(computerValidator);
+	}
+
 
 	@RequestMapping(value = "editComputer", method = RequestMethod.GET)
 	protected String getEditComputer(Model model,@RequestParam Map<String,String> requestParams) {
@@ -41,7 +54,7 @@ public class EditComputerController {
 		model.addAttribute("id", computerId);
 
 		if (computer == null) {
-			return "400";
+			return "404";
 		} else {
 
 			model.addAttribute("companyList", companyService.getCompanies());
@@ -53,14 +66,20 @@ public class EditComputerController {
 	}
 
 	@RequestMapping(value = "editComputer", method = RequestMethod.POST)
-	public RedirectView editComputer(ComputerDTO computerDTO){
+	public String editComputer(@Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model){
 
+		LoggerSing.logger.error("BINDINGRESULTERROR "+bindingResult.hasErrors());
+		if (bindingResult.hasErrors()) {
+
+			model.addAttribute("computer",computerDTO);
+			return "404";
+		}
 		boolean success = computerService.update(computerDTO);
 
 		if (!success) {
-			return new RedirectView("400");
+			return "404";
 		} else {
-			return new RedirectView("editComputer");
+			return "editComputer";
 		}
 
 	}

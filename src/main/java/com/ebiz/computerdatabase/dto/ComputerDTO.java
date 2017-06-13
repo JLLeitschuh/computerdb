@@ -6,9 +6,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ComputerDTO {
 
 	private int id;
+	@NotNull
 	private String name;
+	@NotNull
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private String introduced;
+	@NotNull
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private String discontinued;
+	@NotNull
 	private int companyId;
 	private String companyName;
 
@@ -42,6 +48,7 @@ public class ComputerDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
+
 
 	public String getName() {
 		return name;
@@ -115,7 +122,7 @@ public class ComputerDTO {
 		 * @param name .
 		 * @return computer dto builder object
 		 */
-		@NotNull
+
 		public ComputerDTOBuilder name(String name) {
 			this.name = name;
 			return this;
@@ -126,8 +133,7 @@ public class ComputerDTO {
 		 * @param introduced .
 		 * @return computer dto builder object
 		 */
-		@DateTimeFormat(pattern="yyyy-MM-dd")
-		@NotNull
+
 		public ComputerDTOBuilder introduced(String introduced) {
 			this.introduced = introduced;
 			return this;
@@ -138,8 +144,7 @@ public class ComputerDTO {
 		 * @param discontinued .
 		 * @return computer dto builder object
 		 */
-		@DateTimeFormat(pattern="yyyy-MM-dd")
-		@NotNull
+
 		public ComputerDTOBuilder discontinued(String discontinued) {
 			this.discontinued = discontinued;
 			return this;
@@ -150,7 +155,7 @@ public class ComputerDTO {
 		 * @param companyId .
 		 * @return computer dto builder object
 		 */
-		@NotNull
+
 		public ComputerDTOBuilder companyId(int companyId) {
 			this.companyId = companyId;
 			return this;

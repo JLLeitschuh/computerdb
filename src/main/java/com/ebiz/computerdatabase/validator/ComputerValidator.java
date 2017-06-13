@@ -2,8 +2,8 @@ package com.ebiz.computerdatabase.validator;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
 import com.ebiz.computerdatabase.mapper.DataMapper;
-import org.springframework.cglib.core.Local;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
@@ -20,7 +20,10 @@ public class ComputerValidator implements Validator{
     @Override
     public void validate(Object target, Errors errors) {
         ComputerDTO computerDTO = (ComputerDTO) target;
-        if(computerDTO.getName() == null){
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "introduced", "introduced.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "discontinued", "discontinued.required");
+        if(computerDTO.getName() == null ){
             errors.rejectValue("name", "", new Object[]{"'computerDTO.getName()'"}, "name can't be null");
         }
         LocalDate introducedLocalDate = DataMapper.convertStringToDate(computerDTO.getIntroduced());
@@ -31,7 +34,7 @@ public class ComputerValidator implements Validator{
         if(discontinuedLocalDate==null){
             errors.rejectValue("discontinued", "", new Object[]{"'discontinuedLocalDate'"}, "discontinued can't be null");
         }
-        if(discontinuedLocalDate.isBefore(introducedLocalDate)){
+        if(discontinuedLocalDate != null && discontinuedLocalDate.isBefore(introducedLocalDate)){
             errors.rejectValue("isBefore", "", new Object[]{"'introducedLocalDate,discontinuedLocalDate'"}, "discontinued can't be before introduced");
         }
     }

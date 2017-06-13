@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spr" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
 <title>Computer Database</title>
@@ -22,13 +23,13 @@
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id: ${id}</div>
 					<h1>Edit Computer</h1>
-
-					<form action="editComputer" method="POST">
+					<spr:form action="editComputer" commandName="computer" id="form-editComputer" accept-charset="utf-8" method="POST">
 						<input type="hidden" value="${id}" id="id" name="id" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
-								<label for="name">Computer name</label> <input type="text"
+								<label for="name">Computer name</label>
+								<input type="text"
 									class="form-control" name="name" id="name"
 									<c:if test="${not empty computer.name }" >
 									value="<c:out value="${computer.name}"/>"
@@ -73,7 +74,7 @@
 								href="<c:url value="/dashboard"></c:url>"
 								class="btn btn-default">Cancel</a>
 						</div>
-					</form>
+					</spr:form>
 				</div>
 			</div>
 		</div>

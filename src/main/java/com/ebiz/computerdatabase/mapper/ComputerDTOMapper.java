@@ -31,11 +31,9 @@ public class ComputerDTOMapper {
 
 			computerDTOBuilder.companyId(computer.getCompanyId());
 			computerDTOBuilder.companyName(computer.getCompanyName());
-
 		}
 
 		return computerDTOBuilder.build();
-
 	}
 
 	/**
