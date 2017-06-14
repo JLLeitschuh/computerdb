@@ -1,20 +1,20 @@
 package com.ebiz.computerdatabase.dto;
 
-import com.sun.istack.internal.NotNull;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class ComputerDTO {
 
 	private int id;
-	@NotNull
+
 	private String name;
-	@NotNull
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+
+
 	private String introduced;
-	@NotNull
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+
+
 	private String discontinued;
-	@NotNull
+
 	private int companyId;
 	private String companyName;
 

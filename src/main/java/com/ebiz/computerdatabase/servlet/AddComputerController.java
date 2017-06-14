@@ -1,7 +1,7 @@
 package com.ebiz.computerdatabase.servlet;
 
-
 import com.ebiz.computerdatabase.dto.ComputerDTO;
+import com.ebiz.computerdatabase.log.LoggerSing;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Locale;
 
 @RequestMapping("/")
 @Controller
@@ -35,15 +35,16 @@ public class AddComputerController{
 	}
 
 	@RequestMapping(value = "addComputer", method = RequestMethod.GET)
-	protected String getAddComputer(Model model) {
+	protected String getAddComputer(Locale locale,Model model) {
 
+		LoggerSing.logger.error("LANGUAGE ="+locale);
 		model.addAttribute("companyList", companyService.getCompanies());
 		model.addAttribute("computer", new ComputerDTO());
 		return "addComputer";
 	}
 
 	@RequestMapping(value = "addComputer", method = RequestMethod.POST)
-	protected String addComputer(@Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model) {
+	protected String addComputer( @Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model) {
 
 		model.addAttribute("computer",new ComputerDTO());
 		if (bindingResult.hasErrors()) {

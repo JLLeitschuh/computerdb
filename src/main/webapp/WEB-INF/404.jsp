@@ -4,9 +4,12 @@
     <title>Computer Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="../css/main.css" rel="stylesheet" media="screen">
+    <spring:url value="/resources/css/bootstrap.min.css" var="bootstrap" />
+    <spring:url value="/resources/css/main.css" var="main" />
+    <spring:url value="/resources/css/font-awesome.css" var="font_awsome" />
+    <link href="${bootstrap}" rel="stylesheet" media="screen">
+    <link href="${font_awsome}" rel="stylesheet" media="screen">
+    <link href="${main}" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
