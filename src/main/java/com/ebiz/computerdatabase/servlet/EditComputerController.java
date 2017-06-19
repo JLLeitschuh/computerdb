@@ -15,10 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -66,20 +63,23 @@ public class EditComputerController {
 	}
 
 	@RequestMapping(value = "editComputer", method = RequestMethod.POST)
-	public String editComputer(@Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model){
+	public String editComputer(@ModelAttribute("computer") @Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model){
 
 		model.addAttribute("computer", computerDTO);
+		model.addAttribute("companyList", companyService.getCompanies());
+
+		LoggerSing.logger.error("ComputerDTO CHANGE "+ computerDTO.getId());
 		if (bindingResult.hasErrors()) {
 
-			model.addAttribute("computer",computerDTO);
-			return "404";
+			return "editComputer";
 		}
+
 		boolean success = computerService.update(computerDTO);
 
 		if (!success) {
 			return "404";
 		} else {
-			return "redirect:editComputer";
+			return "editComputer";
 		}
 
 	}

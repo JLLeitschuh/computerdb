@@ -21,21 +21,18 @@ public class ComputerValidator implements Validator{
     public void validate(Object target, Errors errors) {
         ComputerDTO computerDTO = (ComputerDTO) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "introduced", "introduced.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "discontinued", "discontinued.required");
-        if(computerDTO.getName() == null ){
-            errors.rejectValue("name", "", new Object[]{"'computerDTO.getName()'"}, "name.required");
-        }
+
+
         LocalDate introducedLocalDate = DataMapper.convertStringToDate(computerDTO.getIntroduced());
         LocalDate discontinuedLocalDate = DataMapper.convertStringToDate(computerDTO.getDiscontinued());
-        if(introducedLocalDate==null){
-            errors.rejectValue("introduced", "", new Object[]{"'introducedLocalDate'"}, "introduced can't be null");
+
+        if(introducedLocalDate == null){
+            errors.rejectValue("introduced", "introduced.required", new Object[]{"'introducedLocalDate,discontinuedLocalDate'"}, "introduced.required");
         }
-        if(discontinuedLocalDate==null){
-            errors.rejectValue("discontinued", "", new Object[]{"'discontinuedLocalDate'"}, "discontinued can't be null");
-        }
-        if(discontinuedLocalDate != null && discontinuedLocalDate.isBefore(introducedLocalDate)){
-            errors.rejectValue("discontinued", "", new Object[]{"'introducedLocalDate,discontinuedLocalDate'"}, "discontinued can't be before introduced");
+        if(introducedLocalDate!=null && discontinuedLocalDate!=null && discontinuedLocalDate.isBefore(introducedLocalDate)){
+            errors.rejectValue("discontinued", "discontinued.before", new Object[]{"'introducedLocalDate,discontinuedLocalDate'"}, "discontinued.before");
+        }else if(discontinuedLocalDate == null){
+            errors.rejectValue("discontinued", "discontinued.required", new Object[]{"'discontinuedLocalDate'"}, "discontinued.required");
         }
     }
 }

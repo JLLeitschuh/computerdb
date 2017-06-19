@@ -12,6 +12,7 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -44,15 +45,15 @@ public class AddComputerController{
 	}
 
 	@RequestMapping(value = "addComputer", method = RequestMethod.POST)
-	protected String addComputer( @Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model) {
+	protected String addComputer(@ModelAttribute("computer") @Validated ComputerDTO computer, BindingResult bindingResult, Model model) {
 
-		model.addAttribute("computer",new ComputerDTO());
+		model.addAttribute("companyList", companyService.getCompanies());
 		if (bindingResult.hasErrors()) {
 
-			return "redirect:addComputer";
+			return "addComputer";
 		}
-		computerService.insertComputer(computerDTO);
-		 return "redirect:addComputer";
+		computerService.insertComputer(computer);
+		return "redirect:addComputer";
 
 	}
 

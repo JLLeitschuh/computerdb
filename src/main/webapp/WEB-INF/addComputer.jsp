@@ -28,22 +28,22 @@
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
 				<h1><spring:message code="add.computer" text="default text" /></h1>
-				<spr:form action="addComputer" commandName="computer" id="form-addComputer" accept-charset="utf-8" method="POST">
+				<spr:form action="addComputer" modelAttribute="computer" id="form-addComputer" accept-charset="utf-8" method="POST">
 					<fieldset>
 						<div class="form-group">
 							<label for="name"><spring:message code="computer.name" text="default text" /></label>
 							<spr:input path="name" class="form-control" />
-							<spr:errors path="name" class="form-control" />
+							<spr:errors path="name" class="form-control" cssClass="has-error" />
 						</div>
 						<div class="form-group">
-							<label for="introduced"><spring:message code="computer.introduced" text="default text" /> (yyyy-mm-dd)</label>
+							<label for="introduced"><spring:message code="computer.introduced" text="default text" /></label>
 							<spr:input path="introduced" class="form-control" />
-							<spr:errors path="introduced" class="form-control"  />
+							<spr:errors path="introduced" class="form-control" cssClass="has-error"  />
 						</div>
 						<div class="form-group">
-							<label for="discontinued"><spring:message code="computer.discontinued" text="default text" /> (yyyy-mm-dd)</label>
+							<label for="discontinued"><spring:message code="computer.discontinued" text="default text" /></label>
 							<spr:input path="discontinued" class="form-control"  />
-							<spr:errors path="discontinued" class="form-control"  />
+							<spr:errors path="discontinued" class="form-control" cssClass="has-error"   />
 						</div>
 						<div class="form-group">
 							<label for="companyId"><spring:message code="company.name" text="default text" /></label> <select

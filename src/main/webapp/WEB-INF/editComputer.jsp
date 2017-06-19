@@ -27,39 +27,25 @@
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id: ${id}</div>
 					<h1><spring:message code="edit.computer"  /></h1>
-					<spr:form action="editComputer" commandName="computer" id="form-editComputer" accept-charset="utf-8" method="POST">
-						<input type="hidden" value="${id}" id="id" name="id" />
+					<spr:form action="editComputer" modelAttribute="computer" id="form-editComputer" accept-charset="utf-8" method="POST">
+						<spr:input type="hidden" path="id" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
 								<label for="name"><spring:message code="computer.name"  /></label>
-								<input type="text"
-									class="form-control" name="name" id="name"
-									<c:if test="${not empty computer.name }" >
-									value="<c:out value="${computer.name}"/>"
-									</c:if>
-									placeholder="Computer name" />
+								<spr:input path="name" class="form-control"/>
+								<spr:errors path="name" class="form-control" cssClass="has-error" />
 							</div>
 							<div class="form-group">
-								<label for="introduced"><spring:message code="computer.introduced"  /></label> <input
-									type="date" class="form-control" name="introduced"
-									id="introduced" data-validation="date"
-									data-validation-format="yyyy-mm-dd"
-									placeholder="Introduced date"
-									<c:if test="${not empty computer.introduced }" >
-									value="<c:out value="${computer.introduced}"/>"
-									</c:if> />
+								<label for="introduced"><spring:message code="computer.introduced"  /></label>
+								<spr:input path="introduced" class="form-control"/>
+								<spr:errors path="introduced" class="form-control" cssClass="has-error" />
 
 							</div>
 							<div class="form-group">
-								<label for="discontinued"><spring:message code="computer.discontinued"  /></label> <input
-									type="date" class="form-control" name="discontinued"
-									id="discontinued" data-validation="date"
-									data-validation-format="yyyy-mm-dd"
-									<c:if test="${not empty computer.discontinued }" >
-									value="<c:out value="${computer.discontinued}"/>"
-									</c:if>
-									placeholder="Discontinued date">
+								<label for="discontinued"><spring:message code="computer.discontinued"  /></label>
+								<spr:input path="discontinued" class="form-control"/>
+								<spr:errors path="discontinued" class="form-control" cssClass="has-error" />
 							</div>
 							<div class="form-group">
 								<label for="companyId"><spring:message code="company.name"  /></label> <select
