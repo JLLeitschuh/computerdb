@@ -31,3 +31,9 @@ input[type='checkbox'] {
 input.invalid{
 	 border-color:red;
 }
+
+.error {
+    color: #ff0000;
+    font-style: italic;
+    font-weight: bold;
+}

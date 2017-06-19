@@ -34,18 +34,18 @@
 							<div class="form-group">
 								<label for="name"><spring:message code="computer.name"  /></label>
 								<spr:input path="name" class="form-control"/>
-								<spr:errors path="name" class="form-control" cssClass="has-error" />
+								<spr:errors path="name" class="form-control" cssClass="error" />
 							</div>
 							<div class="form-group">
 								<label for="introduced"><spring:message code="computer.introduced"  /></label>
 								<spr:input path="introduced" class="form-control"/>
-								<spr:errors path="introduced" class="form-control" cssClass="has-error" />
+								<spr:errors path="introduced" class="form-control" cssClass="error" />
 
 							</div>
 							<div class="form-group">
 								<label for="discontinued"><spring:message code="computer.discontinued"  /></label>
 								<spr:input path="discontinued" class="form-control"/>
-								<spr:errors path="discontinued" class="form-control" cssClass="has-error" />
+								<spr:errors path="discontinued" class="form-control" cssClass="error" />
 							</div>
 							<div class="form-group">
 								<label for="companyId"><spring:message code="company.name"  /></label> <select
