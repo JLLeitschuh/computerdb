@@ -33,4 +33,12 @@
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
 
+    <bean id="messageError"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename">
+            <value>messages</value>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
 </beans>

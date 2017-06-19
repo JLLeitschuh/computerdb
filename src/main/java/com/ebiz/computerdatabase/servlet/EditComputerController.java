@@ -68,7 +68,7 @@ public class EditComputerController {
 	@RequestMapping(value = "editComputer", method = RequestMethod.POST)
 	public String editComputer(@Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model){
 
-		LoggerSing.logger.error("BINDINGRESULTERROR "+bindingResult.hasErrors());
+		model.addAttribute("computer", computerDTO);
 		if (bindingResult.hasErrors()) {
 
 			model.addAttribute("computer",computerDTO);
@@ -79,7 +79,7 @@ public class EditComputerController {
 		if (!success) {
 			return "404";
 		} else {
-			return "editComputer";
+			return "redirect:editComputer";
 		}
 
 	}

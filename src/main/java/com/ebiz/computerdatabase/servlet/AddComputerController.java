@@ -49,11 +49,10 @@ public class AddComputerController{
 		model.addAttribute("computer",new ComputerDTO());
 		if (bindingResult.hasErrors()) {
 
-			return "404";
+			return "redirect:addComputer";
 		}
 		computerService.insertComputer(computerDTO);
-		model.addAttribute("companyList", companyService.getCompanies());
-		 return "addComputer";
+		 return "redirect:addComputer";
 
 	}
 

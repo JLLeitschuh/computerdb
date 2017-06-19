@@ -24,7 +24,7 @@ public class ComputerValidator implements Validator{
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "introduced", "introduced.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "discontinued", "discontinued.required");
         if(computerDTO.getName() == null ){
-            errors.rejectValue("name", "", new Object[]{"'computerDTO.getName()'"}, "name can't be null");
+            errors.rejectValue("name", "", new Object[]{"'computerDTO.getName()'"}, "name.required");
         }
         LocalDate introducedLocalDate = DataMapper.convertStringToDate(computerDTO.getIntroduced());
         LocalDate discontinuedLocalDate = DataMapper.convertStringToDate(computerDTO.getDiscontinued());
