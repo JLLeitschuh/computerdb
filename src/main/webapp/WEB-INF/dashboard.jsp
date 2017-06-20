@@ -39,7 +39,7 @@ Language : <a href="?lang=en">English</a>|<a href="?lang=fr">French</a>
 			</div>
 			<div class="pull-right">
 				<a class="btn btn-success" id="addComputer"
-				   href="<c:url value="/addComputer">
+				   href="<c:url value="addComputer">
               </c:url>"><spring:message code="add.computer" text="default text" />
 				</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();"><spring:message code="edit" text="default text" /> </a>

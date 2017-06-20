@@ -3,7 +3,14 @@ package com.ebiz.computerdatabase.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class ComputerDTO {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+
+public class ComputerDTO implements Serializable {
+
 
 	private int id;
 

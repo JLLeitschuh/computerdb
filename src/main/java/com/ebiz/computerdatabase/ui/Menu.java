@@ -3,6 +3,7 @@ package com.ebiz.computerdatabase.ui;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.ebiz.computerdatabase.log.LoggerSing;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ebiz.computerdatabase.exception.DAOException;
@@ -12,7 +13,9 @@ import com.ebiz.computerdatabase.persistence.Query;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Menu {
 
 	@Autowired
@@ -239,8 +242,8 @@ public class Menu {
 	 * display all computers from computer table.
 	 * @throws DAOException .
 	 */
-	public void displayComputerList() throws DAOException {
-		computerService.getComputers();
+	public void displayComputerList()  {
+		LoggerSing.logger.error("List size "+computerService.getComputers());
 	}
 
 	/**

@@ -2,12 +2,19 @@ package com.ebiz.computerdatabase.model;
 
 import java.util.List;
 
-public class Page<T> {
+public class PageItem<T> {
 
-	int numberTotalItems = 0;
+	long numberTotalItems = 0;
 	List<T> items;
 	int numberPage;
 	PageRequest pageRequest;
+
+	public PageItem(long numberTotalItems, List<T> items, int numberPage) {
+		this.numberTotalItems = numberTotalItems;
+		this.items = items;
+		this.numberPage = numberPage;
+
+	}
 
 	public PageRequest getPageRequest() {
 		return pageRequest;
@@ -18,14 +25,12 @@ public class Page<T> {
 		this.numberPage = numberPage;
 	}
 
-	public int getNumberTotalItems() {
+	public long getNumberTotalItems() {
 		return numberTotalItems;
 	}
 
 	public void setNumberTotalItems(int numberTotalItems, PageRequest pageRequest) {
 		this.numberTotalItems = numberTotalItems;
-		this.pageRequest = pageRequest;
-		updateNumberPage(pageRequest.itemNumber);
 	}
 
 	public List<T> getItems() {
@@ -36,18 +41,6 @@ public class Page<T> {
 		this.items = items;
 	}
 
-	/**
-	 * update number page.
-	 * @param itemPerPage .
-	 */
-
-	public void updateNumberPage(int itemPerPage) {
-
-		if (itemPerPage > 0) {
-
-			numberPage = (int) Math.ceil((float) ((float) numberTotalItems / (float) itemPerPage));
-		}
-	}
 
 	public int getNumberPage() {
 

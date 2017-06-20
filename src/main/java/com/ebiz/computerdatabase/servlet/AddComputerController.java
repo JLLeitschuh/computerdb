@@ -45,7 +45,7 @@ public class AddComputerController{
 	}
 
 	@RequestMapping(value = "addComputer", method = RequestMethod.POST)
-	protected String addComputer(@ModelAttribute("computer") @Validated ComputerDTO computer, BindingResult bindingResult, Model model) {
+	protected String addComputer( @Validated ComputerDTO computer, BindingResult bindingResult, Model model) {
 
 		model.addAttribute("companyList", companyService.getCompanies());
 		if (bindingResult.hasErrors()) {

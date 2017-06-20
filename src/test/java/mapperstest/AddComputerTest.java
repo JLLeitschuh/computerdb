@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import com.ebiz.computerdatabase.entities.Computer;
 import org.junit.Test;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO.ComputerDTOBuilder;
@@ -18,7 +19,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:WEB-INF/spring/applicationContext.xml")
 @Component
 public class AddComputerTest {
 
@@ -58,10 +58,10 @@ public class AddComputerTest {
 
 		String id = "";
 
-		List<ComputerEntity> list = computerService.getComputers();
-		for (ComputerEntity computerEntity : list) {
-			if (computerEntity.getName().equalsIgnoreCase(computerName)) {
-				id = String.valueOf(computerEntity.getId());
+		List<Computer> list = computerService.getComputers();
+		for (Computer computer : list) {
+			if (computer.getName().equalsIgnoreCase(computerName)) {
+				id = String.valueOf(computer.getId());
 			}
 		}
 

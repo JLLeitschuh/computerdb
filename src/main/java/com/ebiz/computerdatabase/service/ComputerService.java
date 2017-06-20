@@ -1,21 +1,25 @@
 package com.ebiz.computerdatabase.service;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
+import com.ebiz.computerdatabase.entities.Computer;
 import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
 import com.ebiz.computerdatabase.model.CompanyEntity;
 import com.ebiz.computerdatabase.model.ComputerEntity;
-import com.ebiz.computerdatabase.model.Page;
-import com.ebiz.computerdatabase.model.PageRequest;
+
+
 import com.ebiz.computerdatabase.persistence.dao.ComputerDao;
 import com.ebiz.computerdatabase.exception.DAOException;
 import static com.ebiz.computerdatabase.persistence.dao.DaoUtils.*;
 
 
-
+import com.ebiz.computerdatabase.persistence.dao.ComputerRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +34,13 @@ public class ComputerService {
     @Autowired
 	private ComputerDao computerDao;
 
+	@Autowired
+	private ComputerRepository computerRepository;
+
 
 	Logger logger =LoggerFactory.getLogger(getClass());
+
+
 
 
 	/**
@@ -116,25 +125,18 @@ public class ComputerService {
 	 * @return list of computerDTO
 	 * @throws DAOException .
 	 */
-	public List<ComputerEntity> getComputers() {
+	public List<Computer> getComputers() {
 
-
-		List<ComputerEntity> list = null;
-		try {
-			list = computerDao.getAll();
-
-		} catch (DAOException e) {
-			logger.error(e.getMessage());
-			throw new RuntimeException(e.getMessage());
-		}
-
-		return list;
+		return computerRepository.findAll();
 
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Page<ComputerDTO> getPage(PageRequest pageRequest) {
-		try {
+	public Page<Computer> getPage(PageRequest pageRequest,String name) {
+		 if(name == null){
+
+		 }
+		/*try {
 
 			Page<ComputerDTO> page = new Page<ComputerDTO>();
 			int numberTotalPage = computerDao.getCount(pageRequest.getSearch());
@@ -148,7 +150,14 @@ public class ComputerService {
 		} catch (DAOException e) {
 			logger.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
+		}*/
+		if(name == null){
+			return computerRepository.findComputerByNameLikeOrCompanyName(pageRequest);
+		}else{
+			return computerRepository.findComputerByNameLikeOrCompanyName(name, name,pageRequest);
 		}
+
+
 
 	}
 
