@@ -119,7 +119,7 @@ public class Menu {
 			ComputerEntity computerModel = computerService.getComputerById(computerId);
 			if (computerModel != null) {
 				String[] computers = new String[] { computerId };
-				computerService.deleteComputer(computers);
+				//computerService.deleteComputer(computers);
 			} else {
 				System.out.println("This computer doesn't exist");
 			}

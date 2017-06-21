@@ -4,6 +4,7 @@ import com.ebiz.computerdatabase.entities.Computer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,7 +13,9 @@ import java.util.List;
  */
 public interface ComputerRepository extends JpaRepository<Computer,Integer>{
 
-    Page<Computer> findComputerByNameLikeOrCompanyName(String name, String companyName, Pageable page);
 
-    Page<Computer> findComputerByNameLikeOrCompanyName(Pageable page);
+    Page<Computer> findComputerByNameContainingOrCompanyNameContaining(String name, String companyName, Pageable page);
+
+    void deleteByIdIn(List<Integer> ids);
+
 }

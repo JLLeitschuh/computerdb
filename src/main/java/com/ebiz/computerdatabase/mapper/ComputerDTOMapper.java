@@ -64,7 +64,17 @@ public class ComputerDTOMapper {
 	public static ComputerDTO createComputerDTO(Computer computer) throws NullPointerException {
 
 		ComputerDTO.ComputerDTOBuilder computerBuilder = new ComputerDTO.ComputerDTOBuilder();
-		computerBuilder.id(computer.getId()).introduced(computer.getIntroduced()).discontinued(computer.getDiscontinued()).companyId(computer.getCompany().getId()).companyName(computer.getCompany().getName());
+		computerBuilder
+				.id(computer.getId())
+				.name(computer.getName())
+				.introduced(computer.getIntroduced())
+				.discontinued(computer.getDiscontinued());
+				if(computer.getCompany()!=null){
+					computerBuilder
+							.companyId(computer.getCompany().getId())
+							.companyName(computer.getCompany().getName());
+
+				}
 
 		return computerBuilder.build();
 

@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -45,11 +48,10 @@ public class DashboardController {
 	public String getDashBoard(Model model, @RequestParam Map<String,String> requestParams){
 
 		PageRequest pageRequest = PageRequestMapper.pageRequestMapper(requestParams);
-		LoggerSing.logger.error("List size "+computerService.getComputers().size());
-		Page<Computer> page = computerService.getPage(pageRequest,requestParams.get("search"));
 
-		PageItem pageItem = new PageItem(page.getTotalElements(), ComputerDTOMapper.createComputerDTOList(page.getContent()), page.getTotalPages());
-		model.addAttribute("page", page);
+		Page<Computer> page = computerService.getPage(pageRequest,requestParams.get("search"));
+		PageItem pageItem = new PageItem(page, ComputerDTOMapper.createComputerDTOList(page.getContent()),requestParams);
+		model.addAttribute("page", pageItem);
 		model.addAttribute("companyList", companyService.getCompanies());
 
 		return "dashboard";
@@ -57,8 +59,12 @@ public class DashboardController {
 
 	@RequestMapping(value = "dashboard", method = RequestMethod.POST)
 	public RedirectView deleteComputer(@RequestParam Map<String,String> requestParams){
-		String[] selectedComputers = requestParams.get("selection").split(",");
-		computerService.deleteComputer(selectedComputers);
+
+		List<String> selectedComputers = Arrays.asList(requestParams.get("selection").split(","));
+ 		List<Integer> listInteger = selectedComputers.stream().map(Integer::valueOf).collect(Collectors.toList());
+ 		 listInteger.stream().forEach(a->LoggerSing.logger.error("Integer to delete "+a));
+
+		computerService.deleteComputer(selectedComputers.stream().map(Integer::valueOf).collect(Collectors.toList()));
 		return new RedirectView("dashboard");
 
 	}

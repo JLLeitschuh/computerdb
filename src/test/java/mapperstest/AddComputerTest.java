@@ -65,7 +65,7 @@ public class AddComputerTest {
 			}
 		}
 
-		computerService.deleteComputer(new String[] { id });
+		//computerService.deleteComputer(new String[] { id });
 		computerNameCountAfter = searchComputer(computerName);
 		assertEquals(computerNameCountAfter, computerNameCount);
 

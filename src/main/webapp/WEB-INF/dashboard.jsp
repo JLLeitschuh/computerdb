@@ -66,21 +66,21 @@ Language : <a href="?lang=en">English</a>|<a href="?lang=fr">French</a>
 						class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-				<th><spring:message code="computer.name" text="default text" /><mytag:sortby sort="${page.pageRequest.sort}"
-																							 orderby="cmp.name" />
+				<th><spring:message code="computer.name" text="default text" /><mytag:sortby sort="${page.sort}"
+																							 orderby="name" />
 				</th>
-				<th><spring:message code="computer.introduced" text="default text" /> <mytag:sortby sort="${page.pageRequest.sort}"
+				<th><spring:message code="computer.introduced" text="default text" /> <mytag:sortby sort="${page.sort}"
 																									orderby="introduced" />
 				</th>
 
 				<!-- Table header for Discontinued Date -->
-				<th><spring:message code="computer.discontinued" text="default text" /> <mytag:sortby sort="${page.pageRequest.sort}"
+				<th><spring:message code="computer.discontinued" text="default text" /> <mytag:sortby sort="${page.sort}"
 																									  orderby="discontinued" />
 				</th>
 
 				<!-- Table header for Company -->
-				<th><spring:message code="company.name" text="default text" />  <mytag:sortby sort="${page.pageRequest.sort}"
-																							  orderby="cmpy.name" />
+				<th><spring:message code="company.name" text="default text" />  <mytag:sortby sort="${page.sort}"
+																							  orderby="company.name" />
 				</th>
 
 			</tr>

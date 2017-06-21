@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -133,31 +134,12 @@ public class ComputerService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Page<Computer> getPage(PageRequest pageRequest,String name) {
-		 if(name == null){
 
-		 }
-		/*try {
-
-			Page<ComputerDTO> page = new Page<ComputerDTO>();
-			int numberTotalPage = computerDao.getCount(pageRequest.getSearch());
-			page.setNumberTotalItems(numberTotalPage, pageRequest);
-			int start = (pageRequest.getPage() - 1) * pageRequest.getItemNumber();
-			List<ComputerEntity> computerEntities = computerDao.getComputers(start, pageRequest);
-			page.setItems(ComputerDTOMapper.createComputerDTOList(computerEntities));
-
-			return page;
-
-		} catch (DAOException e) {
-			logger.error(e.getMessage());
-			throw new RuntimeException(e.getMessage());
-		}*/
 		if(name == null){
-			return computerRepository.findComputerByNameLikeOrCompanyName(pageRequest);
+			return computerRepository.findAll(pageRequest);
 		}else{
-			return computerRepository.findComputerByNameLikeOrCompanyName(name, name,pageRequest);
+			return computerRepository.findComputerByNameContainingOrCompanyNameContaining(name, name,pageRequest);
 		}
-
-
 
 	}
 
@@ -174,19 +156,17 @@ public class ComputerService {
 
 	/**
 	 * delete computer with id strId.
-	 * @param computerIdString .
+	 * @param computerId
 	 * @throws DAOException .
 	 */
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void deleteComputer(String[] computerIdString) {
+	@Transactional
+	public void deleteComputer(List<Integer> computerId) {
 
-		try {
-			computerDao.deleteComputers(computerIdString);
+		computerRepository.deleteByIdIn(computerId);
+		computerRepository.flush();
 
-		} catch (DAOException e) {
-			logger.error(e.getMessage());
-			throw new RuntimeException(e.getMessage());
-		}
+		//computerDao.deleteComputers(computerIdString);
+
 
 	}
 
