@@ -2,6 +2,7 @@ package com.ebiz.computerdatabase.servlet;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO;
 import com.ebiz.computerdatabase.log.LoggerSing;
+import com.ebiz.computerdatabase.mapper.CompanyDTOMapper;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,16 @@ public class AddComputerController{
 	protected String getAddComputer(Locale locale,Model model) {
 
 		LoggerSing.logger.error("LANGUAGE ="+locale);
-		model.addAttribute("companyList", companyService.getCompanies());
+		model.addAttribute("companyList", CompanyDTOMapper.createCompanyDtoList(companyService.getCompanies()));
 		model.addAttribute("computer", new ComputerDTO());
 		return "addComputer";
 	}
 
 	@RequestMapping(value = "addComputer", method = RequestMethod.POST)
-	protected String addComputer( @Validated ComputerDTO computer, BindingResult bindingResult, Model model) {
+	protected String addComputer(@ModelAttribute("computer") @Validated ComputerDTO computer, BindingResult bindingResult, Model model) {
 
-		model.addAttribute("companyList", companyService.getCompanies());
+		model.addAttribute("companyList", CompanyDTOMapper.createCompanyDtoList(companyService.getCompanies()));
+		model.addAttribute("computer", computer);
 		if (bindingResult.hasErrors()) {
 
 			return "addComputer";

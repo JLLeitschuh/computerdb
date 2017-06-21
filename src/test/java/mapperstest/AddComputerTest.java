@@ -8,14 +8,9 @@ import com.ebiz.computerdatabase.entities.Computer;
 import org.junit.Test;
 
 import com.ebiz.computerdatabase.dto.ComputerDTO.ComputerDTOBuilder;
-import com.ebiz.computerdatabase.exception.DAOException;
-import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
-import com.ebiz.computerdatabase.model.ComputerEntity;
 import com.ebiz.computerdatabase.service.ComputerService;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,12 +25,6 @@ public class AddComputerTest {
 
 		int computerTotal = 0;
 
-		try {
-			computerTotal = computerService.getTotalItem(null);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		long timeStamp = System.currentTimeMillis();
 		// Set value to add new computer
 
@@ -46,12 +35,7 @@ public class AddComputerTest {
 		dtoBuilder.name(computerName).introduced("01-01-2012").discontinued("01-01-2012").companyId(1);
 		computerService.insertComputer(dtoBuilder.build());
 		int computerTotalAfter = 0;
-		try {
-			computerTotalAfter = computerService.getTotalItem("");
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		int computerNameCountAfter = searchComputer(computerName);
 		assertEquals(computerTotalAfter, computerTotal + 1);
 		assertEquals(computerNameCountAfter, computerNameCount + 1);
@@ -74,12 +58,7 @@ public class AddComputerTest {
 	public int searchComputer(String name) {
 
 		int computerTotal = 0;
-		try {
-			computerTotal = computerService.getTotalItem(name);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 
 		return computerTotal;
 	}

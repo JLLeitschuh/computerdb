@@ -1,10 +1,11 @@
 package com.ebiz.computerdatabase.entities;
 
-import com.ebiz.computerdatabase.model.CompanyEntity;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by ebiz on 20/06/17.
@@ -14,6 +15,8 @@ import java.util.Date;
 public class Computer implements Serializable {
 
     @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "increment")
     private int id;
 
     @Column(name="name")

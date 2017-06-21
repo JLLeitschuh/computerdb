@@ -3,6 +3,7 @@ package com.ebiz.computerdatabase.servlet;
 import com.ebiz.computerdatabase.dto.ComputerDTO;
 
 import com.ebiz.computerdatabase.log.LoggerSing;
+import com.ebiz.computerdatabase.mapper.CompanyDTOMapper;
 import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
@@ -55,7 +56,7 @@ public class EditComputerController {
 			return "404";
 		} else {
 
-			model.addAttribute("companyList", companyService.getCompanies());
+			model.addAttribute("companyList", CompanyDTOMapper.createCompanyDtoList(companyService.getCompanies()));
 			model.addAttribute("computer", computer);
 			return "editComputer";
 
@@ -67,7 +68,7 @@ public class EditComputerController {
 	public String editComputer(@ModelAttribute("computer") @Validated ComputerDTO computerDTO, BindingResult bindingResult, Model model){
 
 		model.addAttribute("computer", computerDTO);
-		model.addAttribute("companyList", companyService.getCompanies());
+		model.addAttribute("companyList", CompanyDTOMapper.createCompanyDtoList(companyService.getCompanies()));
 
 		LoggerSing.logger.error("ComputerDTO CHANGE "+ computerDTO.getId());
 		if (bindingResult.hasErrors()) {

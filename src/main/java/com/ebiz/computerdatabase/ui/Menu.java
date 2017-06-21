@@ -1,14 +1,12 @@
 package com.ebiz.computerdatabase.ui;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.ebiz.computerdatabase.entities.Computer;
 import com.ebiz.computerdatabase.log.LoggerSing;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ebiz.computerdatabase.exception.DAOException;
-import com.ebiz.computerdatabase.model.CompanyEntity;
-import com.ebiz.computerdatabase.model.ComputerEntity;
 import com.ebiz.computerdatabase.persistence.Query;
 import com.ebiz.computerdatabase.service.CompanyService;
 import com.ebiz.computerdatabase.service.ComputerService;
@@ -116,7 +114,7 @@ public class Menu {
 
 		if (StringUtils.isNumeric(computerId)) {
 
-			ComputerEntity computerModel = computerService.getComputerById(computerId);
+			Computer computerModel = computerService.getComputerById(computerId);
 			if (computerModel != null) {
 				String[] computers = new String[] { computerId };
 				//computerService.deleteComputer(computers);
@@ -158,7 +156,7 @@ public class Menu {
 		boolean isComputerIdOk = StringUtils.isNumeric(computerId);
 
 		if (isComputerIdOk) {
-			ComputerEntity computer = computerService.getComputerById(computerId);
+			Computer computer = computerService.getComputerById(computerId);
 			if (computer != null) {
 				System.out.println(computer.toString());
 			} else {
@@ -196,7 +194,7 @@ public class Menu {
 	 */
 	public void updateComputer(String idComputerUpdate) throws DAOException {
 
-		ComputerEntity computerModel = computerService.getComputerById(idComputerUpdate);
+		Computer computerModel = computerService.getComputerById(idComputerUpdate);
 		if (computerModel != null) {
 			System.out.print("Enter name:");
 
@@ -209,7 +207,7 @@ public class Menu {
 			System.out.print("Company ID:");
 			String companyId = in.nextLine();
 
-			computerService.update(computerModel);
+			//computerService.update(computerModel);
 
 		} else {
 			System.out.println("Computer doesn't exist");
