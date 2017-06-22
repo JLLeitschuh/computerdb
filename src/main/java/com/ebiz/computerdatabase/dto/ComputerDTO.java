@@ -181,5 +181,43 @@ public class ComputerDTO implements Serializable {
 			return new ComputerDTO(this);
 		}
 
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			ComputerDTOBuilder that = (ComputerDTOBuilder) o;
+
+			if (id != that.id) return false;
+			if (companyId != that.companyId) return false;
+			if (!name.equals(that.name)) return false;
+			if (introduced != null ? !introduced.equals(that.introduced) : that.introduced != null) return false;
+			if (discontinued != null ? !discontinued.equals(that.discontinued) : that.discontinued != null)
+				return false;
+			return companyName != null ? companyName.equals(that.companyName) : that.companyName == null;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = id;
+			result = 31 * result + name.hashCode();
+			result = 31 * result + (introduced != null ? introduced.hashCode() : 0);
+			result = 31 * result + (discontinued != null ? discontinued.hashCode() : 0);
+			result = 31 * result + companyId;
+			result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
+			return result;
+		}
+
+		@Override
+		public String toString() {
+			return "ComputerDTOBuilder{" +
+					"id=" + id +
+					", name='" + name + '\'' +
+					", introduced='" + introduced + '\'' +
+					", discontinued='" + discontinued + '\'' +
+					", companyId=" + companyId +
+					", companyName='" + companyName + '\'' +
+					'}';
+		}
 	}
 }

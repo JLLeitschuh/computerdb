@@ -25,7 +25,6 @@ public class PageRequestMapper {
         String sortBy = map.get("sort");
         String orderBy = map.get("orderby");
 
-        LoggerSing.logger.error("List size before "+ map.get("page")  +" "+item_number);
 
         if(  map.get("page") != null && StringUtils.isNumeric(map.get("page"))){
             page = Integer.parseInt(map.get("page")) -1;
@@ -35,12 +34,17 @@ public class PageRequestMapper {
            item_number = Integer.parseInt(map.get("itemNumber"));
         }
 
-        LoggerSing.logger.error("Page Request Mapper "+page  +" "+item_number);
-        if(sortBy !=null && orderBy !=null && sortBy.equals("0")) {
+        int sort = DEFAULT_ITEM_NUMBER;
+        if(sortBy!=null && (sortBy.equals("0") || sortBy.equals("1"))){
+            sort = Integer.parseInt(sortBy);
+        }
+        
+
+        if( orderBy !=null && sort == 0) {
             return new PageRequest(page, item_number, new Sort(
                     new Sort.Order(Sort.Direction.ASC, orderBy)));
 
-        }else if(sortBy!=null && orderBy!=null){
+        }else if(orderBy!=null){
             return new PageRequest(page, item_number, new Sort(
                     new Sort.Order(Sort.Direction.DESC, orderBy)));
         }else{

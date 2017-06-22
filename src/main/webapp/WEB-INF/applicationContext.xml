@@ -46,9 +46,7 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="com.ebiz.computerdatabase"/>
-
         <property name="jpaVendorAdapter" ref="jpaVendor">
-
         </property>
         <property name="jpaProperties">
             <props>

@@ -1,5 +1,6 @@
 package com.ebiz.computerdatabase.entities;
 
+import com.sun.istack.internal.NotNull;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Computer implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "increment")
     private int id;
 
-    @Column(name="name")
+    @Column(name="name",nullable = false)
     private String name;
 
 

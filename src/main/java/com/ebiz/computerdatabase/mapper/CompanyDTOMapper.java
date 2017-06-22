@@ -3,6 +3,8 @@ package com.ebiz.computerdatabase.mapper;
 import com.ebiz.computerdatabase.dto.CompanyDTO;
 import com.ebiz.computerdatabase.dto.ComputerDTO;
 import com.ebiz.computerdatabase.entities.Company;
+import com.ebiz.computerdatabase.entities.Computer;
+import com.ebiz.computerdatabase.exception.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,4 +29,6 @@ public class CompanyDTOMapper {
         }
         return companyDTOS;
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.ebiz.computerdatabase.mapper;
 import com.ebiz.computerdatabase.dto.ComputerDTO;
 import com.ebiz.computerdatabase.entities.Company;
 import com.ebiz.computerdatabase.entities.Computer;
+import com.ebiz.computerdatabase.exception.BadRequestException;
 
 
 import java.util.ArrayList;
@@ -63,6 +64,32 @@ public class ComputerDTOMapper {
 		}
 
 		return computerDTOList;
+
+	}
+
+	public static ComputerDTO mapOldAndNewComputer(Computer oldComputer, ComputerDTO newComputer){
+
+		if(oldComputer == null){
+			throw new BadRequestException("Computer doesn't exist");
+		}
+		if(newComputer.getName()==null){
+			newComputer.setName(oldComputer.getName());
+		}
+		if(newComputer.getIntroduced() == null){
+			newComputer.setIntroduced(oldComputer.getIntroduced());
+		}
+		if(newComputer.getDiscontinued() == null){
+			newComputer.setDiscontinued(oldComputer.getDiscontinued());
+		}
+		if(newComputer.getCompanyId()<=0){
+			if(oldComputer.getCompany()!=null){
+				newComputer.setCompanyId(oldComputer.getCompany().getId());
+				newComputer.setCompanyName(oldComputer.getCompany().getName());
+			}
+
+		}
+
+		return newComputer;
 
 	}
 	

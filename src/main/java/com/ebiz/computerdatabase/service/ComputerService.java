@@ -1,12 +1,18 @@
 package com.ebiz.computerdatabase.service;
 
+import com.ebiz.computerdatabase.dto.CompanyDTO;
 import com.ebiz.computerdatabase.dto.ComputerDTO;
+import com.ebiz.computerdatabase.entities.Company;
 import com.ebiz.computerdatabase.entities.Computer;
+import com.ebiz.computerdatabase.exception.BadRequestException;
+import com.ebiz.computerdatabase.log.LoggerSing;
 import com.ebiz.computerdatabase.mapper.ComputerDTOMapper;
 
 
+import com.ebiz.computerdatabase.persistence.dao.CompanyDao;
 import com.ebiz.computerdatabase.persistence.dao.ComputerDao;
 
+import com.ebiz.computerdatabase.validator.ComputerDTOValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +30,8 @@ import java.util.List;
 @Service
 public class ComputerService {
 
+	@Autowired
+	private CompanyDao companyDao;
     @Autowired
 	private ComputerDao computerDao;
 
@@ -35,8 +43,12 @@ public class ComputerService {
 
 	public void insertComputer(ComputerDTO computerDTO) {
 
-		computerDao.save(ComputerDTOMapper.DtoToComputer(computerDTO));
-
+		ComputerDTOValidator.validArgument(computerDTO);
+		if(companyDao.findOne(computerDTO.getCompanyId())!=null) {
+			computerDao.save(ComputerDTOMapper.DtoToComputer(computerDTO));
+		}else{
+			throw new BadRequestException("CompanyId not valid");
+		}
 	}
 
 
@@ -53,6 +65,14 @@ public class ComputerService {
 
 	public boolean update(ComputerDTO computerDTO) {
 
+		LoggerSing.logger.error("Id computer "+computerDTO.getId());
+		if(computerDTO.getId()<= 0){
+			throw new BadRequestException("Id is required");
+		}
+		Computer oldComputer = computerDao.findComputerById(computerDTO.getId());
+		LoggerSing.logger.error("computer Old "+oldComputer);
+		computerDTO = ComputerDTOMapper.mapOldAndNewComputer(oldComputer,computerDTO);
+		ComputerDTOValidator.validArgument(computerDTO);
 		computerDao.save(ComputerDTOMapper.DtoToComputer(computerDTO));
 		return true;
 
